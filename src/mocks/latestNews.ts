@@ -3,59 +3,67 @@ import {
   LATEST_NEWS_HERO,
   PROFILE_SPOTLIGHT_NEWS,
 } from "./newsCollections";
-import { formatCreatedAtDisplay } from "./homeFactory";
+import { type NewsCreators, type HomeSectionItem } from "./homeFactory";
 
+// Tipo base para itens da seção "Latest News" com imagem
 type LatestNewsImageItem = {
   Title: string;
   Creator: string;
+  Creators: NewsCreators;
   Category: string;
   CreatedAt: string;
   Slug: string;
   ImgUrl: string;
 };
 
+// Tipo para o card especial com foto de perfil
 type LatestNewsProfileItem = {
   Title: string;
   Creator: string;
+  Creators: NewsCreators;
   Category: string;
   CreatedAt: string;
   Slug: string;
   ImgProfileUrl: string;
 };
 
-const toImageItem = (
-  item: (typeof LATEST_NEWS)[number],
-): LatestNewsImageItem => ({
+// Função para normalizar a estrutura de criadores a partir de um HomeSectionItem
+// Assume que o item já possui Creators (nova estrutura)
+function getCreators(item: HomeSectionItem): NewsCreators {
+  return item.Creators;
+}
+
+// Converte um item da coleção para LatestNewsImageItem
+const toImageItem = (item: HomeSectionItem): LatestNewsImageItem => ({
   Title: item.Title,
   Creator: item.Creator,
+  Creators: getCreators(item),
   Category: item.Category,
   CreatedAt: item.CreatedAt,
   Slug: item.Slug,
   ImgUrl: item.ImgUrl,
 });
 
+// Itens regulares (até 7)
 const regularBase = LATEST_NEWS.slice(0, 7);
 const LATEST_NEWS_REGULAR: LatestNewsImageItem[] =
   regularBase.length > 0
-    ? [...regularBase].map(toImageItem)
+    ? regularBase.map(toImageItem)
     : [toImageItem(LATEST_NEWS_HERO)];
 
 while (LATEST_NEWS_REGULAR.length < 7) {
   LATEST_NEWS_REGULAR.push(LATEST_NEWS_REGULAR[0]);
 }
 
+// Item especial de perfil
+const profileSource = PROFILE_SPOTLIGHT_NEWS ?? LATEST_NEWS_HERO;
 const LATEST_NEWS_PROFILE_LAST: LatestNewsProfileItem = {
-  Title: PROFILE_SPOTLIGHT_NEWS?.Title || LATEST_NEWS_HERO?.Title || "",
-  Creator: PROFILE_SPOTLIGHT_NEWS?.Creator || LATEST_NEWS_HERO?.Creator || "",
-  Category:
-    PROFILE_SPOTLIGHT_NEWS?.Category ||
-    LATEST_NEWS_HERO?.Category ||
-    "Frontend",
-  CreatedAt:
-    PROFILE_SPOTLIGHT_NEWS?.CreatedAt ||
-    LATEST_NEWS_HERO?.CreatedAt ||
-    formatCreatedAtDisplay(new Date()),
-  Slug: PROFILE_SPOTLIGHT_NEWS?.Slug || LATEST_NEWS_HERO?.Slug || "/",
+  Title: profileSource.Title,
+  Creator: profileSource.Creator,
+  Creators: profileSource.Creators, // diretamente, sem normalização
+  Category: profileSource.Category,
+  CreatedAt: profileSource.CreatedAt,
+  Slug: profileSource.Slug,
   ImgProfileUrl: "/images/Nicholas-Emery.png",
 };
 

@@ -1,0 +1,244 @@
+.content {
+  color: #111827;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  font-family:
+    var(--font-space-grotesk),
+    var(--font-space-grotesk-fallback),
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  margin-top: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.content h1:first-child,
+.content h2:first-child,
+.content h3:first-child {
+  margin-top: 0;
+}
+
+.content h1 {
+  font-size: clamp(2.1rem, 3.7vw, 3.35rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.content h2 {
+  font-size: clamp(1.7rem, 2.8vw, 2.45rem);
+  font-weight: 700;
+  line-height: 1.14;
+  margin-top: 2rem;
+}
+
+.content h3 {
+  font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.content p,
+.content li,
+.content figcaption {
+  font-family:
+    var(--font-poppins),
+    var(--font-poppins-fallback),
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  font-weight: 400;
+  font-size: clamp(1.04rem, 1.12vw, 1.2rem);
+  line-height: 1.95;
+  color: #334155;
+  margin-bottom: 1.15rem;
+}
+
+.content strong,
+.content b {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.content a {
+  color: #4653f6;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.content ul,
+.content ol {
+  padding-left: 1.4rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.content li::marker {
+  color: #4653f6;
+}
+
+.content blockquote {
+  border-left: 4px solid #4653f6;
+  padding-left: 1rem;
+  margin: 1.25rem 0;
+  color: #1e293b;
+}
+
+:global(.dark) .content {
+  color: #e2e8f0;
+}
+
+:global(.dark) .content h1,
+:global(.dark) .content h2,
+:global(.dark) .content h3,
+:global(.dark) .content h4,
+:global(.dark) .content h5,
+:global(.dark) .content h6 {
+  color: #f8fafc;
+}
+
+:global(.dark) .content p,
+:global(.dark) .content li,
+:global(.dark) .content figcaption {
+  color: #cbd5e1;
+}
+
+:global(.dark) .content strong,
+:global(.dark) .content b {
+  color: #f8fafc;
+}
+.content {
+  color: #111827;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  font-family:
+    var(--font-space-grotesk),
+    var(--font-space-grotesk-fallback),
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  color: #0f172a;
+  letter-spacing: -0.02em;
+  line-height: 1.18;
+  margin-top: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+.content h1:first-child,
+.content h2:first-child,
+.content h3:first-child {
+  margin-top: 0;
+}
+
+.content h1 {
+  font-size: clamp(2.1rem, 3.7vw, 3.35rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.content h2 {
+  font-size: clamp(1.7rem, 2.8vw, 2.45rem);
+  font-weight: 700;
+  line-height: 1.14;
+  margin-top: 2rem;
+}
+
+.content h3 {
+  font-size: clamp(1.4rem, 2.2vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.content p,
+.content li,
+.content figcaption {
+  font-family:
+    var(--font-poppins),
+    var(--font-poppins-fallback),
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    sans-serif;
+  font-weight: 400;
+  font-size: clamp(0.64rem, 0.75vw, 0.86rem);
+  line-height: 1.95;
+  color: #334155;
+  margin-bottom: 1.15rem;
+}
+
+.content strong,
+.content b {
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.content a {
+  color: #4653f6;
+  text-decoration: underline;
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+
+.content ul,
+.content ol {
+  padding-left: 1.4rem;
+  margin: 1rem 0 1.25rem;
+}
+
+.content li::marker {
+  color: #4653f6;
+}
+
+.content blockquote {
+  border-left: 4px solid #4653f6;
+  padding-left: 1rem;
+  margin: 1.25rem 0;
+  color: #1e293b;
+}
+
+:global(.dark) .content {
+  color: #e2e8f0;
+}
+
+:global(.dark) .content h1,
+:global(.dark) .content h2,
+:global(.dark) .content h3,
+:global(.dark) .content h4,
+:global(.dark) .content h5,
+:global(.dark) .content h6 {
+  color: #f8fafc;
+}
+
+:global(.dark) .content p,
+:global(.dark) .content li,
+:global(.dark) .content figcaption {
+  color: #cbd5e1;
+}
+
+:global(.dark) .content strong,
+:global(.dark) .content b {
+  color: #f8fafc;
+}

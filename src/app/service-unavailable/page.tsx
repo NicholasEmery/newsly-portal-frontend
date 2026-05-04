@@ -1,32 +1,34 @@
-import { NotFoundLottie } from "@/app/components/client/NotFoundLottie";
-import SystemStatusPanel from "@/app/components/server/SystemStatusPanel";
+import { NotFoundLottie } from "@/app/components/client/media/NotFoundLottie";
+import SystemStatusPanel from "@/app/components/server/feedback/SystemStatusPanel";
 import { cookies } from "next/headers";
 import { ServiceUnavailableReasonSchema } from "@/api/schemas/system";
+import { getTranslations } from "next-intl/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function ServiceUnavailablePage() {
-  // Lê reason do cookie
+  const t = await getTranslations("serviceUnavailable");
+  // Read reason from cookie
   const cookieStore = await cookies();
   const cookieReason = cookieStore.get("serviceUnavailableReason")?.value;
 
-  // Validação de reason com Zod
+  // Validate reason with Zod
   const isValidReason =
     cookieReason &&
     ServiceUnavailableReasonSchema.safeParse(cookieReason).success;
   let resolvedReason = cookieReason;
 
-  // Fallback: se não houver motivo válido, mostra conteúdo especial
+  // Fallback: if no valid reason, show special content
   if (!isValidReason) {
     return (
       <main className="w-full min-h-dvh flex items-center justify-center px-6 py-10 bg-gray-50 dark:bg-gray-800">
         <SystemStatusPanel
-          badge="Cookies necessários"
-          title="Não foi possível identificar o motivo da indisponibilidade."
-          description="Para acessar esta página, habilite cookies no seu navegador."
-          secondaryDescription="Se o problema persistir, entre em contato com o suporte."
+          badge={t("cookiesRequired.badge")}
+          title={t("cookiesRequired.title")}
+          description={t("cookiesRequired.description")}
+          secondaryDescription={t("cookiesRequired.secondaryDescription")}
           actionHref="/"
-          actionLabel="Ir para home"
+          actionLabel={t("cookiesRequired.actionLabel")}
           illustration={<NotFoundLottie />}
         />
       </main>
@@ -35,52 +37,42 @@ export default async function ServiceUnavailablePage() {
 
   const contentByReason = {
     "api-unavailable": {
-      badge: "Ops, algo inesperado aconteceu",
-      title: "Não conseguimos concluir o carregamento desta página agora.",
-      description:
-        "Encontramos uma instabilidade temporária durante a solicitação. Nossa equipe já está monitorando o comportamento para restabelecer a navegação completa o quanto antes.",
-      secondaryDescription:
-        "Você pode tentar novamente em alguns instantes para continuar lendo as últimas atualizações.",
-      actionLabel: "Tentar novamente",
+      badge: t("apiUnavailable.badge"),
+      title: t("apiUnavailable.title"),
+      description: t("apiUnavailable.description"),
+      secondaryDescription: t("apiUnavailable.secondaryDescription"),
+      actionLabel: t("apiUnavailable.actionLabel"),
     },
   } as const;
 
   const devContentByReason = {
     "mock-directory-missing-dev": {
-      badge: "Mocks ausentes no projeto",
-      title: "A pasta src/mocks não foi encontrada neste ambiente local.",
-      description:
-        "Para usar fallback local, restaure a pasta src/mocks com os arquivos esperados pelo frontend.",
-      secondaryDescription:
-        "Se preferir seguir sem mocks, use NEWSLY_DATA_SOURCE=api e garanta que a API esteja disponível.",
-      actionLabel: "Voltar para home",
+      badge: t("mockDirectoryMissing.badge"),
+      title: t("mockDirectoryMissing.title"),
+      description: t("mockDirectoryMissing.description"),
+      secondaryDescription: t("mockDirectoryMissing.secondaryDescription"),
+      actionLabel: t("mockDirectoryMissing.actionLabel"),
     },
     "datasource-env-missing-dev": {
-      badge: "Configuração pendente em desenvolvimento",
-      title: "Defina a variável de fonte de dados para continuar.",
-      description:
-        "No ambiente local/dev, informe NEWSLY_DATA_SOURCE (ou NEXT_PUBLIC_NEWSLY_DATA_SOURCE) com api, mock ou auto.",
-      secondaryDescription:
-        "Sem essa configuração explícita, o frontend não consegue decidir a estratégia de carregamento para a home.",
-      actionLabel: "Voltar para home",
+      badge: t("datasourceEnvMissing.badge"),
+      title: t("datasourceEnvMissing.title"),
+      description: t("datasourceEnvMissing.description"),
+      secondaryDescription: t("datasourceEnvMissing.secondaryDescription"),
+      actionLabel: t("datasourceEnvMissing.actionLabel"),
     },
     "api-unavailable-use-mocks": {
-      badge: "Backend indisponível no ambiente local",
-      title: "A API não respondeu, mas existem dados mock disponíveis.",
-      description:
-        "Para continuar o desenvolvimento, altere a fonte de dados para mock ou auto (NEWSLY_DATA_SOURCE=mock|auto).",
-      secondaryDescription:
-        "Após ajustar a variável de ambiente, reinicie o frontend para aplicar o novo modo.",
-      actionLabel: "Voltar para home",
+      badge: t("apiUnavailableUseMocks.badge"),
+      title: t("apiUnavailableUseMocks.title"),
+      description: t("apiUnavailableUseMocks.description"),
+      secondaryDescription: t("apiUnavailableUseMocks.secondaryDescription"),
+      actionLabel: t("apiUnavailableUseMocks.actionLabel"),
     },
     "api-and-mock-unavailable": {
-      badge: "Sem fonte de dados disponível",
-      title: "Não foi possível continuar: API indisponível e mocks ausentes.",
-      description:
-        "No ambiente de desenvolvimento, você precisa de pelo menos uma fonte de dados ativa para carregar o frontend.",
-      secondaryDescription:
-        "Conecte o backend ou adicione mocks locais antes de tentar novamente.",
-      actionLabel: "Voltar para home",
+      badge: t("apiAndMockUnavailable.badge"),
+      title: t("apiAndMockUnavailable.title"),
+      description: t("apiAndMockUnavailable.description"),
+      secondaryDescription: t("apiAndMockUnavailable.secondaryDescription"),
+      actionLabel: t("apiAndMockUnavailable.actionLabel"),
     },
   } as const;
 

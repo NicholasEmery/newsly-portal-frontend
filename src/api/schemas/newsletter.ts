@@ -1,28 +1,26 @@
 import { z } from "zod";
 
-// Schema para validação de email de newsletter (server-side)
+// Schema for newsletter email validation (server-side)
 export const NewsletterSubscribeSchema = z.object({
-  email: z.string().email("Endereço de email inválido"),
+  email: z.string().email("Invalid email address"),
 });
 
-// Schema com mensagens mais detalhadas para client-side
+// Schema with more detailed messages for client-side
 export const NewsletterSubscribeClientSchema = z.object({
   email: z
     .string()
-    .min(1, "Email é obrigatório")
-    .email("Digite um email válido"),
-  acceptTerms: z.boolean().refine((val) => val === true, {
-    message: "Você deve aceitar os termos de uso e privacidade",
-  }),
+    .min(1, "Email is required")
+    .email("Enter a valid email"),
+  acceptTerms: z.boolean().optional(), // Optional - manual validation in component
 });
 
-// Schema de resposta de sucesso
+// Success response schema
 export const NewsletterSubscribeResponseSchema = z.object({
   success: z.boolean(),
   message: z.string().optional(),
 });
 
-// Schema de resposta de erro
+// Error response schema
 export const NewsletterErrorResponseSchema = z.object({
   success: z.literal(false),
   error: z.string(),

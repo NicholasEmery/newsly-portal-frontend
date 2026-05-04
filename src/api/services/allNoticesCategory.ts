@@ -6,11 +6,13 @@ import {
   LatestNewsSectionSchema,
   TrendingItemSchema,
   type HomeSectionItemDto,
+  type HomeSectionDto,
   type LatestNewsSectionDto,
   type TrendingItemDto,
 } from "@/api/schemas/homepage";
 import { loadMocks } from "@/api/mocks";
 import { paginateArray } from "@/api/utils/pagination";
+import { createDevService } from "@/api/utils/serviceHelpers";
 
 export type ViewMoreQuery = {
   limit?: number;
@@ -80,15 +82,13 @@ export const getTrendingNowPage = async (
     { limit, page },
   );
 
-  const items: TrendingItemDto[] = await requestByDataSourceMode<
-    TrendingItemDto[]
-  >({
-    fromApi: () =>
+  const items: TrendingItemDto[] = await createDevService<TrendingItemDto[]>({
+    apiCall: async () =>
       requestJson(
         withQuery(routes.sections.trendingNow, { limit, page }),
         TrendingItemSchema.array(),
       ),
-    fallbackData: fallbackItems,
+    mockLoader: () => fallbackItems,
   });
 
   return toPaginatedResult(items, total, { limit, page });
@@ -107,13 +107,15 @@ export const getSubscriberNewsPage = async (
     { limit, page },
   );
 
-  const items: HomeSectionItemDto[] = await requestByDataSourceMode({
-    fromApi: () =>
+  const items: HomeSectionItemDto[] = await createDevService<
+    HomeSectionItemDto[]
+  >({
+    apiCall: async () =>
       requestJson(
         withQuery(routes.sections.subscriberNews, { limit, page }),
         HomeSectionItemSchema.array(),
       ),
-    fallbackData: fallbackItems,
+    mockLoader: () => fallbackItems,
   });
 
   return toPaginatedResult(items, total, { limit, page });
@@ -139,13 +141,13 @@ export const getLatestNewsPage = async (
     (item): item is LatestNewsSectionDto["Feed"][number] => "ImgUrl" in item,
   );
 
-  const section = await requestByDataSourceMode<LatestNewsSectionDto>({
-    fromApi: () =>
+  const section = await createDevService<LatestNewsSectionDto>({
+    apiCall: async () =>
       requestJson(
         withQuery(routes.sections.latestNews, { limit, page }),
         LatestNewsSectionSchema,
       ),
-    fallbackData: {
+    mockLoader: () => ({
       ...((mocks?.LATEST_NEWS_SECTION_MOCK as any) || {}),
       Items: fallbackItems,
       Hero:
@@ -157,7 +159,7 @@ export const getLatestNewsPage = async (
         (mocks?.LATEST_NEWS_SECTION_MOCK?.SideCard as any),
       SideProfile: mocks?.LATEST_NEWS_SECTION_MOCK?.SideProfile as any,
       TotalNews: total,
-    },
+    }),
   });
 
   return toPaginatedResult(section.Items, total, { limit, page });
@@ -184,13 +186,13 @@ export const getHomeGridNewsPageByCategory = async (
     page,
   });
 
-  const sections = await requestByDataSourceMode({
-    fromApi: () =>
+  const sections = await createDevService<HomeSectionDto[]>({
+    apiCall: async () =>
       requestJson(
         withQuery(routes.sections.homeGrids, { limit, page }),
         HomeSectionSchema.array(),
       ),
-    fallbackData: [
+    mockLoader: () => [
       {
         ...sourceSection,
         Items: fallbackItems,

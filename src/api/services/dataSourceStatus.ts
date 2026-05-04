@@ -37,7 +37,7 @@ export const getDataSourceStatus = async (): Promise<DataSourceStatus> => {
     };
   }
 
-  // API não pronta e em produção não consideramos mocks -> indicar 'none'
+  // API not ready and in production we don't consider mocks -> indicate 'none'
   return {
     canRender: false,
     reason: "api-unavailable",

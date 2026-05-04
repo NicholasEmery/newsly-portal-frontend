@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/app/components/client/ThemeProvider";
+import { ThemeProvider } from "@/app/components/client/providers/ThemeProvider";
+import { AuthProvider } from "@/app/components/client/providers/AuthProvider";
+import { TooltipProvider } from "@/shadcn/components/ui/tooltip";
 import localFont from "next/font/local";
 import { resolveDataSourceMode } from "@/api/connection/http";
 import { getDataSourceStatus } from "@/api/services/homeSections";
 import { IS_DEV_BUILD } from "@/config/buildTarget";
-import { cn } from "@/lib/utils";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 const spaceGroteskLocal = localFont({
   src: [
@@ -69,56 +72,50 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export const metadata: Metadata = {
-  title: "Newsly Portal",
-  description: "Seu portal de notícias atualizado e confiável.",
-  authors: [{ name: "Nicholas Emery", url: "https://nicholasemery.com" }],
-  applicationName: "Newsly Portal",
-  keywords: [
-    "notícias",
-    "atualidades",
-    "portal de notícias",
-    "jornalismo",
-    "informação",
-    "notícias online",
-    "notícias do dia",
-    "notícias internacionais",
-    "notícias locais",
-    "notícias de última hora",
-    "notícias confiáveis",
-    "notícias em tempo real",
-    "notícias de tecnologia",
-  ],
-  openGraph: {
-    title: "Newsly Portal",
-    description: "Seu portal de notícias atualizado e confiável.",
-    url: "https://newsly-portal.vercel.app/",
-    siteName: "Newsly Portal",
-    images: [
-      {
-        url: "https://newsly-portal.vercel.app/images/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Newsly Portal",
-      },
-    ],
-    locale: "pt_BR",
-    type: "website",
-  },
-  publisher: "Nicholas Emery",
-  creator: "Nicholas Emery",
-  icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("metadata");
+  const locale = await getLocale();
+  const ogLocale = locale === "pt-br" ? "pt_BR" : "en_US";
+
+  return {
+    title: t("title"),
+    description: t("description"),
+    authors: [{ name: "Nicholas Emery", url: "https://nicholasemery.com" }],
+    applicationName: t("title"),
+    keywords: t("keywords").split(", "),
+    openGraph: {
+      title: t("title"),
+      description: t("description"),
+      url: "https://newsly-portal.vercel.app/",
+      siteName: t("title"),
+      images: [
+        {
+          url: "https://newsly-portal.vercel.app/images/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: t("title"),
+        },
+      ],
+      locale: ogLocale,
+      type: "website",
+    },
+    publisher: "Nicholas Emery",
+    creator: "Nicholas Emery",
+    icons: {
+      icon: "/favicon.ico",
+      shortcut: "/favicon-16x16.png",
+      apple: "/apple-touch-icon.png",
+    },
+  };
+}
 
 export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const messages = await getMessages();
   const isDevEnvironment = IS_DEV_BUILD;
 
   const dataSource = IS_DEV_BUILD
@@ -126,21 +123,31 @@ export default async function RootLayout({
     : "api";
 
   const DevEnvironmentNotice = IS_DEV_BUILD
-    ? (await import("@/app/components/client/DevEnvironmentNotice")).default
+    ? (await import("@/app/components/client/feedback/DevEnvironmentNotice"))
+        .default
     : null;
 
   return (
-    <html lang="pt-br" className={cn("h-screen w-screen overflow-x-hidden", "font-sans", inter.variable)}>
+    <html
+      lang={locale}
+      className={`h-screen w-screen overflow-x-hidden font-sans ${inter.variable}`}
+    >
       <body
         className={`${poppins.variable} ${poppinsLocal.variable} ${spaceGrotesk.variable} ${spaceGroteskLocal.variable} antialiased bg-gray-100 dark:bg-[#1a202c] min-w-screen min-h-screen transition-colors duration-500`}
       >
-        {DevEnvironmentNotice && (
-          <DevEnvironmentNotice
-            isDevEnvironment={isDevEnvironment}
-            dataSource={dataSource}
-          />
-        )}
-        <ThemeProvider>{children}</ThemeProvider>
+        <NextIntlClientProvider messages={messages} locale={locale}>
+          {DevEnvironmentNotice && (
+            <DevEnvironmentNotice
+              isDevEnvironment={isDevEnvironment}
+              dataSource={dataSource}
+            />
+          )}
+          <TooltipProvider>
+            <AuthProvider>
+              <ThemeProvider>{children}</ThemeProvider>
+            </AuthProvider>
+          </TooltipProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   );

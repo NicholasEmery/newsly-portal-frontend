@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { getTranslations } from "next-intl/server";
 
-export default function Loading() {
+export default async function Loading() {
+  const t = await getTranslations("common");
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-5">
@@ -10,7 +12,7 @@ export default function Loading() {
           <span className="flex items-center justify-center w-full h-full">
             <Image
               src="/images/logo-spinner.png"
-              alt="Logo Newsly Portal"
+              alt={t("logoAlt")}
               width={48}
               height={48}
               className="w-12 h-12 object-contain"

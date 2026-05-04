@@ -260,7 +260,7 @@ const paginated = paginateArray(items, { limit: 3, page: 2 });
 import { formatCreatedAtDisplay } from "@/utils/date";
 
 const formatted = formatCreatedAtDisplay(new Date());
-// "07 Mar, 02:30 PM"
+// "07 Mar 2026, 02:30 PM"
 ```
 
 ---

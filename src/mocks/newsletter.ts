@@ -1,11 +1,11 @@
 export const NEWSLETTER_SUCCESS_RESPONSE_MOCK = {
   success: true,
-  message: "Inscrição realizada com sucesso!",
+  message: "Successfully subscribed!",
 };
 
 export const NEWSLETTER_ERROR_DUPLICATE_MOCK = {
   success: false,
-  error: "Este email já está cadastrado na newsletter.",
+  error: "This email is already registered in the newsletter.",
 };
 
 export const NEWSLETTER_SUBSCRIBERS_MOCK = [

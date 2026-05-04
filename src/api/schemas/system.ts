@@ -12,7 +12,7 @@ export const ApiReadySchema = z.object({
   timestamp: z.string().min(1),
 });
 
-// Schema para validação de motivos de serviço indisponível
+// Schema for validating service unavailable reasons
 export const ServiceUnavailableReasonSchema = z.enum([
   "ok",
   "api-unavailable",

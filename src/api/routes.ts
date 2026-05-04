@@ -12,6 +12,7 @@ export const joinRoute = (...parts: string[]) => {
 };
 
 const SECTIONS_PREFIX = joinRoute(API_PREFIX, "sections");
+const AUTH_PREFIX = joinRoute(API_PREFIX, "auth");
 
 // Central map of internal/frontend API routes. Keep values absolute and typed.
 export const routes = {
@@ -23,7 +24,14 @@ export const routes = {
     subscriberNews: joinRoute(SECTIONS_PREFIX, "subscriber-news"),
   },
   categories: joinRoute(API_PREFIX, "categories"),
+  socialLinks: joinRoute(API_PREFIX, "social-links"),
   newsletter: joinRoute(API_PREFIX, "newsletter"),
+  auth: {
+    session: joinRoute(AUTH_PREFIX, "session"),
+    login: joinRoute(AUTH_PREFIX, "login"),
+    signup: joinRoute(AUTH_PREFIX, "signup"),
+    logout: joinRoute(AUTH_PREFIX, "logout"),
+  },
   system: {
     health: joinRoute(API_PREFIX, "health"),
     ready: joinRoute(API_PREFIX, "ready"),

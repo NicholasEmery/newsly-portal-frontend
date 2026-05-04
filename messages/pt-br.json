@@ -1,0 +1,272 @@
+{
+  "metadata": {
+    "title": "Newsly Portal",
+    "description": "Seu portal de notícias confiável e atualizado.",
+    "keywords": "notícias, eventos atuais, portal de notícias, jornalismo, informação, notícias online, notícias diárias, notícias internacionais, notícias locais, últimas notícias, notícias confiáveis, notícias em tempo real, notícias de tecnologia"
+  },
+  "common": {
+    "goToHomepage": "Ir para a página inicial",
+    "tryAgain": "Tentar novamente",
+    "logoAlt": "Logo Newsly Portal"
+  },
+  "cards": {
+    "by": "por",
+    "comments": "comentários",
+    "viewMore": "Ver Mais",
+    "dontMissOut": "Não Perca"
+  },
+  "dateRelative": {
+    "thisMonth": "Este mês",
+    "twoWeeksAgo": "Há 2 semanas",
+    "oneDayAgo": "Há 1 dia",
+    "manyDaysAgo": "Há {count} dias",
+    "oneHourAgo": "Há 1 hora",
+    "manyHoursAgo": "Há {count} horas",
+    "oneMinuteAgo": "Há 1 minuto",
+    "manyMinutesAgo": "Há {count} minutos",
+    "oneSecondAgo": "Há 1 segundo",
+    "manySecondsAgo": "Há {count} segundos"
+  },
+  "sections": {
+    "latestNews": "Últimas Notícias",
+    "trendingNow": "Em Alta",
+    "forSubscribers": "Para Assinantes",
+    "viewMore": "Ver Mais",
+    "filterLabels": {
+      "spotlight": "Destaques",
+      "trendingStories": "Historias em Alta",
+      "longreads": "Leituras Longas",
+      "dontMissOut": "Não Perca"
+    }
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "guestTitle": "Ainda sem conta?",
+    "guestSummary": "Entre para salvar leituras, acompanhar sua conta e liberar o que vem depois.",
+    "guestBadge": "Comece aqui",
+    "language": "Idioma",
+    "portugueseBrazil": "Português (Brasil)",
+    "englishUs": "Inglês (EUA)",
+    "memberTitle": "Conta ativa",
+    "memberSummary": "Atalhos para sua conta, navegação e ajustes futuros.",
+    "memberBadge": "Logado",
+    "premiumTitle": "Assinante",
+    "premiumSummary": "Atalhos para conteúdo exclusivo e gestão da assinatura.",
+    "premiumBadge": "Premium",
+    "accessSection": "Acesso",
+    "accountSection": "Conta",
+    "premiumSection": "Assinatura",
+    "exploreSection": "Explorar",
+    "supportSection": "Ajuda e informações",
+    "signIn": "Entrar",
+    "createAccount": "Criar conta",
+    "profile": "Meu perfil",
+    "accountSettings": "Configurações da conta",
+    "readingHistory": "Histórico de leitura",
+    "latestNews": "Últimas notícias",
+    "trendingNow": "Em alta",
+    "newsletter": "Newsletter",
+    "subscriberArea": "Área de assinantes",
+    "manageSubscription": "Gerenciar assinatura",
+    "billing": "Faturas",
+    "signOut": "Sair da conta",
+    "help": "Central de ajuda",
+    "privacy": "Privacidade e cookies",
+    "terms": "Termos de uso",
+    "soon": "Em breve"
+  },
+  "header": {
+    "signIn": "Entrar",
+    "openSearch": "Abrir busca",
+    "closeSearch": "Fechar busca",
+    "search": "Buscar Noticias",
+    "open": "Abrir",
+    "toggleTheme": "Alternar tema",
+    "openMenu": "Abrir menu",
+    "mainNav": "Principal"
+  },
+  "navbar": {
+    "more": "Mais"
+  },
+  "appShell": {
+    "welcome": "Bem Vindo!",
+    "logoAlt": "Logo Newsly Portal"
+  },
+  "editorialSection": {
+    "goToCategory": "Ir para {category}",
+    "featuredImageAlt": "Imagem de destaque da categoria {category}",
+    "categories": {
+      "gadgets": "Gadgets",
+      "space": "Espaco",
+      "tech": "Tech",
+      "science": "Ciencia"
+    }
+  },
+  "footer": {
+    "brand": "Newsly",
+    "navigationLabel": "Navegacao do rodape",
+    "copyright": "© {year} Newsly. Todos os direitos reservados.",
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "X",
+      "youtube": "YouTube",
+      "pinterest": "Pinterest"
+    },
+    "links": {
+      "innovation": "Inovacao",
+      "science": "Ciencia",
+      "space": "Espaco",
+      "gadgets": "Gadgets",
+      "opinion": "Opiniao",
+      "podcast": "Podcast",
+      "video": "Video"
+    }
+  },
+  "newsletter": {
+    "title": "Assine nossa Newsletter",
+    "subtitle": "Fique por dentro das nossas últimas notícias e ofertas",
+    "emailPlaceholder": "Digite seu email*",
+    "sending": "Enviando...",
+    "subscriptionCompleted": "Inscrição realizada",
+    "emailAlreadyRegistered": "Email já cadastrado",
+    "subscribe": "Inscrever-se",
+    "acceptTermsLabel": "Eu aceito os",
+    "termsOfUse": "termos de uso",
+    "and": "e",
+    "privacyPolicy": "política de privacidade",
+    "termsError": "Você deve aceitar os termos de uso e a política de privacidade para continuar",
+    "errorProcessing": "Erro ao processar inscrição",
+    "invalidResponse": "Resposta inválida do servidor",
+    "emailAlreadyRegisteredError": "Este email já está cadastrado.",
+    "genericError": "Erro ao processar sua solicitação",
+    "buttonErrorTerms": "Aceite os termos",
+    "buttonErrorRequest": "Falha no envio",
+    "buttonWarningAlreadyRegistered": "Email existente"
+  },
+  "auth": {
+    "tabs": {
+      "login": "Entrar",
+      "signup": "Criar conta"
+    },
+    "fields": {
+      "fullName": "Nome completo",
+      "email": "Email",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha"
+    },
+    "placeholders": {
+      "fullName": "Digite seu nome",
+      "email": "Digite seu email",
+      "password": "Digite sua senha",
+      "confirmPassword": "Confirme sua senha"
+    },
+    "actions": {
+      "login": "Entrar",
+      "signup": "Criar conta",
+      "sending": "Enviando...",
+      "google": "Continuar com Google",
+      "orContinue": "ou continue com",
+      "backToHome": "Voltar para a página inicial"
+    },
+    "switch": {
+      "noAccount": "Ainda não tem conta?",
+      "hasAccount": "Já tem uma conta?"
+    },
+    "login": {
+      "title": "Bem-vindo de volta",
+      "subtitle": "Entre para acompanhar as notícias que importam para você.",
+      "forgotPassword": "Esqueceu sua senha?"
+    },
+    "signup": {
+      "title": "Crie sua conta",
+      "subtitle": "Personalize sua leitura e receba conteúdos no seu ritmo.",
+      "terms": {
+        "acceptTermsLabel": "Eu aceito os",
+        "termsOfUse": "termos de uso",
+        "and": "e",
+        "privacyPolicy": "política de privacidade"
+      }
+    },
+    "validation": {
+      "fullNameRequired": "Informe seu nome completo",
+      "fullNameMin": "Seu nome deve ter ao menos 2 caracteres",
+      "emailRequired": "Informe seu email",
+      "emailInvalid": "Digite um email válido",
+      "passwordRequired": "Informe sua senha",
+      "passwordMin": "Sua senha deve ter ao menos 8 caracteres",
+      "confirmPasswordRequired": "Confirme sua senha",
+      "passwordsMustMatch": "As senhas não coincidem",
+      "acceptTermsRequired": "Você precisa aceitar os termos para continuar"
+    },
+    "feedback": {
+      "loginSuccess": "Login validado com sucesso",
+      "signupSuccess": "Cadastro validado com sucesso",
+      "requestFailed": "Não foi possível concluir sua solicitação"
+    },
+    "onboarding": {
+      "kicker": "Experiência Newsly",
+      "title": "Seu briefing diário com contexto, não só manchete.",
+      "description": "Organize sua rotina com curadoria inteligente, alertas relevantes e uma leitura mais objetiva para ganhar tempo todos os dias.",
+      "highlightsTitle": "O que você desbloqueia ao entrar",
+      "highlightOne": "Seleção editorial personalizada por tema.",
+      "highlightTwo": "Resumo rápido das notícias mais importantes.",
+      "highlightThree": "Alertas para não perder mudanças críticas no cenário tech."
+    }
+  },
+  "notFound": {
+    "badge": "Conteúdo não encontrado",
+    "title": "A página que você tentou acessar não está disponível.",
+    "description": "O endereço pode ter sido alterado, removido ou não existe mais.",
+    "secondaryDescription": "Você pode voltar à página inicial e continuar navegando pelas últimas notícias.",
+    "actionLabel": "Ir para a página inicial"
+  },
+  "serviceUnavailable": {
+    "cookiesRequired": {
+      "badge": "Cookies necessários",
+      "title": "Não foi possível identificar o motivo da indisponibilidade.",
+      "description": "Para acessar esta página, habilite os cookies no seu navegador.",
+      "secondaryDescription": "Se o problema persistir, entre em contato com o suporte.",
+      "actionLabel": "Ir para a página inicial"
+    },
+    "apiUnavailable": {
+      "badge": "Ops, algo inesperado aconteceu",
+      "title": "Não foi possível finalizar o carregamento desta página agora.",
+      "description": "Encontramos uma instabilidade temporária durante a requisição. Nossa equipe já está monitorando a situação para restaurar a navegação completa o mais rápido possível.",
+      "secondaryDescription": "Você pode tentar novamente em alguns instantes para continuar lendo as últimas atualizações.",
+      "actionLabel": "Tentar novamente"
+    },
+    "mockDirectoryMissing": {
+      "badge": "Mocks ausentes no projeto",
+      "title": "A pasta src/mocks não foi encontrada neste ambiente local.",
+      "description": "Para usar o fallback local, restaure a pasta src/mocks com os arquivos esperados pelo frontend.",
+      "secondaryDescription": "Se preferir continuar sem mocks, use NEWSLY_DATA_SOURCE=api e certifique-se de que a API está disponível.",
+      "actionLabel": "Ir para a página inicial"
+    },
+    "datasourceEnvMissing": {
+      "badge": "Configuração pendente no desenvolvimento",
+      "title": "Defina a variável de fonte de dados para continuar.",
+      "description": "No ambiente local/dev, defina NEWSLY_DATA_SOURCE (ou NEXT_PUBLIC_NEWSLY_DATA_SOURCE) como api, mock ou auto.",
+      "secondaryDescription": "Sem essa configuração explícita, o frontend não pode decidir a estratégia de carregamento da homepage.",
+      "actionLabel": "Ir para a página inicial"
+    },
+    "apiUnavailableUseMocks": {
+      "badge": "Backend indisponível no ambiente local",
+      "title": "A API não respondeu, mas dados mock estão disponíveis.",
+      "description": "Para continuar o desenvolvimento, altere a fonte de dados para mock ou auto (NEWSLY_DATA_SOURCE=mock|auto).",
+      "secondaryDescription": "Após ajustar a variável de ambiente, reinicie o frontend para aplicar o novo modo.",
+      "actionLabel": "Ir para a página inicial"
+    },
+    "apiAndMockUnavailable": {
+      "badge": "Nenhuma fonte de dados disponível",
+      "title": "Não foi possível continuar: API indisponível e mocks ausentes.",
+      "description": "No ambiente de desenvolvimento, você precisa de pelo menos uma fonte de dados ativa para carregar o frontend.",
+      "secondaryDescription": "Conecte o backend ou adicione mocks locais antes de tentar novamente.",
+      "actionLabel": "Ir para a página inicial"
+    }
+  },
+  "devNotice": {
+    "banner": "Ambiente de desenvolvimento ativo • Fonte de dados: {dataSource}",
+    "unavailable": "indisponível (API e mocks)"
+  }
+}

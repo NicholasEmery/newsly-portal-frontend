@@ -11,6 +11,7 @@ import {
   type HomePageSectionsDto,
 } from "@/api/schemas/homepage";
 import { paginateArray } from "@/api/utils/pagination";
+import { loadMocksAsync } from "@/api/mocks";
 
 export const getHomeSectionsFromMocks = async (
   options: {
@@ -21,32 +22,11 @@ export const getHomeSectionsFromMocks = async (
     subscriberNews?: any;
   } = {},
 ): Promise<HomePageSectionsDto> => {
-  let mocks: any = false;
-  const { hasMocksDirectory } = await import("@/api/mocks");
-  if (hasMocksDirectory()) {
-    try {
-      try {
-        // @ts-ignore
-        // eslint-disable-next-line
-        mocks = (await import("@/mocks")) as unknown;
-      } catch {
-        mocks = false;
-      }
-    } catch (err: any) {
-      if (
-        err &&
-        err.code !== "MODULE_NOT_FOUND" &&
-        err.message &&
-        !/Cannot find module/.test(err.message)
-      ) {
-        throw err;
-      }
-      mocks = false;
-    }
-  }
+  const mocks = await loadMocksAsync();
   if (!mocks) {
-    throw new Error("Mocks não disponíveis.");
+    throw new Error("Mocks not available.");
   }
+
   const pagedTrending = paginateArray(
     mocks.TRENDING_SECTION_MOCK || [],
     options.trendingNow || {},
@@ -80,6 +60,7 @@ export const getHomeSectionsFromMocks = async (
       baseLatest.SideProfile,
     TotalNews: latestItems.length,
   };
+
   return {
     TopNotice: TopNoticeSchema.parse(mocks.TOP_NOTICE_MOCK || {}),
     TrendingNow: TrendingItemSchema.array().parse(pagedTrending),

@@ -89,7 +89,7 @@ export const requestByDataSourceMode = async <T>(
     }
 
     if (isBackendUnavailable(error)) {
-      // Fallback: serviço indisponível, já tratado em outros fluxos
+      // Fallback: service unavailable, already handled in other flows
       return options.fallbackData;
     }
 
@@ -133,7 +133,7 @@ const resolveBaseUrl = () => {
 
   if (!isTrustedOrigin(candidate)) {
     throw new Error(
-      "NEXT_PUBLIC_API_URL/NEXT_PUBLIC_APP_ORIGIN inválida ou insegura. Use HTTPS (ou localhost/newsly-backend em ambiente interno).",
+      "NEXT_PUBLIC_API_URL/NEXT_PUBLIC_APP_ORIGIN invalid or insecure. Use HTTPS (or localhost/newsly-backend in internal environment).",
     );
   }
 
@@ -167,6 +167,23 @@ export const requestJson = async <T>(
   const response = await api.get(normalizePath(path), {
     timeout: options.timeoutMs ?? DEFAULT_TIMEOUT_MS,
     headers: {
+      ...(options.headers || {}),
+    },
+  });
+
+  return schema.parse(response.data);
+};
+
+export const requestJsonWithLocale = async <T>(
+  path: string,
+  schema: z.ZodSchema<T>,
+  locale: string,
+  options: RequestJsonOptions = {},
+): Promise<T> => {
+  const response = await api.get(normalizePath(path), {
+    timeout: options.timeoutMs ?? DEFAULT_TIMEOUT_MS,
+    headers: {
+      "Accept-Language": locale,
       ...(options.headers || {}),
     },
   });

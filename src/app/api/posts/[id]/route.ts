@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { loadMocks, hasMocksDirectory } from "@/api/mocks";
-import { requestJson } from "@/api/connection/http";
+import { loadMocksAsync, hasMocksDirectory } from "@/api/mocks";
+import { requestJsonWithLocale } from "@/api/connection/http";
 import {
   getDataSourceStatus,
   getResolvedDataSourceMode,
 } from "@/api/services/homeSections";
 import { withQuery } from "@/api/routes";
+import { getLocaleFromRequest } from "@/api/utils/locale";
 
 export async function GET(
   request: NextRequest,
@@ -27,9 +28,11 @@ export async function GET(
     );
   };
 
-  const serveMocks = () => {
-    const mocks = loadMocks();
+  const serveMocks = async () => {
+    const mocks = await loadMocksAsync();
     if (!mocks || !mocks.ALL_NEWS_MOCK) {
+      // eslint-disable-next-line no-console
+      console.debug("[posts/id] mocks missing or ALL_NEWS_MOCK not present");
       return NextResponse.json(null, { status: 404 });
     }
     const post = mocks.ALL_NEWS_MOCK.find((item: any) => matchId(item.Slug));
@@ -45,18 +48,20 @@ export async function GET(
     );
   };
 
-  if (mode === "mock") return serveMocks();
+  if (mode === "mock") return await serveMocks();
 
-  if (!status.canRender && hasMocksDirectory()) return serveMocks();
+  if (!status.canRender && hasMocksDirectory()) return await serveMocks();
 
   try {
-    const resp = await requestJson(
+    const locale = getLocaleFromRequest(request);
+    const resp = await requestJsonWithLocale(
       `${process.env.NEXT_PUBLIC_API_URL}/posts/${encodeURIComponent(id)}`,
       {} as any,
+      locale,
     );
     return NextResponse.json(resp, { status: 200 });
   } catch (err) {
-    if (hasMocksDirectory()) return serveMocks();
+    if (hasMocksDirectory()) return await serveMocks();
     return NextResponse.json(null, { status: 404 });
   }
 }

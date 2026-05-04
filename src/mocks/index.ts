@@ -11,3 +11,4 @@ export * from "./topNotice";
 export * from "./trending";
 export * from "./latestNews";
 export * from "./newsletter";
+export * from "./socialLinks";

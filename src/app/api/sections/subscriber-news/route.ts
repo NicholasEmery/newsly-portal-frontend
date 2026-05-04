@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { loadMocks } from "@/api/mocks";
+import { loadMocksAsync } from "@/api/mocks";
 import { HomeSectionItemSchema } from "@/api/schemas/homepage";
 import { paginateArray, parsePaginationParams } from "@/api/utils/pagination";
-import { requestJson } from "@/api/connection/http";
+import { requestJsonWithLocale } from "@/api/connection/http";
 import { withQuery } from "@/api/routes";
 import { getDataSourceStatus } from "@/api/services/homeSections";
+import { getLocaleFromRequest } from "@/api/utils/locale";
 
 export async function GET(request: NextRequest) {
   const { limit, page } = parsePaginationParams(request.nextUrl.searchParams);
@@ -14,9 +15,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json([], { status: 200 });
   }
 
-  if (String(status.reason).includes("mock")) {
-    const mocks = loadMocks();
+  if (status.datasource === "mock" || String(status.reason).includes("mock")) {
+    const mocks = await loadMocksAsync();
     if (!mocks || !mocks.SUBSCRIBER_NEWS_MOCK) {
+      // eslint-disable-next-line no-console
+      console.debug(
+        "[subscriber-news] mocks missing or SUBSCRIBER_NEWS_MOCK not present",
+        { status },
+      );
       return NextResponse.json([], { status: 200 });
     }
     const payload = HomeSectionItemSchema.array().parse(
@@ -29,12 +35,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const resp = await requestJson(
+    const locale = getLocaleFromRequest(request);
+    const resp = await requestJsonWithLocale(
       withQuery(`${process.env.NEXT_PUBLIC_API_URL}/sections/subscriber-news`, {
         limit,
         page,
       }),
       HomeSectionItemSchema.array(),
+      locale,
     );
     return NextResponse.json(resp, {
       status: 200,

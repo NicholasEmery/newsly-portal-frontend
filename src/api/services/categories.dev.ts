@@ -2,12 +2,13 @@ import { createDevGetService } from "@/api/utils/serviceHelpers";
 import type { Category } from "@/api/schemas/categories";
 
 /**
- * Busca categorias para navegação
- * Usa helper que gerencia API vs mocks automaticamente
+ * Fetches categories for navigation
+ * Uses helper that manages API vs mocks automatically
  */
-export const getCategories = async (): Promise<Category[]> => {
+export const getCategories = async (locale?: string): Promise<Category[]> => {
   return createDevGetService({
     endpoint: "/categories",
+    headers: locale ? { "Accept-Language": locale } : undefined,
     mockLoader: async (mocks) => {
       const nav =
         mocks.NAV_ALL_CATEGORIES || mocks.NAV_PRIMARY_CATEGORIES || [];
@@ -18,6 +19,5 @@ export const getCategories = async (): Promise<Category[]> => {
         Slug: String(c.Slug || c.slug || c.href || "#"),
       }));
     },
-    fallbackValue: [],
   });
 };

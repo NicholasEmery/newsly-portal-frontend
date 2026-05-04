@@ -1,18 +1,27 @@
+// devopsNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
 import { summarizeHtmlToDescription } from "./homeFactory";
+import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const DEVOPS_SEEDS = [
   {
     ImgUrl: "/images/imageScience.png",
     Title: "CI/CD com GitHub Actions e quality gates",
-    Description: "Guia prático sobre CI/CD...",
-    Creator: "opsbia",
+    Creators: {
+      Owner: {
+        name: "opsbia",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsbia — engenheira de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1200),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/cicd-github-actions-quality-gates",
+    Slug: "cicd-github-actions-quality-gates",
     notice: `
       <article>
         <header>
@@ -26,21 +35,25 @@ const DEVOPS_SEEDS = [
         <p>Armazene logs estruturados e métricas de tempo de execução para diagnosticar falhas e otimizar tempo de entrega.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsbia — engenheira de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Deploy azul/verde com rollback orientado por métricas",
-    Description: "Guia prático sobre deploy azul/verde...",
-    Creator: "opsrafa",
+    Creators: {
+      Owner: {
+        name: "opsrafa",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsrafa — engenheira de confiabilidade",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1237),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/deploy-azul-verde-rollback-metricas",
+    Slug: "deploy-azul-verde-rollback-metricas",
     notice: `
       <article>
         <header><h1>Deploy azul/verde com rollback orientado por métricas</h1></header>
@@ -50,21 +63,25 @@ const DEVOPS_SEEDS = [
         <p>Incluímos um exemplo de pipeline que automatiza a comparação e rota de rollback.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsrafa — engenheira de confiabilidade",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Kubernetes: autoscaling por fila e latência",
-    Description: "Guia prático sobre Kubernetes...",
-    Creator: "kubeleo",
+    Creators: {
+      Owner: {
+        name: "kubeleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "kubeleo — engenheiro de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1274),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/kubernetes-autoscaling-fila-latencia",
+    Slug: "kubernetes-autoscaling-fila-latencia",
     notice: `
       <article>
         <header><h1>Kubernetes: autoscaling por fila e latência</h1></header>
@@ -75,21 +92,25 @@ const DEVOPS_SEEDS = [
         <p>Dimensione buffers e políticas de cooldown para evitar oscillation em picos.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "kubeleo — engenheiro de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Observabilidade com OpenTelemetry e alertas úteis",
-    Description: "Guia prático sobre observabilidade...",
-    Creator: "opsbia",
+    Creators: {
+      Owner: {
+        name: "opsbia",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsbia — engenheira de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1311),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/observabilidade-opentelemetry-alertas",
+    Slug: "observabilidade-opentelemetry-alertas",
     notice: `
       <article>
         <header><h1>Observabilidade com OpenTelemetry e alertas úteis</h1></header>
@@ -100,21 +121,25 @@ const DEVOPS_SEEDS = [
         <p>Aplique sampling adaptativo para reduzir custos sem perder visibilidade em eventos raros.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsbia — engenheira de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Estratégias de release train para squads paralelos",
-    Description: "Guia prático sobre release train...",
-    Creator: "opsrafa",
+    Creators: {
+      Owner: {
+        name: "opsrafa",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsrafa — engenheira de confiabilidade",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1348),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/release-train-squads",
+    Slug: "release-train-squads",
     notice: `
       <article>
         <header><h1>Estratégias de release train para squads paralelos</h1></header>
@@ -123,21 +148,25 @@ const DEVOPS_SEEDS = [
         <p>Defina janelas de release, listas de dependências e integrações automatizadas para validar compatibilidade entre mudanças.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsrafa — engenheira de confiabilidade",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "SLOs acionáveis para operação de portais",
-    Description: "Guia prático sobre SLOs...",
-    Creator: "kubeleo",
+    Creators: {
+      Owner: {
+        name: "kubeleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "kubeleo — engenheiro de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1385),
     CommentsCount: 7,
     isSubscriber: false,
-    Slug: "/slos-acionaveis-portais",
+    Slug: "slos-acionaveis-portais",
     notice: `
       <article>
         <header><h1>SLOs acionáveis para operação de portais</h1></header>
@@ -146,21 +175,25 @@ const DEVOPS_SEEDS = [
         <p>Estabeleça SLOs alinhados ao impacto de negócio e com SLIs medíveis e confiáveis.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "kubeleo — engenheiro de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Padronização de ambientes com templates IaC",
-    Description: "Guia prático sobre templates IaC...",
-    Creator: "opsbia",
+    Creators: {
+      Owner: {
+        name: "opsbia",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsbia — engenheira de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1422),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/padronizacao-ambientes-templates-iac",
+    Slug: "padronizacao-ambientes-templates-iac",
     notice: `
       <article>
         <header><h1>Padronização de ambientes com templates IaC</h1></header>
@@ -169,21 +202,25 @@ const DEVOPS_SEEDS = [
         <p>Defina parâmetros para adaptar templates a requisitos de compliance, performance e custo.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsbia — engenheira de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Hardening de pipelines contra supply-chain attacks",
-    Description: "Guia prático sobre hardening de pipelines...",
-    Creator: "opsrafa",
+    Creators: {
+      Owner: {
+        name: "opsrafa",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsrafa — engenheira de confiabilidade",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1459),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/hardening-pipelines-supply-chain",
+    Slug: "hardening-pipelines-supply-chain",
     notice: `
       <article>
         <header><h1>Hardening de pipelines contra supply-chain attacks</h1></header>
@@ -196,21 +233,25 @@ const DEVOPS_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsrafa — engenheira de confiabilidade",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Postmortems sem culpa e melhoria contínua",
-    Description: "Guia prático sobre postmortems...",
-    Creator: "kubeleo",
+    Creators: {
+      Owner: {
+        name: "kubeleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "kubeleo — engenheiro de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1496),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/postmortems-melhoria-continua",
+    Slug: "postmortems-melhoria-continua",
     notice: `
       <article>
         <header><h1>Postmortems sem culpa e melhoria contínua</h1></header>
@@ -219,21 +260,25 @@ const DEVOPS_SEEDS = [
         <p>Inclua ambiente, impacto, timeline e ações com responsáveis e datas.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "kubeleo — engenheiro de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Estratégia de feature flags para releases seguros",
-    Description: "Guia prático sobre feature flags...",
-    Creator: "opsbia",
+    Creators: {
+      Owner: {
+        name: "opsbia",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsbia — engenheira de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1533),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/feature-flags-releases-seguros",
+    Slug: "feature-flags-releases-seguros",
     notice: `
       <article>
         <header><h1>Estratégia de feature flags para releases seguros</h1></header>
@@ -242,21 +287,25 @@ const DEVOPS_SEEDS = [
         <p>Inicie em um pequeno percentual, monitore métricas e aumente gradualmente com automações de rollback em caso de regressão.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsbia — engenheira de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Rollback automatizado por erro de negócio",
-    Description: "Guia prático sobre rollback automatizado...",
-    Creator: "opsrafa",
+    Creators: {
+      Owner: {
+        name: "opsrafa",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsrafa — engenheira de confiabilidade",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1570),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/rollback-automatizado-erro-negocio",
+    Slug: "rollback-automatizado-erro-negocio",
     notice: `
       <article>
         <header><h1>Rollback automatizado por erro de negócio</h1></header>
@@ -265,21 +314,25 @@ const DEVOPS_SEEDS = [
         <p>Combine múltiplos sinais e análise estatística para reduzir falsos positivos.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsrafa — engenheira de confiabilidade",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "GitOps para governança de múltiplos clusters",
-    Description: "Guia prático sobre GitOps...",
-    Creator: "kubeleo",
+    Creators: {
+      Owner: {
+        name: "kubeleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "kubeleo — engenheiro de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1607),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/gitops-governanca-multiplos-clusters",
+    Slug: "gitops-governanca-multiplos-clusters",
     notice: `
       <article>
         <header><h1>GitOps para governança de múltiplos clusters</h1></header>
@@ -288,21 +341,25 @@ const DEVOPS_SEEDS = [
         <p>Use repositórios mono ou multi para gerir clusters e aplique policies-as-code para controlar mudanças.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "kubeleo — engenheiro de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Métricas DORA para evolução de entrega",
-    Description: "Guia prático sobre métricas DORA...",
-    Creator: "opsbia",
+    Creators: {
+      Owner: {
+        name: "opsbia",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsbia — engenheira de plataforma",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1644),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/metricas-dora-evolucao-entrega",
+    Slug: "metricas-dora-evolucao-entrega",
     notice: `
       <article>
         <header><h1>Métricas DORA para evolução de entrega</h1></header>
@@ -311,21 +368,25 @@ const DEVOPS_SEEDS = [
         <p>Combine métricas com objetivos de negócio e trace experimentos para melhorar eficiência de entrega.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsbia — engenheira de plataforma",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Canary com análise estatística de regressão",
-    Description: "Guia prático sobre canary deployments...",
-    Creator: "opsrafa",
+    Creators: {
+      Owner: {
+        name: "opsrafa",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "opsrafa — engenheira de confiabilidade",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "DevOps",
     CreatedAt: createCreatedAtFromMinutesAgo(1681),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/canary-analise-estatistica-regressao",
+    Slug: "canary-analise-estatistica-regressao",
     notice: `
       <article>
         <header><h1>Canary com análise estatística de regressão</h1></header>
@@ -334,14 +395,25 @@ const DEVOPS_SEEDS = [
         <p>Use testes A/B com correção para múltiplas comparações e monitoramento contínuo para decidir expansão ou rollback.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "opsrafa — engenheira de confiabilidade",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
 ];
 
-export const DEVOPS_NEWS_MOCK: HomeSectionItem[] = DEVOPS_SEEDS.map((s) => ({
-  ...s,
-  Description: summarizeHtmlToDescription(s.notice),
-}));
+export const DEVOPS_NEWS_MOCK: HomeSectionItem[] = DEVOPS_SEEDS.map(
+  (s, index) => {
+    const notice = enrichNoticeHtml({
+      html: s.notice,
+      title: s.Title,
+      category: s.Category,
+      creator: s.Creators.Owner.name,
+      index,
+    });
+
+    return {
+      ...s,
+      Creator: s.Creators.Owner.name,
+      notice,
+      Description: summarizeHtmlToDescription(notice),
+    };
+  },
+);

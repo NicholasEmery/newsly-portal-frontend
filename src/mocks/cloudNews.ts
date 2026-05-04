@@ -1,18 +1,27 @@
+// cloudNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
 import { summarizeHtmlToDescription } from "./homeFactory";
+import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const CLOUD_SEEDS = [
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Arquitetura multi-ambiente na AWS com Terraform",
-    Description: "Guia prático sobre arquitetura multi-ambiente...",
-    Creator: "cloudleo",
+    Creators: {
+      Owner: {
+        name: "cloudleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "cloudleo — engenheiro de infraestrutura",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(1800),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/aws-terraform-multiambiente",
+    Slug: "aws-terraform-multiambiente",
     notice: `
       <article>
         <header>
@@ -28,21 +37,25 @@ const CLOUD_SEEDS = [
         <p>Conclusão: automação e convenções reduzem erros operacionais e aceleram entregas.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "cloudleo — engenheiro de infraestrutura",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Custos em cloud: FinOps com dashboards por serviço",
-    Description: "Guia prático sobre FinOps...",
-    Creator: "finopsdani",
+    Creators: {
+      Owner: {
+        name: "finopsdani",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "finopsdani — especialista em FinOps",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(1837),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/finops-dashboards-por-servico",
+    Slug: "finops-dashboards-por-servico",
     notice: `
       <article>
         <header>
@@ -59,21 +72,25 @@ const CLOUD_SEEDS = [
         <p>Ferramentas: combine dados do provider com um BI para análises históricas e alertas de anomalia.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "finopsdani — especialista em FinOps",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Mensageria gerenciada com SQS e processamento resiliente",
-    Description: "Guia prático sobre mensageria...",
-    Creator: "cloudleo",
+    Creators: {
+      Owner: {
+        name: "cloudleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "cloudleo — engenheiro de infraestrutura",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(1874),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/sqs-processamento-resiliente",
+    Slug: "sqs-processamento-resiliente",
     notice: `
       <article>
         <header><h1>Mensageria gerenciada com SQS e processamento resiliente</h1></header>
@@ -84,21 +101,25 @@ const CLOUD_SEEDS = [
         <p>Monitore métricas de atraso, taxa de mensagens na DLQ e latência de processamento para detectar problemas cedo.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "cloudleo — engenheiro de infraestrutura",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Segurança em cloud com least privilege e auditoria contínua",
-    Description: "Guia prático sobre segurança em cloud...",
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(1911),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/least-privilege-auditoria-continua",
+    Slug: "least-privilege-auditoria-continua",
     notice: `
       <article>
         <header><h1>Segurança em cloud com least privilege e auditoria contínua</h1></header>
@@ -109,21 +130,25 @@ const CLOUD_SEEDS = [
         <p>Automatize rotação e revogação de credenciais para reduzir janela de exposição.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Blueprints de infraestrutura para novos produtos",
-    Description: "Guia prático sobre blueprints de infraestrutura...",
-    Creator: "cloudleo",
+    Creators: {
+      Owner: {
+        name: "cloudleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "cloudleo — engenheiro de infraestrutura",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(1948),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/blueprints-infra-novos-produtos",
+    Slug: "blueprints-infra-novos-produtos",
     notice: `
       <article>
         <header><h1>Blueprints de infraestrutura para novos produtos</h1></header>
@@ -136,21 +161,25 @@ const CLOUD_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "cloudleo — engenheiro de infraestrutura",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Observabilidade de custo por domínio de negócio",
-    Description: "Guia prático sobre observabilidade de custo...",
-    Creator: "finopsdani",
+    Creators: {
+      Owner: {
+        name: "finopsdani",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "finopsdani — especialista em FinOps",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(1985),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/observabilidade-custo-dominio",
+    Slug: "observabilidade-custo-dominio",
     notice: `
       <article>
         <header><h1>Observabilidade de custo por domínio de negócio</h1></header>
@@ -160,21 +189,25 @@ const CLOUD_SEEDS = [
         <p>Inclui exemplos de queries e thresholds recomendados.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "finopsdani — especialista em FinOps",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Disaster recovery orientado a RTO e RPO",
-    Description: "Guia prático sobre disaster recovery...",
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2022),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/disaster-recovery-rto-rpo",
+    Slug: "disaster-recovery-rto-rpo",
     notice: `
       <article>
         <header><h1>Disaster recovery orientado a RTO e RPO</h1></header>
@@ -184,21 +217,25 @@ const CLOUD_SEEDS = [
         <p style="font-size:13px">Incluímos checklist de DR e exemplos de runbooks.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Rede privada com segmentação de workloads",
-    Description: "Guia prático sobre redes privadas...",
-    Creator: "cloudleo",
+    Creators: {
+      Owner: {
+        name: "cloudleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "cloudleo — engenheiro de infraestrutura",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2059),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/rede-privada-segmentacao-workloads",
+    Slug: "rede-privada-segmentacao-workloads",
     notice: `
       <article>
         <header><h1>Rede privada com segmentação de workloads</h1></header>
@@ -207,21 +244,25 @@ const CLOUD_SEEDS = [
         <p>Compare isolamento por VPC, por sub-rede e por microsegmentation para escolher a abordagem adequada.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "cloudleo — engenheiro de infraestrutura",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Estratégias de storage lifecycle para mídia",
-    Description: "Guia prático sobre storage lifecycle...",
-    Creator: "finopsdani",
+    Creators: {
+      Owner: {
+        name: "finopsdani",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "finopsdani — especialista em FinOps",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2096),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/storage-lifecycle-midias",
+    Slug: "storage-lifecycle-midias",
     notice: `
       <article>
         <header><h1>Estratégias de storage lifecycle para mídia</h1></header>
@@ -233,21 +274,25 @@ const CLOUD_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "finopsdani — especialista em FinOps",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Controle de acesso federado para times globais",
-    Description: "Guia prático sobre controle de acesso federado...",
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2133),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/acesso-federado-times-globais",
+    Slug: "acesso-federado-times-globais",
     notice: `
       <article>
         <header><h1>Controle de acesso federado para times globais</h1></header>
@@ -256,21 +301,25 @@ const CLOUD_SEEDS = [
         <p>Centralize identidade e delegue autorização via claims; mantenha logs de auditoria para conformidade.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Escalabilidade horizontal para picos de tráfego",
-    Description: "Guia prático sobre escalabilidade horizontal...",
-    Creator: "cloudleo",
+    Creators: {
+      Owner: {
+        name: "cloudleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "cloudleo — engenheiro de infraestrutura",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2170),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/escalabilidade-horizontal-picos",
+    Slug: "escalabilidade-horizontal-picos",
     notice: `
       <article>
         <header><h1>Escalabilidade horizontal para picos de tráfego</h1></header>
@@ -279,21 +328,25 @@ const CLOUD_SEEDS = [
         <p>Use caches na borda e caching por domínio para reduzir carga nos serviços origin.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "cloudleo — engenheiro de infraestrutura",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Tagging policy para governança financeira",
-    Description: "Guia prático sobre tagging policy...",
-    Creator: "finopsdani",
+    Creators: {
+      Owner: {
+        name: "finopsdani",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "finopsdani — especialista em FinOps",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2207),
     CommentsCount: 1,
     isSubscriber: false,
-    Slug: "/tagging-policy-governanca-financeira",
+    Slug: "tagging-policy-governanca-financeira",
     notice: `
       <article>
         <header><h1>Tagging policy para governança financeira</h1></header>
@@ -302,21 +355,25 @@ const CLOUD_SEEDS = [
         <p>Automatize checagens em pipelines e aplique guardrails para impedir recursos sem tags obrigatórias.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "finopsdani — especialista em FinOps",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Segurança de segredos com rotação automatizada",
-    Description: "Guia prático sobre segurança de segredos...",
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2244),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/segredos-rotacao-automatizada",
+    Slug: "segredos-rotacao-automatizada",
     notice: `
       <article>
         <header><h1>Segurança de segredos com rotação automatizada</h1></header>
@@ -325,21 +382,25 @@ const CLOUD_SEEDS = [
         <p>Automatize a atualização de segredos em serviços e minimize o tempo entre rotação e aplicação.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "CDN avançada para distribuição global de conteúdo",
-    Description: "Guia prático sobre CDN avançada...",
-    Creator: "cloudleo",
+    Creators: {
+      Owner: {
+        name: "cloudleo",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "cloudleo — engenheiro de infraestrutura",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Cloud",
     CreatedAt: createCreatedAtFromMinutesAgo(2281),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/cdn-distribuicao-global-conteudo",
+    Slug: "cdn-distribuicao-global-conteudo",
     notice: `
       <article>
         <header><h1>CDN avançada para distribuição global de conteúdo</h1></header>
@@ -349,14 +410,25 @@ const CLOUD_SEEDS = [
         <p>Guia completo: <a href="https://example.com/cdn-guide">Guia de CDN</a></p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "cloudleo — engenheiro de infraestrutura",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
 ];
 
-export const CLOUD_NEWS_MOCK: HomeSectionItem[] = CLOUD_SEEDS.map((s) => ({
-  ...s,
-  Description: summarizeHtmlToDescription(s.notice),
-}));
+export const CLOUD_NEWS_MOCK: HomeSectionItem[] = CLOUD_SEEDS.map(
+  (s, index) => {
+    const notice = enrichNoticeHtml({
+      html: s.notice,
+      title: s.Title,
+      category: s.Category,
+      creator: s.Creators.Owner.name,
+      index,
+    });
+
+    return {
+      ...s,
+      Creator: s.Creators.Owner.name,
+      notice,
+      Description: summarizeHtmlToDescription(notice),
+    };
+  },
+);

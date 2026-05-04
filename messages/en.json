@@ -1,0 +1,306 @@
+{
+  "metadata": {
+    "title": "Newsly Portal",
+    "description": "Your trusted and up-to-date news portal.",
+    "keywords": "news, current events, news portal, journalism, information, online news, daily news, international news, local news, latest news, reliable news, real-time news, tech news",
+    "guestTitle": "Guest",
+    "guestSummary": "Sign in to access your account and reserved content.",
+    "guestBadge": "Visitor",
+    "memberTitle": "Active account",
+    "memberSummary": "Shortcuts for your account, navigation, and future settings.",
+    "memberBadge": "Logged in",
+    "premiumTitle": "Subscriber",
+    "premiumSummary": "Shortcuts for exclusive content and subscription management.",
+    "premiumBadge": "Premium",
+    "accessSection": "Access",
+    "accountSection": "Account",
+    "premiumSection": "Subscription",
+    "exploreSection": "Explore",
+    "supportSection": "Help and information",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "profile": "My profile",
+    "accountSettings": "Account settings",
+    "readingHistory": "Reading history",
+    "latestNews": "Latest news",
+    "trendingNow": "Trending now",
+    "newsletter": "Subscribe to our Newsletter",
+    "subscriberArea": "Subscriber area",
+    "manageSubscription": "Manage subscription",
+    "billing": "Billing",
+    "signOut": "Sign out",
+    "help": "Help center",
+    "privacy": "Privacy and cookies",
+    "terms": "Terms of use",
+    "soon": "Soon"
+  },
+  "common": {
+    "goToHomepage": "Go to homepage",
+    "tryAgain": "Try again",
+    "logoAlt": "Newsly Portal Logo"
+  },
+  "cards": {
+    "by": "by",
+    "comments": "comments",
+    "viewMore": "View More",
+    "dontMissOut": "Don't Miss Out"
+  },
+  "dateRelative": {
+    "thisMonth": "This month",
+    "twoWeeksAgo": "2 weeks ago",
+    "oneDayAgo": "1 day ago",
+    "manyDaysAgo": "{count} days ago",
+    "oneHourAgo": "1 hour ago",
+    "manyHoursAgo": "{count} hours ago",
+    "oneMinuteAgo": "1 minute ago",
+    "manyMinutesAgo": "{count} minutes ago",
+    "oneSecondAgo": "1 second ago",
+    "manySecondsAgo": "{count} seconds ago"
+  },
+  "sections": {
+    "latestNews": "Latest News",
+    "trendingNow": "Trending Now",
+    "forSubscribers": "For Subscribers",
+    "viewMore": "View More",
+    "filterLabels": {
+      "spotlight": "Spotlight",
+      "trendingStories": "Trending Stories",
+      "longreads": "Long Reads",
+      "dontMissOut": "Don't Miss Out"
+    }
+  },
+  "sidebar": {
+    "menu": "Menu",
+    "guestTitle": "No account yet?",
+    "guestSummary": "Sign in to save reads, track your account, and unlock what comes next.",
+    "guestBadge": "Start here",
+    "language": "Language",
+    "portugueseBrazil": "Portuguese (Brazil)",
+    "englishUs": "English (US)",
+    "memberTitle": "Active account",
+    "memberSummary": "Shortcuts for your account, navigation, and future settings.",
+    "memberBadge": "Logged in",
+    "premiumTitle": "Subscriber",
+    "premiumSummary": "Shortcuts for exclusive content and subscription management.",
+    "premiumBadge": "Premium",
+    "accessSection": "Access",
+    "accountSection": "Account",
+    "premiumSection": "Subscription",
+    "exploreSection": "Explore",
+    "supportSection": "Help and information",
+    "signIn": "Sign in",
+    "createAccount": "Create account",
+    "profile": "My profile",
+    "preferences": "Preferences",
+    "accountSettings": "Account settings",
+    "readingHistory": "Reading history",
+    "latestNews": "Latest news",
+    "trendingNow": "Trending now",
+    "newsletter": "Newsletter",
+    "subscriberArea": "Subscriber area",
+    "manageSubscription": "Manage subscription",
+    "billing": "Billing",
+    "signOut": "Sign out",
+    "preferencesLabel": "Preferences",
+    "appearance": "Appearance",
+    "helpSection": "Help and information",
+    "help": "Help center",
+    "privacy": "Privacy and cookies",
+    "terms": "Terms of use",
+    "soon": "Soon"
+  },
+  "header": {
+    "signIn": "Sign In",
+    "openSearch": "Open search",
+    "closeSearch": "Close search",
+    "search": "Search News",
+    "open": "Open",
+    "toggleTheme": "Toggle theme",
+    "openMenu": "Open menu",
+    "mainNav": "Main"
+  },
+  "navbar": {
+    "more": "More"
+  },
+  "appShell": {
+    "welcome": "Welcome!",
+    "logoAlt": "Newsly Portal Logo"
+  },
+  "editorialSection": {
+    "goToCategory": "Go to {category}",
+    "featuredImageAlt": "Featured image from the {category} category",
+    "categories": {
+      "gadgets": "Gadgets",
+      "space": "Space",
+      "tech": "Tech",
+      "science": "Science"
+    }
+  },
+  "footer": {
+    "brand": "Newsly",
+    "navigationLabel": "Footer navigation",
+    "copyright": "© {year} Newsly. All rights reserved.",
+    "social": {
+      "facebook": "Facebook",
+      "instagram": "Instagram",
+      "twitter": "X",
+      "youtube": "YouTube",
+      "pinterest": "Pinterest"
+    },
+    "links": {
+      "innovation": "Innovation",
+      "science": "Science",
+      "space": "Space",
+      "gadgets": "Gadgets",
+      "opinion": "Opinion",
+      "podcast": "Podcast",
+      "video": "Video"
+    }
+  },
+  "newsletter": {
+    "title": "Subscribe to our Newsletter",
+    "subtitle": "Stay in touch with our latest news and offers",
+    "emailPlaceholder": "Enter your email*",
+    "sending": "Sending...",
+    "subscriptionCompleted": "Subscription completed",
+    "emailAlreadyRegistered": "Email already registered",
+    "subscribe": "Subscribe",
+    "acceptTermsLabel": "I accept the",
+    "termsOfUse": "terms of use",
+    "and": "and",
+    "privacyPolicy": "privacy policy",
+    "termsError": "You must accept the terms of use and privacy policy to continue",
+    "errorProcessing": "Error processing subscription",
+    "invalidResponse": "Invalid server response",
+    "emailAlreadyRegisteredError": "This email is already registered.",
+    "genericError": "Error processing your request",
+    "buttonErrorTerms": "Accept terms",
+    "buttonErrorRequest": "Send failed",
+    "buttonWarningAlreadyRegistered": "Email exists"
+  },
+  "auth": {
+    "tabs": {
+      "login": "Sign in",
+      "signup": "Create account"
+    },
+    "fields": {
+      "fullName": "Full name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm password"
+    },
+    "placeholders": {
+      "fullName": "Enter your name",
+      "email": "Enter your email",
+      "password": "Enter your password",
+      "confirmPassword": "Confirm your password"
+    },
+    "actions": {
+      "login": "Sign in",
+      "signup": "Create account",
+      "sending": "Sending...",
+      "google": "Continue with Google",
+      "orContinue": "or continue with",
+      "backToHome": "Back to homepage"
+    },
+    "switch": {
+      "noAccount": "Don't have an account yet?",
+      "hasAccount": "Already have an account?"
+    },
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to keep up with the stories that matter to you.",
+      "forgotPassword": "Forgot password?"
+    },
+    "signup": {
+      "title": "Create your account",
+      "subtitle": "Personalize your reading and receive content at your own pace.",
+      "terms": {
+        "acceptTermsLabel": "I accept the",
+        "termsOfUse": "terms of use",
+        "and": "and",
+        "privacyPolicy": "privacy policy"
+      }
+    },
+    "validation": {
+      "fullNameRequired": "Enter your full name",
+      "fullNameMin": "Your name must be at least 2 characters",
+      "emailRequired": "Enter your email",
+      "emailInvalid": "Enter a valid email",
+      "passwordRequired": "Enter your password",
+      "passwordMin": "Your password must be at least 8 characters",
+      "confirmPasswordRequired": "Confirm your password",
+      "passwordsMustMatch": "Passwords do not match",
+      "acceptTermsRequired": "You must accept the terms to continue"
+    },
+    "feedback": {
+      "loginSuccess": "Login validated successfully",
+      "signupSuccess": "Signup validated successfully",
+      "requestFailed": "Could not complete your request"
+    },
+    "onboarding": {
+      "kicker": "Newsly Experience",
+      "title": "Your daily briefing with context, not just headlines.",
+      "description": "Organize your routine with smart curation, relevant alerts, and objective reading to save time every day.",
+      "highlightsTitle": "What you unlock when you join",
+      "highlightOne": "Editorial picks tailored by topic.",
+      "highlightTwo": "Quick summary of the most important stories.",
+      "highlightThree": "Alerts so you never miss critical shifts in tech."
+    }
+  },
+  "notFound": {
+    "badge": "Content not found",
+    "title": "The page you tried to access is not available.",
+    "description": "The address may have been changed, removed, or no longer exists.",
+    "secondaryDescription": "You can go back to the homepage and continue browsing the latest news.",
+    "actionLabel": "Go to homepage"
+  },
+  "serviceUnavailable": {
+    "cookiesRequired": {
+      "badge": "Cookies required",
+      "title": "Could not identify the reason for the unavailability.",
+      "description": "To access this page, enable cookies in your browser.",
+      "secondaryDescription": "If the problem persists, contact support.",
+      "actionLabel": "Go to homepage"
+    },
+    "apiUnavailable": {
+      "badge": "Oops, something unexpected happened",
+      "title": "We couldn't finish loading this page right now.",
+      "description": "We encountered a temporary instability during the request. Our team is already monitoring the situation to restore full navigation as soon as possible.",
+      "secondaryDescription": "You can try again in a few moments to continue reading the latest updates.",
+      "actionLabel": "Try again"
+    },
+    "mockDirectoryMissing": {
+      "badge": "Mocks missing in project",
+      "title": "The src/mocks folder was not found in this local environment.",
+      "description": "To use local fallback, restore the src/mocks folder with the files expected by the frontend.",
+      "secondaryDescription": "If you prefer to continue without mocks, use NEWSLY_DATA_SOURCE=api and ensure the API is available.",
+      "actionLabel": "Go to homepage"
+    },
+    "datasourceEnvMissing": {
+      "badge": "Pending configuration in development",
+      "title": "Set the data source variable to continue.",
+      "description": "In the local/dev environment, set NEWSLY_DATA_SOURCE (or NEXT_PUBLIC_NEWSLY_DATA_SOURCE) to api, mock, or auto.",
+      "secondaryDescription": "Without this explicit configuration, the frontend cannot decide the loading strategy for the homepage.",
+      "actionLabel": "Go to homepage"
+    },
+    "apiUnavailableUseMocks": {
+      "badge": "Backend unavailable in local environment",
+      "title": "The API did not respond, but mock data is available.",
+      "description": "To continue development, change the data source to mock or auto (NEWSLY_DATA_SOURCE=mock|auto).",
+      "secondaryDescription": "After adjusting the environment variable, restart the frontend to apply the new mode.",
+      "actionLabel": "Go to homepage"
+    },
+    "apiAndMockUnavailable": {
+      "badge": "No data source available",
+      "title": "Could not continue: API unavailable and mocks missing.",
+      "description": "In the development environment, you need at least one active data source to load the frontend.",
+      "secondaryDescription": "Connect the backend or add local mocks before trying again.",
+      "actionLabel": "Go to homepage"
+    }
+  },
+  "devNotice": {
+    "banner": "Development environment active • Data source: {dataSource}",
+    "unavailable": "unavailable (API and mocks)"
+  }
+}

@@ -3,12 +3,16 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import SidebarMenu from "@/app/components/client/SideBarMenu";
-import Header from "@/app/components/client/Header";
+import SidebarMenu from "@/app/components/client/navigation/SideBarMenu";
+import Header from "@/app/components/client/navigation/Header";
+import Footer from "@/app/components/client/navigation/Footer";
+import ScrollToTopButton from "@/app/components/client/ui/ScrollToTopButton";
 import { useGlobalStore } from "@/app/store/stateGlobals";
+import { useTranslations } from "next-intl";
 
 const RouteTransitionOverlay = ({ onDone }: { onDone: () => void }) => {
   const pathname = usePathname();
+  const t = useTranslations("appShell");
   const [visible, setVisible] = useState(true);
   const [canGreet, setCanGreet] = useState(true);
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -59,9 +63,9 @@ const RouteTransitionOverlay = ({ onDone }: { onDone: () => void }) => {
           }
 
           const tl = gsap.timeline({ defaults: { ease: "power4.inOut" } });
-          const greetStart = 0.7;
+          const greetStart = 0.15;
           const greetDuration = 0.45;
-          const slideStart = canGreet ? greetStart + greetDuration + 0.25 : 0;
+          const slideStart = canGreet ? greetStart + greetDuration + 0.1 : 0;
 
           if (canGreet && greetingRef.current) {
             tl.fromTo(
@@ -79,7 +83,11 @@ const RouteTransitionOverlay = ({ onDone }: { onDone: () => void }) => {
 
           tl.to(
             overlayRef.current,
-            { yPercent: -100, duration: 1.5, delay: 4.5 },
+            {
+              yPercent: -100,
+              duration: 0.75,
+              delay: canGreet ? 0.55 : 0.2,
+            },
             slideStart,
           ).call(() => {
             if (!isMounted) return;
@@ -121,7 +129,7 @@ const RouteTransitionOverlay = ({ onDone }: { onDone: () => void }) => {
           <span className="flex items-center justify-center w-full h-full">
             <Image
               src="/images/logo-spinner.png"
-              alt="Logo Newsly Portal"
+              alt={t("logoAlt")}
               width={48}
               height={48}
               className="w-12 h-12 object-contain"
@@ -134,7 +142,7 @@ const RouteTransitionOverlay = ({ onDone }: { onDone: () => void }) => {
             ref={greetingRef}
             className="text-lg dark:text-gray-300 text-blue-500 font-semibold"
           >
-            Bem Vindo!
+            {t("welcome")}
           </span>
         )}
       </div>
@@ -143,26 +151,19 @@ const RouteTransitionOverlay = ({ onDone }: { onDone: () => void }) => {
 };
 
 export function AppShell({ children }: { children: ReactNode }) {
-  const { open, setOpen } = useGlobalStore();
-  const [overlayActive, setOverlayActive] = useState(true);
+  const { open } = useGlobalStore();
 
   return (
-    <div className="h-full w-screen max-w-screen min-w-screen overflow-x-hidden flex flex-row  text-gray-900 dark:text-gray-100 transition-all duration-500">
-      <RouteTransitionOverlay onDone={() => setOverlayActive(false)} />
-      <div
-        className={`fixed inset-0 bg-black/50 transition-opacity duration-300 md:hidden ${
-          open
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        } z-1180`}
-        onClick={() => setOpen(false)}
-      />
+    <div data-appshell="true" className="h-full w-full overflow-x-hidden flex flex-row text-gray-900 dark:text-gray-100 transition-all duration-500">
+      <RouteTransitionOverlay onDone={() => {}} />
       <SidebarMenu />
       <div
-        className={`flex-1 min-w-0 transition-all duration-500 ${open ? "md:pl-64" : "pl-0"}`}
+        className={`flex flex-col flex-1 min-w-0 transition-all duration-500 ${open ? "md:pl-64" : "pl-0"}`}
       >
         <Header />
-        {children}
+        <div className="flex-1">{children}</div>
+        <ScrollToTopButton />
+        <Footer />
       </div>
     </div>
   );

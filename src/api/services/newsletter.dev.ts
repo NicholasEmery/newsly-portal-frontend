@@ -5,8 +5,8 @@ import type {
 } from "@/api/schemas/newsletter";
 
 /**
- * Implementação dev da inscrição na newsletter
- * Usa createDevPostService helper que gerencia API vs Mocks automaticamente
+ * Dev implementation of newsletter subscription
+ * Uses createDevPostService helper that manages API vs Mocks automatically
  */
 export const subscribeNewsletter = async (
   data: NewsletterSubscribeDto,
@@ -15,22 +15,22 @@ export const subscribeNewsletter = async (
     endpoint: "/newsletter/subscribe",
     data,
     mockLoader: (mocks, requestData) => {
-      // Simula checagem de email duplicado
+      // Simulate duplicate email check
       const subscribers = mocks.NEWSLETTER_SUBSCRIBERS_MOCK || [];
       if (subscribers.includes(requestData.email)) {
         return (
           mocks.NEWSLETTER_ERROR_DUPLICATE_MOCK || {
             success: false,
-            message: "Este email já está cadastrado.",
+            message: "This email is already registered.",
           }
         );
       }
 
-      // Retorna sucesso mockado
+      // Return mocked success
       return (
         mocks.NEWSLETTER_SUCCESS_RESPONSE_MOCK || {
           success: true,
-          message: "Inscrição realizada com sucesso!",
+          message: "Successfully subscribed!",
         }
       );
     },

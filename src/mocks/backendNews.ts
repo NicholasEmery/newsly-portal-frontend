@@ -1,18 +1,69 @@
+// backendNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
 import { summarizeHtmlToDescription } from "./homeFactory";
+import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const BACKEND_SEEDS = [
   {
     ImgUrl: "/images/imageScience.png",
+    Title: "Mock Accordion Backend",
+    Creators: {
+      Owner: {
+        name: "mockbackend",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "mockbackend — tester",
+        socialMedias: [],
+      },
+      Colaborators: [
+        {
+          name: "mockengineer",
+          imgProfile: "/images/Nicholas-Emery.png",
+          bio: "mockengineer — colaborador backend",
+          socialMedias: [],
+        },
+      ],
+    },
+    Category: "Backend",
+    CreatedAt: createCreatedAtFromMinutesAgo(2),
+    CommentsCount: 0,
+    isSubscriber: false,
+    Slug: "mock-accordion-2",
+    notice: `
+      <article>
+        <header><h1>Mock Accordion Backend</h1></header>
+        <p>Exemplo vindo do backend com componente customizado.</p>
+        <div data-component="accordion">
+          <item data-title="Pergunta A">
+            <p>Resposta A do backend mock.</p>
+          </item>
+          <item data-title="Pergunta B">
+            <p>Resposta B do backend mock.</p>
+          </item>
+        </div>
+      </article>
+    `.trim(),
+    commentsNotice: [],
+  },
+  {
+    ImgUrl: "/images/imageScience.png",
     Title: "Node.js 22: filas, retries e idempotência para APIs",
-    // Description will be generated from `notice` by homeFactory
-    Creator: "backendjoao",
+    Creators: {
+      Owner: {
+        name: "backendjoao",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "backendjoao — engenheiro backend",
+        socialMedias: [
+          { type: "twitter", url: "https://twitter.com/backendjoao" },
+        ],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(600),
     CommentsCount: 8,
     isSubscriber: false,
-    Slug: "/node22-filas-retries-idempotencia",
+    Slug: "node22-filas-retries-idempotencia",
     notice: `
       <article>
         <header>
@@ -27,11 +78,6 @@ const BACKEND_SEEDS = [
         <p>Conclusão: combinando essas práticas, APIs críticas alcançam maior resiliência sem comprometer consistência.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "backendjoao — engenheiro backend",
-    socialMediasCreator: [
-      { type: "twitter", url: "https://twitter.com/backendjoao" },
-    ],
     commentsNotice: [
       {
         imgProfile: "/images/Nicholas-Emery.png",
@@ -45,13 +91,20 @@ const BACKEND_SEEDS = [
   {
     ImgUrl: "/images/imageScience.png",
     Title: "NestJS modular: domínio, aplicação e infraestrutura",
-    // Description will be generated from `notice` by homeFactory
-    Creator: "apiclara",
+    Creators: {
+      Owner: {
+        name: "apiclara",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "apiclara — arquiteta de APIs",
+        socialMedias: [{ type: "github", url: "https://github.com/apiclara" }],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(637),
     CommentsCount: 9,
     isSubscriber: false,
-    Slug: "/nestjs-modular-dominio-aplicacao-infra",
+    Slug: "nestjs-modular-dominio-aplicacao-infra",
     notice: `
       <article>
         <header><h1>NestJS modular: domínio, aplicação e infraestrutura</h1></header>
@@ -59,23 +112,25 @@ const BACKEND_SEEDS = [
         <p>Inclui exemplos de organização de pacotes e testes de integração.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "apiclara — arquiteta de APIs",
-    socialMediasCreator: [
-      { type: "github", url: "https://github.com/apiclara" },
-    ],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Segurança em APIs públicas com OAuth2 e scopes",
-    // Description will be generated from `notice` by homeFactory
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(674),
     CommentsCount: 7,
     isSubscriber: false,
-    Slug: "/seguranca-apis-oauth2-scopes",
+    Slug: "seguranca-apis-oauth2-scopes",
     notice: `
       <article>
         <header><h1>Segurança em APIs públicas com OAuth2 e scopes</h1></header>
@@ -83,42 +138,50 @@ const BACKEND_SEEDS = [
         <p>Inclui exemplos de políticas de cache e rotação de chaves.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Cache distribuído com Redis para reduzir p95",
-    // Description will be generated from `notice` by homeFactory
-    Creator: "backendjoao",
+    Creators: {
+      Owner: {
+        name: "backendjoao",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "backendjoao — engenheiro backend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(711),
     CommentsCount: 12,
     isSubscriber: false,
-    Slug: "/cache-distribuido-redis-p95",
+    Slug: "cache-distribuido-redis-p95",
     notice: `
       <article>
         <header><h1>Cache distribuído com Redis para reduzir p95</h1></header>
         <p>Analisamos estratégias de cache warming, invalidação e uso de expiração por domínio para reduzir latências de p95 em endpoints críticos.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "backendjoao — engenheiro backend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Versionamento de contratos com compatibilidade retroativa",
-
-    Creator: "apiclara",
+    Creators: {
+      Owner: {
+        name: "apiclara",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "apiclara — arquiteta de APIs",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(748),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/versionamento-contratos-retrocompatibilidade",
+    Slug: "versionamento-contratos-retrocompatibilidade",
     notice: `
       <article>
         <header>
@@ -142,21 +205,25 @@ const BACKEND_SEEDS = [
         <p>Conclusão: com processos e testes de contrato automatizados, você minimiza riscos ao evoluir APIs.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "apiclara — arquiteta de APIs",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Outbox pattern para consistência em eventos",
-
-    Creator: "backendjoao",
+    Creators: {
+      Owner: {
+        name: "backendjoao",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "backendjoao — engenheiro backend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(785),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/outbox-pattern-consistencia-eventos",
+    Slug: "outbox-pattern-consistencia-eventos",
     notice: `
       <article>
         <header><h1>Outbox pattern para consistência em eventos</h1></header>
@@ -172,21 +239,25 @@ const BACKEND_SEEDS = [
         <p style="font-size:14px">Referência: <a href="https://example.com/outbox">Implementando Outbox</a></p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "backendjoao — engenheiro backend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "CQRS pragmático para equipes pequenas",
-
-    Creator: "apiclara",
+    Creators: {
+      Owner: {
+        name: "apiclara",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "apiclara — arquiteta de APIs",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(822),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/cqrs-pragmatico-equipes-pequenas",
+    Slug: "cqrs-pragmatico-equipes-pequenas",
     notice: `
       <article>
         <header><h1>CQRS pragmático para equipes pequenas</h1></header>
@@ -198,20 +269,25 @@ const BACKEND_SEEDS = [
         <p>Código de pseudo-exemplo e diagrama da separação de responsabilidades.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "apiclara — arquiteta de APIs",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Rate limiting e quotas por plano de API",
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(859),
     CommentsCount: 11,
     isSubscriber: false,
-    Slug: "/rate-limiting-quotas-api",
+    Slug: "rate-limiting-quotas-api",
     notice: `
       <article>
         <header><h1>Rate limiting e quotas por plano de API</h1></header>
@@ -221,21 +297,25 @@ const BACKEND_SEEDS = [
         <p style="font-size:13px"><a href="https://example.com/rate-limiting">Leia o guia</a></p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Monitoramento de jobs assíncronos em produção",
-
-    Creator: "backendjoao",
+    Creators: {
+      Owner: {
+        name: "backendjoao",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "backendjoao — engenheiro backend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(896),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/monitoramento-jobs-assincronos",
+    Slug: "monitoramento-jobs-assincronos",
     notice: `
       <article>
         <header><h1>Monitoramento de jobs assíncronos em produção</h1></header>
@@ -248,21 +328,25 @@ const BACKEND_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "backendjoao — engenheiro backend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Políticas de retry com jitter e circuit breaker",
-
-    Creator: "apiclara",
+    Creators: {
+      Owner: {
+        name: "apiclara",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "apiclara — arquiteta de APIs",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(933),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/retry-jitter-circuit-breaker",
+    Slug: "retry-jitter-circuit-breaker",
     notice: `
       <article>
         <header><h1>Políticas de retry com jitter e circuit breaker</h1></header>
@@ -271,21 +355,25 @@ const BACKEND_SEEDS = [
         <p>Backoff exponencial com jitter e limites de tentativa por operação.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "apiclara — arquiteta de APIs",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Schema validation para payloads externos",
-
-    Creator: "secgabriel",
+    Creators: {
+      Owner: {
+        name: "secgabriel",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "secgabriel — especialista em segurança",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(970),
     CommentsCount: 7,
     isSubscriber: false,
-    Slug: "/schema-validation-payloads",
+    Slug: "schema-validation-payloads",
     notice: `
       <article>
         <header><h1>Schema validation para payloads externos</h1></header>
@@ -298,21 +386,25 @@ const BACKEND_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "secgabriel — especialista em segurança",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Persistência multi-tenant com isolamento seguro",
-
-    Creator: "backendjoao",
+    Creators: {
+      Owner: {
+        name: "backendjoao",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "backendjoao — engenheiro backend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(1007),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/persistencia-multi-tenant",
+    Slug: "persistencia-multi-tenant",
     notice: `
       <article>
         <header><h1>Persistência multi-tenant com isolamento seguro</h1></header>
@@ -321,21 +413,25 @@ const BACKEND_SEEDS = [
         <p>Segurança, performance e operações de manutenção são fatores chave na escolha do modelo.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "backendjoao — engenheiro backend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Estratégias de observabilidade orientadas a domínio",
-
-    Creator: "apiclara",
+    Creators: {
+      Owner: {
+        name: "apiclara",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "apiclara — arquiteta de APIs",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(1044),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/observabilidade-orientada-dominio",
+    Slug: "observabilidade-orientada-dominio",
     notice: `
       <article>
         <header><h1>Estratégias de observabilidade orientadas a domínio</h1></header>
@@ -344,21 +440,25 @@ const BACKEND_SEEDS = [
         <p>Defina eventos, spans e métricas alinhadas ao domínio.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "apiclara — arquiteta de APIs",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Webhooks resilientes com deduplicação",
-
-    Creator: "backendjoao",
+    Creators: {
+      Owner: {
+        name: "backendjoao",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "backendjoao — engenheiro backend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Backend",
     CreatedAt: createCreatedAtFromMinutesAgo(1081),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/webhooks-resilientes-deduplicacao",
+    Slug: "webhooks-resilientes-deduplicacao",
     notice: `
       <article>
         <header><h1>Webhooks resilientes com deduplicação</h1></header>
@@ -367,14 +467,25 @@ const BACKEND_SEEDS = [
         <p>Use consumidores com dedup keys e filas com retry configurado.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "backendjoao — engenheiro backend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
 ];
 
-export const BACKEND_NEWS_MOCK: HomeSectionItem[] = BACKEND_SEEDS.map((s) => ({
-  ...s,
-  Description: summarizeHtmlToDescription(s.notice),
-}));
+export const BACKEND_NEWS_MOCK: HomeSectionItem[] = BACKEND_SEEDS.map(
+  (s, index) => {
+    const notice = enrichNoticeHtml({
+      html: s.notice,
+      title: s.Title,
+      category: s.Category,
+      creator: s.Creators.Owner.name,
+      index,
+    });
+
+    return {
+      ...s,
+      Creator: s.Creators.Owner.name,
+      notice,
+      Description: summarizeHtmlToDescription(notice),
+    };
+  },
+);

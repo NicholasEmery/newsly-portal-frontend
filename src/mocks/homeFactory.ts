@@ -1,5 +1,19 @@
 import { createCreatedAtFromMinutesAgo } from "../utils/date";
 
+// Informações de um criador (owner ou colaborador)
+export interface CreatorInfo {
+  name: string;
+  imgProfile: string;
+  bio: string;
+  socialMedias: { type: string; url: string }[];
+}
+
+// Estrutura de criadores de uma notícia
+export interface NewsCreators {
+  Owner: CreatorInfo;
+  Colaborators: CreatorInfo[]; // pode ser vazio
+}
+
 export interface HomeSectionItem {
   ImgUrl: string;
   Title: string;
@@ -10,11 +24,10 @@ export interface HomeSectionItem {
   CommentsCount: number;
   isSubscriber: boolean;
   Slug: string;
+  // Nova estrutura de autoria
+  Creators: NewsCreators;
   // Additional fields for full article structure
   notice?: string; // HTML string with the full news body
-  imgProfile?: string; // creator profile image
-  bioCreator?: string;
-  socialMediasCreator?: { type: string; url: string }[];
   commentsNotice?: {
     imgProfile?: string;
     nameProfile?: string;
@@ -37,7 +50,7 @@ export interface HomeSection {
 
 export type HomeSeed = {
   title: string;
-  creator: string;
+  creator: string; // nome do criador principal (usado para gerar o Owner)
   slug: string;
 };
 
@@ -105,48 +118,61 @@ export const summarizeHtmlToDescription = (
   return lines.slice(0, maxLines).join("\n");
 };
 
+// Função auxiliar para gerar um objeto CreatorInfo padrão a partir de um nome e categoria
+const buildCreatorInfo = (
+  creatorName: string,
+  category: string,
+): CreatorInfo => ({
+  name: creatorName,
+  imgProfile: "/images/Nicholas-Emery.png",
+  bio: `Autor ${creatorName} — especialista em ${category}`,
+  socialMedias: [
+    { type: "twitter", url: `https://twitter.com/${creatorName}` },
+    { type: "github", url: `https://github.com/${creatorName}` },
+  ],
+});
+
 export const buildCategoryItems = (
   seeds: HomeSeed[],
   devCategory: string,
   startOffset: number,
 ): HomeSectionItem[] =>
-  seeds.map((seed, index) => ({
-    ImgUrl: "/images/imageScience.png",
-    Title: seed.title,
-    // Description should be a short plain-text summary extracted from full HTML
-    Description: summarizeHtmlToDescription(
-      makeDescription(seed.title, devCategory, seed.creator),
-    ),
-    Creator: seed.creator,
-    Category: devCategory,
-    CreatedAt: createdAtByOffset(startOffset + index * 37),
-    CommentsCount: 8 + (index % 11),
-    isSubscriber: false,
-    // store slug without category prefix; server components will compose
-    // full URLs using the category when needed
-    Slug: `/${seed.slug}`,
-    // new structured fields
-    notice: makeDescription(seed.title, devCategory, seed.creator),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: `Autor ${seed.creator} — especialista em ${devCategory}`,
-    socialMediasCreator: [
-      { type: "twitter", url: `https://twitter.com/${seed.creator}` },
-      { type: "github", url: `https://github.com/${seed.creator}` },
-    ],
-    commentsNotice: [
-      {
-        imgProfile: "/images/Nicholas-Emery.png",
-        nameProfile: seed.creator,
-        createdAtComment: createdAtByOffset(startOffset + index * 10),
-        comment: `Comentário de exemplo sobre ${seed.title}`,
-        replyComments: [
-          {
-            imgProfile: "/images/Nicholas-Emery.png",
-            nameProfile: "replyUser",
-            createdAtComment: createdAtByOffset(startOffset + index * 5),
-            comment: "Resposta de exemplo",
-          },
-        ],
+  seeds.map((seed, index) => {
+    const owner = buildCreatorInfo(seed.creator, devCategory);
+    return {
+      ImgUrl: "/images/imageScience.png",
+      Title: seed.title,
+      Creator: owner.name,
+      // Description continuará sendo extraída do notice gerado
+      Description: summarizeHtmlToDescription(
+        makeDescription(seed.title, devCategory, seed.creator),
+      ),
+      Category: devCategory,
+      CreatedAt: createdAtByOffset(startOffset + index * 37),
+      CommentsCount: 8 + (index % 11),
+      isSubscriber: false,
+      Slug: `${seed.slug}`,
+      // Nova estrutura de criadores
+      Creators: {
+        Owner: owner,
+        Colaborators: [], // por padrão, sem colaboradores nos mocks gerados
       },
-    ],
-  }));
+      notice: makeDescription(seed.title, devCategory, seed.creator),
+      commentsNotice: [
+        {
+          imgProfile: "/images/Nicholas-Emery.png",
+          nameProfile: seed.creator,
+          createdAtComment: createdAtByOffset(startOffset + index * 10),
+          comment: `Comentário de exemplo sobre ${seed.title}`,
+          replyComments: [
+            {
+              imgProfile: "/images/Nicholas-Emery.png",
+              nameProfile: "replyUser",
+              createdAtComment: createdAtByOffset(startOffset + index * 5),
+              comment: "Resposta de exemplo",
+            },
+          ],
+        },
+      ],
+    };
+  });

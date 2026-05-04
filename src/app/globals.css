@@ -85,6 +85,10 @@
   }
   * {
     @apply border-border outline-ring/50;
+    outline: none;
+  }
+  *:focus {
+    outline: none;
   }
   html {
     @apply font-sans;
@@ -103,6 +107,18 @@
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Edge novo */
+}
+
+/* Remove o fundo da scrollbar em todos os elementos roláveis */
+*:not(.scrollbar-hide) {
+  scrollbar-color: rgba(148, 148, 148, 0.9) transparent; /* Firefox */
+}
+
+*:not(.scrollbar-hide)::-webkit-scrollbar,
+*:not(.scrollbar-hide)::-webkit-scrollbar-corner,
+*:not(.scrollbar-hide)::-webkit-scrollbar-track,
+*:not(.scrollbar-hide)::-webkit-scrollbar-track-piece {
+  background: transparent; /* Chrome, Safari e Edge */
 }
 
 :root {
@@ -147,7 +163,7 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.87 0.00 0);
+  --primary: oklch(0.87 0 0);
   --primary-foreground: oklch(0.205 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
@@ -214,4 +230,70 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* Checkbox customizado com check na cor primary-blue */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  min-width: 16px;
+  min-height: 16px;
+  max-width: 15px;
+  max-height: 15px;
+  flex-shrink: 0;
+  border: 2px solid white;
+  border-radius: 0.125rem;
+  background-color: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+}
+
+input[type="checkbox"]:checked::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1;
+  display: block;
+}
+
+input[type="checkbox"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input[type="checkbox"].has-error {
+  border-color: #f87171;
+  animation: shake 0.3s ease-in-out;
+}
+
+.has-error-shake {
+  animation: shake 0.3s ease-in-out;
+}
+
+/* Hide native password reveal icons to use custom eye toggle */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-4px);
+  }
+  75% {
+    transform: translateX(4px);
+  }
 }

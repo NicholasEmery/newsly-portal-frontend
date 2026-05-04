@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { loadMocks } from "@/api/mocks";
+import { loadMocksAsync } from "@/api/mocks";
 import { LatestNewsSectionSchema } from "@/api/schemas/homepage";
 import { paginateArray, parsePaginationParams } from "@/api/utils/pagination";
-import { requestJson } from "@/api/connection/http";
+import { requestJsonWithLocale } from "@/api/connection/http";
 import { withQuery } from "@/api/routes";
 import { getDataSourceStatus } from "@/api/services/homeSections";
+import { getLocaleFromRequest } from "@/api/utils/locale";
 
 export async function GET(request: NextRequest) {
   const { limit, page } = parsePaginationParams(request.nextUrl.searchParams);
@@ -14,9 +15,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ Items: [], Hero: null }, { status: 200 });
   }
 
-  if (String(status.reason).includes("mock")) {
-    const mocks = loadMocks();
+  if (status.datasource === "mock" || String(status.reason).includes("mock")) {
+    const mocks = await loadMocksAsync();
     if (!mocks || !mocks.LATEST_NEWS_SECTION_MOCK) {
+      // eslint-disable-next-line no-console
+      console.debug(
+        "[latest-news] mocks missing or LATEST_NEWS_SECTION_MOCK not present",
+        { status },
+      );
       return NextResponse.json({ Items: [], Hero: null }, { status: 200 });
     }
     const base = mocks.LATEST_NEWS_SECTION_MOCK;
@@ -46,12 +52,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const resp = await requestJson(
+    const locale = getLocaleFromRequest(request);
+    const resp = await requestJsonWithLocale(
       withQuery(`${process.env.NEXT_PUBLIC_API_URL}/sections/latest-news`, {
         limit,
         page,
       }),
       LatestNewsSectionSchema,
+      locale,
     );
     return NextResponse.json(resp, {
       status: 200,

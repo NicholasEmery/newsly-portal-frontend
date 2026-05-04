@@ -2,12 +2,12 @@ import { requestByDataSourceMode, api } from "@/api/connection/http";
 import { loadMocks } from "@/api/mocks";
 
 /**
- * Helper genérico para criar services dev com lógica de API + Mocks
+ * Generic helper to create dev services with API + Mocks logic
  *
- * Usa requestByDataSourceMode do http.ts para gerenciar automaticamente:
- * - Modo 'api': Só tenta API externa
- * - Modo 'mock': Só usa mocks
- * - Modo 'auto': Tenta API, fallback para mocks se falhar
+ * Uses requestByDataSourceMode from http.ts to automatically manage:
+ * - 'api' mode: Only tries external API
+ * - 'mock' mode: Only uses mocks
+ * - 'auto' mode: Tries API, falls back to mocks if it fails
  *
  * @example
  * ```typescript
@@ -80,11 +80,14 @@ export async function createDevPostService<TRequest, TResponse>(options: {
  */
 export async function createDevGetService<T>(options: {
   endpoint: string;
+  headers?: Record<string, string>;
   mockLoader: (mocks: any) => T;
 }): Promise<T> {
   return await requestByDataSourceMode({
     fromApi: async () => {
-      const response = await api.get(options.endpoint);
+      const response = await api.get(options.endpoint, {
+        headers: options.headers,
+      });
       return response.data;
     },
     fallbackData: loadMockData(options.mockLoader),
@@ -92,22 +95,22 @@ export async function createDevGetService<T>(options: {
 }
 
 /**
- * Carrega dados de mock de forma segura
- * Retorna o resultado do loader ou valor padrão se mocks não disponíveis
+ * Loads mock data safely
+ * Returns the loader result or default value if mocks not available
  */
 function loadMockData<T>(loader: (mocks: any) => T): T {
   const mocks = loadMocks();
 
   if (!mocks) {
-    // Retorna valor padrão vazio baseado no tipo
-    // Para arrays, retorna array vazio; para objetos, retorna objeto vazio
+    // Returns empty default value based on type
+    // For arrays, returns empty array; for objects, returns empty object
     return (Array.isArray(loader({})) ? [] : {}) as T;
   }
 
   try {
     return loader(mocks);
   } catch (error) {
-    console.error("[loadMockData] erro ao processar mocks:", error);
+    console.error("[loadMockData] error processing mocks:", error);
     return (Array.isArray(loader({})) ? [] : {}) as T;
   }
 }

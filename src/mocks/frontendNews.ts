@@ -1,18 +1,68 @@
+// frontendNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
 import { summarizeHtmlToDescription } from "./homeFactory";
+import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const FRONTEND_SEEDS = [
   {
     ImgUrl: "/images/imageScience.png",
+    Title: "Mock Accordion: Guia Interativo",
+    Creators: {
+      Owner: {
+        name: "mockuser",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "mockuser — tester",
+        socialMedias: [],
+      },
+      Colaborators: [
+        {
+          name: "mockcollab",
+          imgProfile: "/images/Nicholas-Emery.png",
+          bio: "mockcollab — colaboradora editorial",
+          socialMedias: [],
+        },
+      ],
+    },
+    Category: "Frontend",
+    CreatedAt: createCreatedAtFromMinutesAgo(1),
+    CommentsCount: 0,
+    isSubscriber: false,
+    Slug: "mock-accordion-1",
+    notice: `
+      <article>
+        <header><h1>Mock Accordion: Guia Interativo</h1></header>
+        <p>Introdução rápida ao conteúdo interativo.</p>
+        <div data-component="accordion">
+          <item data-title="O que é isto?">
+            <p>Este é um exemplo de accordion inserido via HTML do backend.</p>
+          </item>
+          <item data-title="Como testar?">
+            <p>Navegue até esta rota e clique nos itens para verificar renderização.</p>
+          </item>
+        </div>
+        <p>Fim do mock.</p>
+      </article>
+    `.trim(),
+    commentsNotice: [],
+  },
+  {
+    ImgUrl: "/images/imageScience.png",
     Title: "React 19 no mundo real: boundaries, suspense e streaming",
-    Description: "Guia prático sobre React 19...",
-    Creator: "frontendmaria",
+    Creators: {
+      Owner: {
+        name: "frontendmaria",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "frontendmaria — desenvolvedora frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(0),
     CommentsCount: 10,
     isSubscriber: false,
-    Slug: "/react-19-boundaries-suspense-streaming",
+    Slug: "react-19-boundaries-suspense-streaming",
     notice: `
       <article>
         <header>
@@ -30,21 +80,25 @@ const FRONTEND_SEEDS = [
         <p>Conclusão: adotar esses recursos exige disciplina em arquitetura, mas traz ganhos significativos em UX.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "frontendmaria — desenvolvedora frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Acessibilidade em design systems com Tailwind e tokens",
-    Description: "Guia prático sobre acessibilidade...",
-    Creator: "uxdevana",
+    Creators: {
+      Owner: {
+        name: "uxdevana",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "uxdevana — designer de produto",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(37),
     CommentsCount: 5,
     isSubscriber: false,
-    Slug: "/acessibilidade-design-system-tailwind",
+    Slug: "acessibilidade-design-system-tailwind",
     notice: `
       <article>
         <header>
@@ -63,21 +117,25 @@ const FRONTEND_SEEDS = [
         <p>Recomendamos documentar exemplos de uso e incluir guias para desenvolvedores sobre como usar atributos ARIA corretamente.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "uxdevana — designer de produto",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Estratégias de hidratação parcial para reduzir TTI",
-    Description: "Guia prático sobre hidratação parcial...",
-    Creator: "fealvaro",
+    Creators: {
+      Owner: {
+        name: "fealvaro",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "fealvaro — desenvolvedor frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(74),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/hidratacao-parcial-reduzir-tti",
+    Slug: "hidratacao-parcial-reduzir-tti",
     notice: `
       <article>
         <header><h1>Estratégias de hidratação parcial para reduzir TTI</h1></header>
@@ -90,21 +148,25 @@ const FRONTEND_SEEDS = [
         <p>Testes A/B podem validar impacto real das mudanças na percepção do usuário.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "fealvaro — desenvolvedor frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Internacionalização em Next.js com fallback resiliente",
-    Description: "Guia prático sobre internacionalização...",
-    Creator: "frontendmaria",
+    Creators: {
+      Owner: {
+        name: "frontendmaria",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "frontendmaria — desenvolvedora frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(111),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/internacionalizacao-nextjs-fallback",
+    Slug: "internacionalizacao-nextjs-fallback",
     notice: `
       <article>
         <header><h1>Internacionalização em Next.js com fallback resiliente</h1></header>
@@ -120,21 +182,25 @@ const FRONTEND_SEEDS = [
         <p>Mais informações: <a href="https://nextjs.org/docs/advanced-features/i18n">Next.js i18n docs</a></p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "frontendmaria — desenvolvedora frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Microinterações sem custo alto de renderização",
-    Description: "Guia prático sobre microinterações...",
-    Creator: "uxdevana",
+    Creators: {
+      Owner: {
+        name: "uxdevana",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "uxdevana — designer de produto",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(148),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/microinteracoes-performance-render",
+    Slug: "microinteracoes-performance-render",
     notice: `
       <article>
         <header><h1>Microinterações sem custo alto de renderização</h1></header>
@@ -146,21 +212,25 @@ const FRONTEND_SEEDS = [
         <p style="text-align:center"><img src="/images/imageScience.png" alt="microinteractions" style="max-width:100%"/></p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "uxdevana — designer de produto",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Arquitetura de componentes para portais de conteúdo",
-    Description: "Guia prático sobre arquitetura de componentes...",
-    Creator: "fealvaro",
+    Creators: {
+      Owner: {
+        name: "fealvaro",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "fealvaro — desenvolvedor frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(185),
     CommentsCount: 4,
     isSubscriber: false,
-    Slug: "/arquitetura-componentes-portais",
+    Slug: "arquitetura-componentes-portais",
     notice: `
       <article>
         <header><h1>Arquitetura de componentes para portais de conteúdo</h1></header>
@@ -174,21 +244,25 @@ const FRONTEND_SEEDS = [
         <p>Incluímos exemplos de composição e um checklist para revisão de PRs focado em compatibilidade.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "fealvaro — desenvolvedor frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Server Actions com formulários robustos",
-    Description: "Guia prático sobre Server Actions...",
-    Creator: "frontendmaria",
+    Creators: {
+      Owner: {
+        name: "frontendmaria",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "frontendmaria — desenvolvedora frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(222),
     CommentsCount: 7,
     isSubscriber: false,
-    Slug: "/server-actions-formularios-robustos",
+    Slug: "server-actions-formularios-robustos",
     notice: `
       <article>
         <header><h1>Server Actions com formulários robustos</h1></header>
@@ -201,21 +275,25 @@ const FRONTEND_SEEDS = [
         <p>Integre com middlewares para gestão de sessões e proteção contra replay attacks.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "frontendmaria — desenvolvedora frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Revalidação seletiva com cache tags",
-    Description: "Guia prático sobre revalidação seletiva...",
-    Creator: "fealvaro",
+    Creators: {
+      Owner: {
+        name: "fealvaro",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "fealvaro — desenvolvedor frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(259),
     CommentsCount: 1,
     isSubscriber: false,
-    Slug: "/revalidacao-seletiva-cache-tags",
+    Slug: "revalidacao-seletiva-cache-tags",
     notice: `
       <article>
         <header><h1>Revalidação seletiva com cache tags</h1></header>
@@ -225,21 +303,25 @@ const FRONTEND_SEEDS = [
         <p>Incluímos exemplos de TTLs e estratégias de revalidação on-write.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "fealvaro — desenvolvedor frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Escalando estado global com baixo acoplamento",
-    Description: "Guia prático sobre estado global...",
-    Creator: "uxdevana",
+    Creators: {
+      Owner: {
+        name: "uxdevana",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "uxdevana — designer de produto",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(296),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/estado-global-baixo-acoplamento",
+    Slug: "estado-global-baixo-acoplamento",
     notice: `
       <article>
         <header><h1>Escalando estado global com baixo acoplamento</h1></header>
@@ -248,21 +330,25 @@ const FRONTEND_SEEDS = [
         <p>Use eventos e sincronização eventual para reduzir dependências diretas entre componentes, e mecanismos de cache local para leituras frequentes.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "uxdevana — designer de produto",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Métricas Core Web Vitals em apps Next.js",
-    Description: "Guia prático sobre Core Web Vitals...",
-    Creator: "frontendmaria",
+    Creators: {
+      Owner: {
+        name: "frontendmaria",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "frontendmaria — desenvolvedora frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(333),
     CommentsCount: 6,
     isSubscriber: false,
-    Slug: "/core-web-vitals-nextjs",
+    Slug: "core-web-vitals-nextjs",
     notice: `
       <article>
         <header><h1>Métricas Core Web Vitals em apps Next.js</h1></header>
@@ -273,21 +359,25 @@ const FRONTEND_SEEDS = [
         <p>Priorize imagens e fontes para melhorar LCP; reduza repaints causados por layout para diminuir CLS.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "frontendmaria — desenvolvedora frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Layouts compostos com slots e paralel routes",
-    Description: "Guia prático sobre layouts compostos...",
-    Creator: "fealvaro",
+    Creators: {
+      Owner: {
+        name: "fealvaro",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "fealvaro — desenvolvedor frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(370),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/layouts-compostos-parallel-routes",
+    Slug: "layouts-compostos-parallel-routes",
     notice: `
       <article>
         <header><h1>Layouts compostos com slots e paralel routes</h1></header>
@@ -299,21 +389,25 @@ const FRONTEND_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "fealvaro — desenvolvedor frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Estratégias de fallback visual para UX contínua",
-    Description: "Guia prático sobre fallback visual...",
-    Creator: "uxdevana",
+    Creators: {
+      Owner: {
+        name: "uxdevana",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "uxdevana — designer de produto",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(407),
     CommentsCount: 1,
     isSubscriber: false,
-    Slug: "/fallback-visual-ux-continua",
+    Slug: "fallback-visual-ux-continua",
     notice: `
       <article>
         <header><h1>Estratégias de fallback visual para UX contínua</h1></header>
@@ -322,21 +416,25 @@ const FRONTEND_SEEDS = [
         <p>Skeletons preservam a estrutura visual e ajudam usuários a entender o que esperar; use spinners apenas para operações cujo tamanho é incerto.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "uxdevana — designer de produto",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Otimização de imagens para portais de notícia",
-    Description: "Guia prático sobre otimização de imagens...",
-    Creator: "frontendmaria",
+    Creators: {
+      Owner: {
+        name: "frontendmaria",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "frontendmaria — desenvolvedora frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(444),
     CommentsCount: 2,
     isSubscriber: false,
-    Slug: "/otimizacao-imagens-portais",
+    Slug: "otimizacao-imagens-portais",
     notice: `
       <article>
         <header><h1>Otimização de imagens para portais de notícia</h1></header>
@@ -347,21 +445,25 @@ const FRONTEND_SEEDS = [
         <p>Combine com lazy-loading e prioridade para imagens acima da dobra para otimizar LCP.</p>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "frontendmaria — desenvolvedora frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
   {
     ImgUrl: "/images/imageScience.png",
     Title: "Roteamento avançado com intercepting routes",
-    Description: "Guia prático sobre roteamento avançado...",
-    Creator: "fealvaro",
+    Creators: {
+      Owner: {
+        name: "fealvaro",
+        imgProfile: "/images/Nicholas-Emery.png",
+        bio: "fealvaro — desenvolvedor frontend",
+        socialMedias: [],
+      },
+      Colaborators: [],
+    },
     Category: "Frontend",
     CreatedAt: createCreatedAtFromMinutesAgo(481),
     CommentsCount: 3,
     isSubscriber: false,
-    Slug: "/roteamento-intercepting-routes",
+    Slug: "roteamento-intercepting-routes",
     notice: `
       <article>
         <header><h1>Roteamento avançado com intercepting routes</h1></header>
@@ -373,16 +475,25 @@ const FRONTEND_SEEDS = [
         </ul>
       </article>
     `.trim(),
-    imgProfile: "/images/Nicholas-Emery.png",
-    bioCreator: "fealvaro — desenvolvedor frontend",
-    socialMediasCreator: [],
     commentsNotice: [],
   },
 ];
 
 export const FRONTEND_NEWS_MOCK: HomeSectionItem[] = FRONTEND_SEEDS.map(
-  (s) => ({
-    ...s,
-    Description: summarizeHtmlToDescription(s.notice),
-  }),
+  (s, index) => {
+    const notice = enrichNoticeHtml({
+      html: s.notice,
+      title: s.Title,
+      category: s.Category,
+      creator: s.Creators.Owner.name,
+      index,
+    });
+
+    return {
+      ...s,
+      Creator: s.Creators.Owner.name,
+      notice,
+      Description: summarizeHtmlToDescription(notice),
+    };
+  },
 );

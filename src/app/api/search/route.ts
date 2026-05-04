@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { loadMocks, hasMocksDirectory } from "@/api/mocks";
-import { requestJson } from "@/api/connection/http";
+import { loadMocksAsync, hasMocksDirectory } from "@/api/mocks";
+import { requestJsonWithLocale } from "@/api/connection/http";
 import {
   getDataSourceStatus,
   getResolvedDataSourceMode,
 } from "@/api/services/homeSections";
+import { getLocaleFromRequest } from "@/api/utils/locale";
 import {
   TrendingItemSchema,
   LatestNewsSectionSchema,
@@ -13,8 +14,7 @@ import {
 } from "@/api/schemas/homepage";
 
 // flatten results from various sections into {Title,Category,CreatedAt} list
-const flattenMocks = () => {
-  const mocks = loadMocks();
+const flattenMocks = (mocks: any) => {
   if (!mocks) return [];
 
   const results: Array<{ Title: string; Category: string; CreatedAt: string }> =
@@ -79,26 +79,37 @@ export async function GET(request: NextRequest) {
   const status = await getDataSourceStatus();
   const mode = getResolvedDataSourceMode();
 
-  const serveMocks = () => {
-    const data = flattenMocks();
+  const serveMocks = async () => {
+    const mocks = await loadMocksAsync();
+    if (!mocks) {
+      // eslint-disable-next-line no-console
+      console.debug("[search] mocks not available; returning empty results");
+      return NextResponse.json([], {
+        status: 200,
+        headers: { "Cache-Control": "no-store" },
+      });
+    }
+    const data = flattenMocks(mocks);
     return NextResponse.json(data, {
       status: 200,
       headers: { "Cache-Control": "no-store" },
     });
   };
 
-  if (mode === "mock") return serveMocks();
+  if (mode === "mock") return await serveMocks();
 
-  if (!status.canRender && hasMocksDirectory()) return serveMocks();
+  if (!status.canRender && hasMocksDirectory()) return await serveMocks();
 
   try {
-    const resp = await requestJson(
+    const locale = getLocaleFromRequest(request);
+    const resp = await requestJsonWithLocale(
       `${process.env.NEXT_PUBLIC_API_URL}/search`,
       null as any,
+      locale,
     );
     return NextResponse.json(resp, { status: 200 });
   } catch (err) {
-    if (hasMocksDirectory()) return serveMocks();
+    if (hasMocksDirectory()) return await serveMocks();
     return NextResponse.json([], { status: 200 });
   }
 }
