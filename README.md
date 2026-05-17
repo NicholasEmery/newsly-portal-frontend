@@ -209,7 +209,34 @@ Antes de publicar, valide no provedor:
 
 ---
 
-## 📦 Como Contribuir
+## � Sincronização de secrets com o orquestrador
+
+O frontend usa um script local para enviar o conteúdo do `.env` para o Environment do repositório orquestrador. O segredo nunca fica hardcoded no script: ele é lido de `ORCHESTRATOR_PAT` no ambiente.
+
+### Pré-requisitos
+
+- Environment com nome exato `Environments Frontend` no repositório `newsly-portal-orchestrator`
+- `ORCHESTRATOR_PAT` com permissão para gerenciar secrets do repositório alvo
+- Node.js instalado
+
+### Comandos
+
+```powershell
+$env:ORCHESTRATOR_PAT = 'seu_token'
+npm run sync:secrets
+```
+
+Para forçar o envio mesmo quando o hash do `.env` não mudou:
+
+```powershell
+npm run sync:secrets -- --save
+```
+
+### Hook local
+
+O repositório usa `.git/hooks/pre-push` para chamar `node scripts/syncSecrets.js` antes de qualquer push.
+
+## �📦 Como Contribuir
 
 Os usuários podem contribuir com **sugestões** e **feedback** diretamente no repositório GitHub, **através de Issues**. Para sugerir melhorias ou relatar problemas, por favor, siga as etapas abaixo:
 
