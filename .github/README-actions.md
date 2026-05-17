@@ -8,8 +8,10 @@ Requisitos antes de ativar CI completo:
 - Runner self-hosted disponível para o `orchestrator` (não é necessário rodar o runner aqui).
 
 Notas operacionais:
+
 - O workflow que chama o orchestrator está em `.github/workflows/notify-orchestrator.yml`.
 - O token em `ORCHESTRATOR_PAT` deve ser criado por um usuário/UUID com permissão para disparar `repository_dispatch` no repositório alvo.
 
 Como testar localmente:
+
 - Fazer um push de teste para `main` (ou disparo manual do workflow) e verificar se o orchestrator recebeu o evento.

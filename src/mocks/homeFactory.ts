@@ -83,48 +83,13 @@ const makeDescription = (title: string, category: string, creator?: string) => {
   `.trim();
 };
 
-// Remove imagens e links do HTML e extrai texto puro limitado a N linhas.
-export const summarizeHtmlToDescription = (
-  html: string | undefined,
-  maxLines = 10,
-): string => {
-  if (!html) return "";
-
-  // Remove <img ...> tags entirely
-  let cleaned = html.replace(/<img[^>]*>/gi, "");
-
-  // Replace block-level tags that should create line breaks with newline
-  cleaned = cleaned.replace(/<\/(p|div|h[1-6]|li|br)\s*>/gi, "\n");
-
-  // Unwrap anchor tags but keep their inner text
-  cleaned = cleaned.replace(/<a[^>]*>(.*?)<\/a>/gi, "$1");
-
-  // Remove all remaining tags
-  cleaned = cleaned.replace(/<[^>]+>/g, "");
-
-  // Decode a few common HTML entities
-  cleaned = cleaned
-    .replace(/&nbsp;/g, " ")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&amp;/g, "&");
-
-  // Normalize whitespace and split into lines
-  const lines = cleaned
-    .split(/\n|\r/)
-    .map((l) => l.trim())
-    .filter(Boolean);
-
-  return lines.slice(0, maxLines).join("\n");
-};
-
 // Função auxiliar para gerar um objeto CreatorInfo padrão a partir de um nome e categoria
 const buildCreatorInfo = (
   creatorName: string,
   category: string,
 ): CreatorInfo => ({
   name: creatorName,
-  imgProfile: "/images/Nicholas-Emery.png",
+  imgProfile: "",
   bio: `Autor ${creatorName} — especialista em ${category}`,
   socialMedias: [
     { type: "twitter", url: `https://twitter.com/${creatorName}` },
@@ -143,10 +108,7 @@ export const buildCategoryItems = (
       ImgUrl: "/images/imageScience.png",
       Title: seed.title,
       Creator: owner.name,
-      // Description continuará sendo extraída do notice gerado
-      Description: summarizeHtmlToDescription(
-        makeDescription(seed.title, devCategory, seed.creator),
-      ),
+      Description: `Artigo sobre ${seed.title} em ${devCategory}, com orientações práticas para arquitetura, performance e manutenção.`,
       Category: devCategory,
       CreatedAt: createdAtByOffset(startOffset + index * 37),
       CommentsCount: 8 + (index % 11),
@@ -160,13 +122,13 @@ export const buildCategoryItems = (
       notice: makeDescription(seed.title, devCategory, seed.creator),
       commentsNotice: [
         {
-          imgProfile: "/images/Nicholas-Emery.png",
+          imgProfile: "",
           nameProfile: seed.creator,
           createdAtComment: createdAtByOffset(startOffset + index * 10),
           comment: `Comentário de exemplo sobre ${seed.title}`,
           replyComments: [
             {
-              imgProfile: "/images/Nicholas-Emery.png",
+              imgProfile: "",
               nameProfile: "replyUser",
               createdAtComment: createdAtByOffset(startOffset + index * 5),
               comment: "Resposta de exemplo",

@@ -1,5 +1,6 @@
 import { requestByDataSourceMode, api } from "@/api/connection/http";
 import { loadMocks } from "@/api/mocks";
+import axios from "axios";
 
 /**
  * Generic helper to create dev services with API + Mocks logic
@@ -26,9 +27,10 @@ export async function createDevService<T>(options: {
   apiCall: () => Promise<T>;
   mockLoader: (mocks: any) => T;
 }): Promise<T> {
+  const fallback = loadMockData(options.mockLoader);
   return await requestByDataSourceMode({
     fromApi: options.apiCall,
-    fallbackData: loadMockData(options.mockLoader),
+    fallbackData: fallback,
   });
 }
 
@@ -53,14 +55,38 @@ export async function createDevPostService<TRequest, TResponse>(options: {
   data: TRequest;
   mockLoader: (mocks: any, data: TRequest) => TResponse;
 }): Promise<TResponse> {
+  const fallback = loadMockData((mocks) =>
+    options.mockLoader(mocks, options.data),
+  );
   return await requestByDataSourceMode({
     fromApi: async () => {
-      const response = await api.post(options.endpoint, options.data);
-      return response.data;
+      const internalEndpoint = `/api${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
+      const internalOrigin =
+        process.env.NEXT_PUBLIC_APP_ORIGIN ||
+        (process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : "http://localhost:3000");
+      const internalUrl = `${internalOrigin}${internalEndpoint}`;
+
+      try {
+        const response = await axios.post(internalUrl, options.data, {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        });
+        return response.data;
+      } catch (err: any) {
+        const status = err?.response?.status;
+        if (status === 404 && process.env.NEXT_PUBLIC_API_URL) {
+          const backendUrl = `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
+          const backResp = await axios.post(backendUrl, options.data, {
+            headers: { "Content-Type": "application/json" },
+          });
+          return backResp.data;
+        }
+        throw err;
+      }
     },
-    fallbackData: loadMockData((mocks) =>
-      options.mockLoader(mocks, options.data),
-    ),
+    fallbackData: fallback as TResponse,
   });
 }
 
@@ -83,14 +109,36 @@ export async function createDevGetService<T>(options: {
   headers?: Record<string, string>;
   mockLoader: (mocks: any) => T;
 }): Promise<T> {
+  const fallback = loadMockData(options.mockLoader);
   return await requestByDataSourceMode({
     fromApi: async () => {
-      const response = await api.get(options.endpoint, {
-        headers: options.headers,
-      });
-      return response.data;
+      const internalEndpoint = `/api${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
+      const internalOrigin =
+        process.env.NEXT_PUBLIC_APP_ORIGIN ||
+        (process.env.VERCEL_URL
+          ? `https://${process.env.VERCEL_URL}`
+          : "http://localhost:3000");
+      const internalUrl = `${internalOrigin}${internalEndpoint}`;
+
+      try {
+        const response = await axios.get(internalUrl, {
+          headers: options.headers,
+          withCredentials: true,
+        });
+        return response.data;
+      } catch (err: any) {
+        const status = err?.response?.status;
+        if (status === 404 && process.env.NEXT_PUBLIC_API_URL) {
+          const backendUrl = `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
+          const backResp = await axios.get(backendUrl, {
+            headers: options.headers,
+          });
+          return backResp.data;
+        }
+        throw err;
+      }
     },
-    fallbackData: loadMockData(options.mockLoader),
+    fallbackData: fallback as T,
   });
 }
 

@@ -64,7 +64,6 @@ export default function DevEnvironmentNotice({
   if (!isDevEnvironment) {
     return null;
   }
-  const displaySource = dataSource === "none" ? t("unavailable") : dataSource;
 
   return (
     <div className="relative w-full" style={{ height: `${noticeHeight}px` }}>
@@ -73,7 +72,7 @@ export default function DevEnvironmentNotice({
         className="fixed inset-x-0 top-0 z-60 border-b border-amber-300 bg-amber-100 px-3 py-1 text-amber-900 dark:border-amber-700 dark:bg-amber-900 dark:text-amber-100"
       >
         <p className="text-center text-xs font-medium leading-relaxed sm:text-sm">
-          {t("banner", { dataSource: displaySource })}
+          {t("banner", { dataSource })}
         </p>
       </div>
     </div>
