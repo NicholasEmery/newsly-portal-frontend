@@ -6,16 +6,15 @@ ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 ENV NODE_ENV=production
 WORKDIR /app
 
-# Copia package* e instala deps de forma determinística
+# Copia package* e instala deps
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 # Copia código
 COPY . .
 
-# Build da aplicação e remove devDependencies
+# Build da aplicação
 RUN npm run build
-RUN npm prune --production
 
 ### Stage 2: imagem final de produção
 FROM node:26-alpine AS runner
@@ -33,6 +32,5 @@ COPY --from=builder /app/.next ./.next
 
 RUN chown -R frontuser:appgroup /app
 USER frontuser
-
 
 CMD ["npm", "run", "start"]
