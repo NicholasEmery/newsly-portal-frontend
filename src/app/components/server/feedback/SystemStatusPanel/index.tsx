@@ -4,7 +4,7 @@ type SystemStatusPanelProps = {
   badge: string;
   title: string;
   description: string;
-  secondaryDescription?: string;
+  secondaryDescription?: ReactNode;
   actionHref: string;
   actionLabel: string;
   illustration: ReactNode;

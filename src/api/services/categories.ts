@@ -1,42 +1,27 @@
 import {
-  requestJson,
   requestJsonWithLocale,
   resolveDataSourceMode,
-  checkApiReadiness,
 } from "@/api/connection/http";
 import { IS_DEV_BUILD } from "@/config/buildTarget";
 import { CategoriesSchema, type Category } from "@/api/schemas/categories";
+import { createDevGetService } from "@/api/utils/serviceHelpers";
+import { loadMocks } from "@/api/mocks";
 
-// Production-aware function: in production we do not load mocks.
 export const getCategories = async (locale?: string): Promise<Category[]> => {
-  if (IS_DEV_BUILD) {
-    // delegate to dev implementation which may use mocks
-    const mod = await import("./categories.dev");
-    return mod.getCategories(locale);
+  const mocks = loadMocks();
+  const mockCats = (mocks?.CATEGORIES_MOCK as Category[]) || [];
+
+  const result = await createDevGetService<Category[]>({
+    endpoint: "/categories",
+    mockLoader: () => mockCats,
+  });
+
+  if (locale) {
+    // If we have a locale, ensure the data is validated via schema
+    return CategoriesSchema.parse(result);
   }
 
-  resolveDataSourceMode();
-
-  // In production we expect API to be the source
-  const apiReady = await checkApiReadiness(1500);
-  if (!apiReady) return [];
-
-  try {
-    if (locale) {
-      return await requestJsonWithLocale(
-        `${process.env.NEXT_PUBLIC_API_URL}/categories`,
-        CategoriesSchema,
-        locale,
-      );
-    }
-
-    return await requestJson(
-      `${process.env.NEXT_PUBLIC_API_URL}/categories`,
-      CategoriesSchema,
-    );
-  } catch {
-    return [];
-  }
+  return CategoriesSchema.parse(result);
 };
 
 export const getResolvedCategoriesMode = () => resolveDataSourceMode();

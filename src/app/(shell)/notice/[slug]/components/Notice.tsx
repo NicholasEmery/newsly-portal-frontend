@@ -20,6 +20,27 @@ export default function Notice({ htmlContent }: Props) {
       const doc = parser.parseFromString(htmlContent, "text/html");
       const body = doc.body;
 
+      // If the notice HTML includes a leading title (h1/h2/h3) — for
+      // example when the HTML is wrapped in <article><header><h1>...</h1></header></article>
+      // — remove that heading so the page header (from mocks) is authoritative.
+      const headerEl = body.querySelector("header");
+      if (headerEl) {
+        const heading = headerEl.querySelector("h1,h2,h3");
+        if (heading) heading.remove();
+        // if header is now empty, remove it
+        if (!headerEl.textContent || !headerEl.textContent.trim())
+          headerEl.remove();
+      } else {
+        const firstHeading = body.querySelector("h1,h2,h3");
+        if (
+          firstHeading &&
+          body.firstElementChild &&
+          body.firstElementChild.contains(firstHeading)
+        ) {
+          firstHeading.remove();
+        }
+      }
+
       const entries: Array<
         | { type: "html"; html: string }
         | {

@@ -1,8 +1,6 @@
 // frontendNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
-import { summarizeHtmlToDescription } from "./homeFactory";
-import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const FRONTEND_SEEDS = [
   {
@@ -11,14 +9,20 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "mockuser",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "mockuser — tester",
         socialMedias: [],
       },
       Colaborators: [
         {
-          name: "mockcollab",
-          imgProfile: "/images/Nicholas-Emery.png",
+          name: "ryckyollab",
+          imgProfile: "",
+          bio: "mockcollab — colaboradora editorial",
+          socialMedias: [],
+        },
+        {
+          name: "chckhollab2",
+          imgProfile: "",
           bio: "mockcollab — colaboradora editorial",
           socialMedias: [],
         },
@@ -42,8 +46,14 @@ const FRONTEND_SEEDS = [
           </item>
         </div>
         <p>Fim do mock.</p>
+        <section>
+          <h2>Mais contexto</h2>
+          <p>Esse exemplo existe para testar conteúdo editorial rico com interação customizada, mantendo a estrutura simples e previsível.</p>
+          <p>Use-o como base para validar blocos expansíveis, hierarquia visual e comportamento em páginas com bastante densidade de informação.</p>
+        </section>
       </article>
     `.trim(),
+    Description: "Introdução rápida ao conteúdo interativo.",
     commentsNotice: [],
   },
   {
@@ -52,7 +62,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "frontendmaria",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "frontendmaria — desenvolvedora frontend",
         socialMedias: [],
       },
@@ -78,8 +88,15 @@ const FRONTEND_SEEDS = [
         <p>Fragmentos de código e considerações sobre cache, SSR e transitions são apresentados para orientar a migração gradual.</p>
         <p style="text-align:center"><img src="/images/imageScience.png" alt="react19" style="max-width:100%"/></p>
         <p>Conclusão: adotar esses recursos exige disciplina em arquitetura, mas traz ganhos significativos em UX.</p>
+        <section>
+          <h2>Aplicação prática</h2>
+          <p>Na prática, boundaries ajudam a separar áreas críticas e menos críticas da interface para evitar que um atraso isolado degrade toda a experiência.</p>
+          <p>Já o strea ming fica mais útil quando você precisa servir o conteúdo principal cedo sem esperar pela renderização completa do restante da página.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Padrões práticos e trade-offs para usar boundaries, Suspense e streaming em aplicações reais.",
     commentsNotice: [],
   },
   {
@@ -88,7 +105,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "uxdevana",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "uxdevana — designer de produto",
         socialMedias: [],
       },
@@ -115,8 +132,15 @@ const FRONTEND_SEEDS = [
         <h3>Automação</h3>
         <p>Integre testes automatizados (axe, jest-axe) e revisões manuais para validar mudanças em tokens e utilitários.</p>
         <p>Recomendamos documentar exemplos de uso e incluir guias para desenvolvedores sobre como usar atributos ARIA corretamente.</p>
+        <section>
+          <h2>Checklist extra</h2>
+          <p>Além do contraste, valide foco visível, navegação por teclado e feedback de estado para evitar regressões difíceis de perceber em revisão visual.</p>
+          <p>Em sistemas grandes, pequenos desvios de acessibilidade acumulam muito rápido, então vale revisar componentes compartilhados com frequência.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Como incorporar acessibilidade em design systems usando tokens e utilitários com contraste adequado.",
     commentsNotice: [],
   },
   {
@@ -125,7 +149,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "fealvaro",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "fealvaro — desenvolvedor frontend",
         socialMedias: [],
       },
@@ -146,8 +170,15 @@ const FRONTEND_SEEDS = [
         <p>Streaming permite enviar conteúdo crítico ao cliente mais cedo; combine com técnicas de progressive enhancement para manter funcionalidades básicas mesmo quando a hidratação completa ainda não ocorreu.</p>
         <p style="text-align:center"><img src="/images/imageScience.png" alt="hydration" style="max-width:100%"/></p>
         <p>Testes A/B podem validar impacto real das mudanças na percepção do usuário.</p>
+        <section>
+          <h2>Recomendação de uso</h2>
+          <p>Esse padrão funciona melhor quando você sabe exatamente quais blocos precisam responder primeiro e quais podem chegar depois sem comprometer a navegação.</p>
+          <p>Combine isso com observabilidade de front para confirmar se a melhoria percebida realmente reduz o custo de interação.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Técnicas para priorizar hidratação de elementos críticos e reduzir o Time To Interactive.",
     commentsNotice: [],
   },
   {
@@ -156,7 +187,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "frontendmaria",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "frontendmaria — desenvolvedora frontend",
         socialMedias: [],
       },
@@ -180,8 +211,15 @@ const FRONTEND_SEEDS = [
           <li>Medir impacto por região</li>
         </ul>
         <p>Mais informações: <a href="https://nextjs.org/docs/advanced-features/i18n">Next.js i18n docs</a></p>
+        <section>
+          <h2>Observação adicional</h2>
+          <p>Quando a tradução é parte do produto, o fallback precisa ser previsível e consistente para não quebrar o fluxo de leitura em mercados diferentes.</p>
+          <p>Esse mock ajuda a testar o comportamento visual e editorial quando o idioma muda sem reescrever a estrutura da página.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Fluxo resiliente de internacionalização em Next.js com fallback e revalidação.",
     commentsNotice: [],
   },
   {
@@ -190,7 +228,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "uxdevana",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "uxdevana — designer de produto",
         socialMedias: [],
       },
@@ -210,8 +248,15 @@ const FRONTEND_SEEDS = [
         <h3>Ferramentas e práticas</h3>
         <p>Utilize requestAnimationFrame para coordenação e limite número de elementos animados simultaneamente.</p>
         <p style="text-align:center"><img src="/images/imageScience.png" alt="microinteractions" style="max-width:100%"/></p>
+        <section>
+          <h2>Aplicação editorial</h2>
+          <p>Em portais de conteúdo, uma microinteração boa é a que melhora a leitura sem competir com o texto nem mudar a estrutura de forma brusca.</p>
+          <p>Esse exemplo reforça o uso de animações discretas e previsíveis, que são mais fáceis de manter e testar.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Práticas para criar microinterações leves que não prejudicam performance.",
     commentsNotice: [],
   },
   {
@@ -220,7 +265,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "fealvaro",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "fealvaro — desenvolvedor frontend",
         socialMedias: [],
       },
@@ -242,8 +287,15 @@ const FRONTEND_SEEDS = [
           <li>Contract tests para componentes compartilhados</li>
         </ul>
         <p>Incluímos exemplos de composição e um checklist para revisão de PRs focado em compatibilidade.</p>
+        <section>
+          <h2>Boa prática adicional</h2>
+          <p>Quanto mais clara for a fronteira entre layout, dados e apresentação, mais simples fica escalar o portal sem introduzir regressões visuais ou de comportamento.</p>
+          <p>O objetivo é manter os blocos previsíveis o suficiente para serem combinados em várias páginas sem duplicação de lógica.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Estrutura e patterns para construir componentes reutilizáveis em portais de conteúdo.",
     commentsNotice: [],
   },
   {
@@ -252,7 +304,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "frontendmaria",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "frontendmaria — desenvolvedora frontend",
         socialMedias: [],
       },
@@ -273,8 +325,15 @@ const FRONTEND_SEEDS = [
         <pre style="background:#f6f8fa;padding:8px;border-radius:4px">POST /actions/submit
 { "email": "user@example.com" }</pre>
         <p>Integre com middlewares para gestão de sessões e proteção contra replay attacks.</p>
+        <section>
+          <h2>Quando usar</h2>
+          <p>Esse padrão é útil quando o custo de manter estados intermediários no cliente é maior do que concentrar a mutação no servidor.</p>
+          <p>Ele funciona bem em fluxos simples e previsíveis, onde o feedback de validação pode ser rápido e direto.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Server Actions para processar formulários com validação e proteção de segurança no servidor.",
     commentsNotice: [],
   },
   {
@@ -283,7 +342,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "fealvaro",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "fealvaro — desenvolvedor frontend",
         socialMedias: [],
       },
@@ -301,8 +360,15 @@ const FRONTEND_SEEDS = [
         <h2>Quando usar</h2>
         <p>Útil quando mudanças afetam apenas setores do site, por exemplo, atualizações de uma categoria ou autor.</p>
         <p>Incluímos exemplos de TTLs e estratégias de revalidação on-write.</p>
+        <section>
+          <h2>Benefício prático</h2>
+          <p>O ganho real aparece quando você consegue atualizar um conjunto pequeno de páginas sem abrir mão da consistência do restante do site.</p>
+          <p>Esse mock ajuda a validar esse tipo de comportamento sem tornar a implementação mais complexa do que precisa ser.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Uso de cache tags para invalidar conjuntos de conteúdo relacionados sem limpar todo o cache.",
     commentsNotice: [],
   },
   {
@@ -311,7 +377,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "uxdevana",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "uxdevana — designer de produto",
         socialMedias: [],
       },
@@ -328,8 +394,15 @@ const FRONTEND_SEEDS = [
         <p>Manter estado global escalável requer limitar acoplamento entre módulos e optar por stores regionais quando possível. Discutimos trade-offs entre consistência e performance.</p>
         <h2>Arquitetura</h2>
         <p>Use eventos e sincronização eventual para reduzir dependências diretas entre componentes, e mecanismos de cache local para leituras frequentes.</p>
+        <section>
+          <h2>Resumo prático</h2>
+          <p>Se uma mudança em um lugar exige reescrever muitos consumidores, o estado provavelmente está acoplado demais.</p>
+          <p>Prefira interfaces menores, limites mais claros e fontes de verdade bem definidas para evitar fragilidade estrutural.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Práticas para manter estado global escalável reduzindo acoplamento entre módulos.",
     commentsNotice: [],
   },
   {
@@ -338,7 +411,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "frontendmaria",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "frontendmaria — desenvolvedora frontend",
         socialMedias: [],
       },
@@ -357,8 +430,15 @@ const FRONTEND_SEEDS = [
         <p>Combine RUM com métricas sintéticas para obter sinais confiáveis; agregue por rota e por segmento de usuário.</p>
         <h3>Ações</h3>
         <p>Priorize imagens e fontes para melhorar LCP; reduza repaints causados por layout para diminuir CLS.</p>
+        <section>
+          <h2>Interpretação</h2>
+          <p>Métricas só ajudam quando viram decisão de produto e engenharia, então esse exemplo precisa carregar contexto suficiente para guiar uma revisão real.</p>
+          <p>Use-o para discutir trade-offs entre percepção do usuário e custo técnico da melhoria.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Instrumentação e ações corretivas para medir e melhorar Core Web Vitals em Next.js.",
     commentsNotice: [],
   },
   {
@@ -367,7 +447,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "fealvaro",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "fealvaro — desenvolvedor frontend",
         socialMedias: [],
       },
@@ -387,8 +467,15 @@ const FRONTEND_SEEDS = [
           <li>Reuso de layouts</li>
           <li>Isolamento de responsabilidades</li>
         </ul>
+        <section>
+          <h2>Aplicação sugerida</h2>
+          <p>Use esse padrão quando diferentes áreas da tela precisarem evoluir com ritmos independentes sem quebrar o restante da navegação.</p>
+          <p>Ele funciona melhor com contratos claros entre slots, conteúdo e estados de carregamento.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Compor layouts usando slots e rotas paralelas para experiências complexas sem duplicação.",
     commentsNotice: [],
   },
   {
@@ -397,7 +484,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "uxdevana",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "uxdevana — designer de produto",
         socialMedias: [],
       },
@@ -414,8 +501,15 @@ const FRONTEND_SEEDS = [
         <p>Fallbacks bem projetados reduzem fricção enquanto o conteúdo principal é carregado. Discutimos placeholders, skeletons e técnicas para manter o layout estável.</p>
         <h2>Skeletons vs spinners</h2>
         <p>Skeletons preservam a estrutura visual e ajudam usuários a entender o que esperar; use spinners apenas para operações cujo tamanho é incerto.</p>
+        <section>
+          <h2>Regra prática</h2>
+          <p>Se o carregamento vai demorar o suficiente para gerar ansiedade, o fallback precisa parecer uma continuação da interface e não um bloco genérico de espera.</p>
+          <p>Esse mock serve para testar exatamente essa sensação de continuidade.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Fallbacks visuais (skeletons) e técnicas para manter a experiência do usuário consistente.",
     commentsNotice: [],
   },
   {
@@ -424,7 +518,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "frontendmaria",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "frontendmaria — desenvolvedora frontend",
         socialMedias: [],
       },
@@ -443,8 +537,15 @@ const FRONTEND_SEEDS = [
         <p>Adote WebP/AVIF quando possível e ajuste qualidade por viewport para equilibrar qualidade visual e payload.</p>
         <figure style="text-align:center"><img src="/images/imageScience.png" alt="otimizacao" style="max-width:100%"/></figure>
         <p>Combine com lazy-loading e prioridade para imagens acima da dobra para otimizar LCP.</p>
+        <section>
+          <h2>Nota editorial</h2>
+          <p>Em portais de notícia, imagens são parte do conteúdo e não só enfeite, então o tratamento visual precisa considerar contexto, peso e relevância.</p>
+          <p>Um bom mock precisa refletir esse equilíbrio para ser útil no teste de leitura real.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Guia para otimizar imagens em portais de notícia com formatos modernos e lazy-loading.",
     commentsNotice: [],
   },
   {
@@ -453,7 +554,7 @@ const FRONTEND_SEEDS = [
     Creators: {
       Owner: {
         name: "fealvaro",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "fealvaro — desenvolvedor frontend",
         socialMedias: [],
       },
@@ -473,27 +574,24 @@ const FRONTEND_SEEDS = [
           <li>Proteção de rotas</li>
           <li>Fluxos de confirmação</li>
         </ul>
+        <section>
+          <h2>Quando faz sentido</h2>
+          <p>Esse padrão é mais valioso quando a navegação precisa ser interrompida de forma elegante para preservar contexto e controle do usuário.</p>
+          <p>Ele ajuda a manter o fluxo fluido sem transformar ações de confirmação em páginas inteiras desnecessárias.</p>
+        </section>
       </article>
     `.trim(),
+    Description:
+      "Intercepting routes para validação de permissões e modais antes da navegação.",
     commentsNotice: [],
   },
 ];
 
 export const FRONTEND_NEWS_MOCK: HomeSectionItem[] = FRONTEND_SEEDS.map(
-  (s, index) => {
-    const notice = enrichNoticeHtml({
-      html: s.notice,
-      title: s.Title,
-      category: s.Category,
-      creator: s.Creators.Owner.name,
-      index,
-    });
-
-    return {
-      ...s,
-      Creator: s.Creators.Owner.name,
-      notice,
-      Description: summarizeHtmlToDescription(notice),
-    };
-  },
+  (s) => ({
+    ...s,
+    Creator: s.Creators.Owner.name,
+    notice: s.notice,
+    Description: s.Description,
+  }),
 );

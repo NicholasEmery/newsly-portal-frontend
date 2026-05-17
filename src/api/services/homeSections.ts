@@ -259,15 +259,9 @@ export const getHomeSections = async (
   if (mode === "auto") {
     const apiReady = await checkApiReadiness(1500);
     if (apiReady) {
-      try {
-        return await getHomeSectionsFromApi(options);
-      } catch {
-        // If API fails even though it was "ready", try mocks (dev only)
-        if (!IS_DEV_BUILD)
-          throw new Error("API failed and mocks not available in production");
-        const mod = await import("./homeSections.dev");
-        return mod.getHomeSectionsFromMocks(options);
-      }
+      // Backend respondeu OK ao readiness check
+      // Tenta API e deixa erros bubblarem (sem fallback para mocks)
+      return await getHomeSectionsFromApi(options);
     } else {
       // API not ready, try mocks directly (dev only)
       if (!IS_DEV_BUILD)

@@ -64,7 +64,7 @@ const LATEST_NEWS_PROFILE_LAST: LatestNewsProfileItem = {
   Category: profileSource.Category,
   CreatedAt: profileSource.CreatedAt,
   Slug: profileSource.Slug,
-  ImgProfileUrl: "/images/Nicholas-Emery.png",
+  ImgProfileUrl: "",
 };
 
 export const LATEST_NEWS_ITEMS_MOCK = [

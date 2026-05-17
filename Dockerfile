@@ -1,5 +1,5 @@
 ### Stage 1: build da aplicação Next.js
-FROM node:24-alpine AS builder
+FROM node:26-alpine AS builder
 
 ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
@@ -18,7 +18,7 @@ RUN npm run build
 RUN npm prune --production
 
 ### Stage 2: imagem final de produção
-FROM node:24-alpine AS runner
+FROM node:26-alpine AS runner
 
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1

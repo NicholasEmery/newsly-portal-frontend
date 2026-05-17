@@ -45,6 +45,46 @@
     "viewMore": "View More",
     "dontMissOut": "Don't Miss Out"
   },
+  "noticePage": {
+    "share": "Share article",
+    "copyLink": "Copy link",
+    "copyFallback": "Copy this article link",
+    "comments": "comments",
+    "shareChannels": {
+      "facebook": "Share on Facebook",
+      "x": "Share on X",
+      "linkedin": "Share on LinkedIn",
+      "email": "Share by email"
+    }
+  },
+  "subscriberCard": {
+    "badge": "Premium access",
+    "titleGuest": "Enjoy unlimited digital access",
+    "titleMember": "Upgrade your subscription",
+    "titlePremium": "Premium access active",
+    "descriptionGuest": "Read trusted, award-winning journalism with more context. Subscribe for just $2 for 6 months.",
+    "descriptionMember": "Upgrade your account to unlock the full story, premium features, and subscriber-only coverage.",
+    "descriptionPremium": "Your premium subscription is active. Keep reading without restrictions and enjoy the full article.",
+    "primaryGuest": "Subscribe now",
+    "primaryMember": "Upgrade now",
+    "primaryPremium": "Manage account",
+    "secondaryGuest": "Sign in",
+    "secondaryPremium": "Sign out",
+    "secondaryPrompt": "Already a subscriber?",
+    "signedInAs": "Signed in as"
+  },
+  "profilesCard": {
+    "openProfile": "Open Profile",
+    "noDescription": "No description available",
+    "roles": {
+      "creator": "Creator",
+      "collaborator": "Collaborator"
+    },
+    "aria": {
+      "previousProfile": "Previous profile",
+      "nextProfile": "Next profile"
+    }
+  },
   "dateRelative": {
     "thisMonth": "This month",
     "twoWeeksAgo": "2 weeks ago",
@@ -270,11 +310,18 @@
       "secondaryDescription": "You can try again in a few moments to continue reading the latest updates.",
       "actionLabel": "Try again"
     },
+    "apiUnavailableDev": {
+      "badge": "API unavailable in development",
+      "title": "The configured source is api, but the backend did not respond.",
+      "description": "The current env points to api, so the frontend tried to use the backend directly.",
+      "secondaryDescription": "Switch NEWSLY_DATA_SOURCE to auto or mock to keep developing while the API is down.",
+      "actionLabel": "Go to homepage"
+    },
     "mockDirectoryMissing": {
       "badge": "Mocks missing in project",
       "title": "The src/mocks folder was not found in this local environment.",
       "description": "To use local fallback, restore the src/mocks folder with the files expected by the frontend.",
-      "secondaryDescription": "If you prefer to continue without mocks, use NEWSLY_DATA_SOURCE=api and ensure the API is available.",
+      "secondaryDescriptionPrefix": "If the source is set to mock, switch to auto or api and make sure the API is available until the mocks folder is restored. You can also use newsly-cli to install the mocks in the project:",
       "actionLabel": "Go to homepage"
     },
     "datasourceEnvMissing": {

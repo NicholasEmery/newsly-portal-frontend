@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import Image from "next/image";
 
 export function DesktopOnboarding() {
   const t = useTranslations("auth");
@@ -9,9 +10,7 @@ export function DesktopOnboarding() {
       <div className="pointer-events-none absolute -right-20 bottom-14 h-52 w-52 rounded-full bg-blue-300/30 blur-3xl dark:bg-blue-200/20" />
 
       <div className="relative z-10">
-        <p className="text-xs font-semibold tracking-[0.14em] uppercase text-blue-100/90">
-          {t("onboarding.kicker")}
-        </p>
+        <Image src="/images/logo-header.png" alt="Logo Badge" width={200} height={200} className="w-50" />
         <h2 className="mt-3 max-w-sm text-[1.9rem] leading-tight text-white">
           {t("onboarding.title")}
         </h2>

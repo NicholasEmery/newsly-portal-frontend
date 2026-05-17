@@ -1,0 +1,56 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    pull-request-branch-name:
+      separator: "/"
+    commit-message:
+      prefix: "deps"
+      include: scope
+    assignees:
+      - "NicholasEmery"
+    labels:
+      - "dependencies"
+      - "automated"
+    groups:
+      ui-frameworks:
+        patterns:
+          - "react*"
+          - "next*"
+          - "react-router*"
+          - "@emotion/*"
+          - "styled-components"
+      http-and-state:
+        patterns:
+          - "axios"
+          - "redux*"
+          - "@reduxjs/*"
+      types-and-build:
+        patterns:
+          - "typescript"
+          - "@types/*"
+          - "tslib"
+          - "webpack*"
+          - "babel*"
+      lint-and-format:
+        patterns:
+          - "eslint*"
+          - "prettier"
+      styling:
+        patterns:
+          - "tailwind*"
+      testing:
+        patterns:
+          - "jest*"
+          - "@testing-library/*"
+      utils:
+        patterns:
+          - "lodash*"
+          - "date-fns"
+          - "moment"
+          - "core-js"        
+    rebase-strategy: "auto"
+  
+

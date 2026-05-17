@@ -1,17 +1,15 @@
 import {
   createCreatedAtFromMinutesAgo,
-  summarizeHtmlToDescription,
   type HomeSectionItem,
   type NewsCreators,
 } from "./homeFactory";
-import { enrichNoticeHtml } from "./noticeEnhancer";
 
 // Função auxiliar para criar a estrutura de criadores
 function buildOwnerCreators(creatorName: string): NewsCreators {
   return {
     Owner: {
       name: creatorName,
-      imgProfile: "/images/Nicholas-Emery.png",
+      imgProfile: "",
       bio: `Autor ${creatorName} — conteúdo exclusivo para assinantes`,
       socialMedias: [],
     },
@@ -32,7 +30,21 @@ const SUBSCRIBER_NEWS_SEEDS: Omit<HomeSectionItem, "Description" | "notice">[] =
       CommentsCount: 24,
       isSubscriber: true,
       Slug: "event-driven-checkout-resiliencia",
-      // notice será adicionado depois do enrich
+      notice: `
+        <article>
+          <header><h1>Arquitetura event-driven para checkout com alta resiliência</h1></header>
+          <p>Este guia aprofunda como desacoplar o fluxo de checkout para lidar com picos, retries e falhas parciais sem interromper a experiência do usuário.</p>
+          <h2>Fluxo recomendado</h2>
+          <p>Separe a confirmação do pagamento da finalização do pedido, persistindo eventos intermediários e usando compensações quando necessário.</p>
+          <h2>Cuidados operacionais</h2>
+          <p>Inclua idempotência, tracing distribuído e filas com redrive para lidar com duplicidade e reprocessamento.</p>
+            <section>
+              <h2>Leitura complementar</h2>
+              <p>Quando o checkout depende de vários serviços, a modelagem event-driven ajuda a preservar a experiência do usuário mesmo com falhas parciais.</p>
+              <p>Esse conteúdo extra deixa o mock mais próximo de um artigo editorial longo, com contexto e aplicação prática.</p>
+            </section>
+        </article>
+      `.trim(),
     },
     {
       ImgUrl: "/images/imageScience.png",
@@ -44,30 +56,28 @@ const SUBSCRIBER_NEWS_SEEDS: Omit<HomeSectionItem, "Description" | "notice">[] =
       CommentsCount: 19,
       isSubscriber: true,
       Slug: "governanca-multiconta-politicas-automatizadas",
+      notice: `
+        <article>
+          <header><h1>Governança multi-conta em cloud com políticas automatizadas</h1></header>
+          <p>Uma estratégia de governança multi-conta precisa combinar políticas, auditoria e visibilidade centralizada para manter consistência sem travar a operação.</p>
+          <h2>Elementos centrais</h2>
+          <p>Use guardrails, catálogos de contas e automações de compliance para bloquear desvios antes que eles cheguem à produção.</p>
+          <h2>Benefícios</h2>
+          <p>Além de reduzir risco, esse modelo melhora rastreabilidade de custo e simplifica a coordenação entre times de plataforma e produto.</p>
+          <section>
+            <h2>Visão de execução</h2>
+            <p>O ponto principal é padronizar sem sufocar a operação, mantendo as equipes com autonomia dentro de limites seguros.</p>
+            <p>O mock ganha mais densidade para ser usado como leitura completa na home.</p>
+          </section>
+        </article>
+      `.trim(),
     },
   ];
 
-// Converte cada seed adicionando o notice enriquecido e a descrição derivada
+// Converte cada seed com notice e descrição explícitos
 export const SUBSCRIBER_NEWS_MOCK: HomeSectionItem[] =
-  SUBSCRIBER_NEWS_SEEDS.map((s, index) => {
-    // Como seeds não possuem notice, precisamos gerar um HTML mínimo para enriquecer
-    const rawHtml = `
-      <article>
-        <header><h1>${s.Title}</h1></header>
-        <p>Conteúdo completo disponível apenas para assinantes. Este artigo aborda ${s.Title} com profundidade.</p>
-      </article>
-    `.trim();
-    const notice = enrichNoticeHtml({
-      html: rawHtml,
-      title: s.Title,
-      category: s.Category,
-      creator: s.Creators.Owner.name,
-      index,
-    });
-
-    return {
-      ...s,
-      notice,
-      Description: summarizeHtmlToDescription(notice),
-    };
-  });
+  SUBSCRIBER_NEWS_SEEDS.map((s) => ({
+    ...s,
+    Description:
+      "Conteúdo exclusivo para assinantes com análise aprofundada e orientações práticas.",
+  }));

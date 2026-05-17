@@ -29,15 +29,13 @@ export interface NoticeArticle {
   Creators: NewsCreators;
 }
 
-export const DEFAULT_PROFILE_IMAGE = "/images/Nicholas-Emery.png";
-
 export const normalizeCreator = (
   creator?: Partial<CreatorInfo> | null,
   fallbackName = "newsly",
   fallbackBio = "",
 ): CreatorInfo => ({
   name: creator?.name?.trim() || fallbackName,
-  imgProfile: creator?.imgProfile?.trim() || DEFAULT_PROFILE_IMAGE,
+  imgProfile: creator?.imgProfile?.trim() || "",
   bio: creator?.bio?.trim() || fallbackBio,
   socialMedias: Array.isArray(creator?.socialMedias)
     ? creator.socialMedias.filter(

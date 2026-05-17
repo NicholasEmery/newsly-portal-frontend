@@ -52,7 +52,7 @@ export const LatestNewsProfileItemSchema = z.object({
   Category: z.string().min(1),
   CreatedAt: z.string().min(1),
   Slug: z.string().min(1),
-  ImgProfileUrl: z.string().min(1),
+  ImgProfileUrl: z.string(),
 });
 
 export const LatestNewsSectionSchema = z.object({

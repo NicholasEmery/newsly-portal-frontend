@@ -55,12 +55,13 @@ const Header = () => {
           <div
             className={`flex items-center justify-center ${openSearchBar ? "w-0 opacity-0 xl:opacity-100 xl:w-50" : "w-40 opacity-100 xl:w-50"} transition-all duration-500 ease-in-out`}
           >
-            <Link href="./" className="pointer-events-auto inline-flex">
+            <Link href="/" className="pointer-events-auto inline-flex">
               <Image
                 src="/images/logo-header.png"
                 width={500}
                 height={500}
                 alt=""
+                loading="eager"
                 className={`transition-all duration-500 ease-in-out`}
               />
             </Link>

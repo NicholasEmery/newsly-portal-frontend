@@ -1,8 +1,6 @@
 // backendNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
-import { summarizeHtmlToDescription } from "./homeFactory";
-import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const BACKEND_SEEDS = [
   {
@@ -11,14 +9,14 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "mockbackend",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "mockbackend — tester",
         socialMedias: [],
       },
       Colaborators: [
         {
           name: "mockengineer",
-          imgProfile: "/images/Nicholas-Emery.png",
+          imgProfile: "",
           bio: "mockengineer — colaborador backend",
           socialMedias: [],
         },
@@ -41,6 +39,11 @@ const BACKEND_SEEDS = [
             <p>Resposta B do backend mock.</p>
           </item>
         </div>
+        <section>
+          <h2>Aplicação prática</h2>
+          <p>Esse conteúdo também ajuda a testar respostas ricas do backend com blocos estruturados, sem depender de processamento extra no cliente.</p>
+          <p>É um ponto útil para validar como a página lida com conteúdo mais longo, blocos repetidos e pequenas variações de markup.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -51,7 +54,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "backendjoao",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "backendjoao — engenheiro backend",
         socialMedias: [
           { type: "twitter", url: "https://twitter.com/backendjoao" },
@@ -76,11 +79,16 @@ const BACKEND_SEEDS = [
         <h2>Retries inteligentes</h2>
         <p>Apresentamos políticas de retry com backoff exponencial e jitter para reduzir o impacto em picos de latência.</p>
         <p>Conclusão: combinando essas práticas, APIs críticas alcançam maior resiliência sem comprometer consistência.</p>
+        <section>
+          <h2>Detalhe operacional</h2>
+          <p>Em sistemas com muita concorrência, idempotência e retry precisam ser desenhados juntos para evitar duplicidade e reprocessamento indevido.</p>
+          <p>Esse tipo de artigo fica mais útil quando mostra a relação entre teoria, observabilidade e comportamento em produção.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [
       {
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         nameProfile: "backendjoao",
         createdAtComment: createCreatedAtFromMinutesAgo(590),
         comment: "Comentário de exemplo sobre Node.js 22",
@@ -94,7 +102,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "apiclara",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "apiclara — arquiteta de APIs",
         socialMedias: [{ type: "github", url: "https://github.com/apiclara" }],
       },
@@ -110,6 +118,11 @@ const BACKEND_SEEDS = [
         <header><h1>NestJS modular: domínio, aplicação e infraestrutura</h1></header>
         <p>Abordamos uma abordagem modular para projetos NestJS, separando camadas de domínio, aplicação e infraestrutura com exemplos de módulos, interfaces e injeção de dependência.</p>
         <p>Inclui exemplos de organização de pacotes e testes de integração.</p>
+        <section>
+          <h2>Como interpretar</h2>
+          <p>O valor real de uma divisão modular aparece quando os limites entre camadas impedem acoplamento e facilitam evolução independente.</p>
+          <p>Isso ajuda a manter a base previsível mesmo quando o projeto cresce e a quantidade de integrações aumenta.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -120,7 +133,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -136,6 +149,11 @@ const BACKEND_SEEDS = [
         <header><h1>Segurança em APIs públicas com OAuth2 e scopes</h1></header>
         <p>Este artigo descreve práticas de autenticação e autorização com OAuth2, modelos de scopes finos e validação de tokens em gateways.</p>
         <p>Inclui exemplos de políticas de cache e rotação de chaves.</p>
+        <section>
+          <h2>Boas práticas</h2>
+          <p>Quanto mais claro for o contrato de acesso, mais simples fica impedir permissões excessivas sem bloquear casos legítimos.</p>
+          <p>Esse conteúdo reforça o uso de padrões que reduzem superfície de ataque sem complicar o consumo da API.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -146,7 +164,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "backendjoao",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "backendjoao — engenheiro backend",
         socialMedias: [],
       },
@@ -161,6 +179,11 @@ const BACKEND_SEEDS = [
       <article>
         <header><h1>Cache distribuído com Redis para reduzir p95</h1></header>
         <p>Analisamos estratégias de cache warming, invalidação e uso de expiração por domínio para reduzir latências de p95 em endpoints críticos.</p>
+        <section>
+          <h2>Consideração extra</h2>
+          <p>O cache só é efetivo quando o padrão de invalidação é tão bem pensado quanto o de leitura, evitando dados obsoletos e picos de carga desnecessários.</p>
+          <p>Esse mock foi pensado para suportar uma explicação mais longa sobre custo, consistência e reuso de dados.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -171,7 +194,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "apiclara",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "apiclara — arquiteta de APIs",
         socialMedias: [],
       },
@@ -203,6 +226,11 @@ const BACKEND_SEEDS = [
         </ul>
         <p style="background:#f8f9fa;padding:10px;border-left:4px solid #e0e0e0">Leia também: <a href="https://example.com/versioning" style="color:#1a73e8">Guia completo de versionamento</a></p>
         <p>Conclusão: com processos e testes de contrato automatizados, você minimiza riscos ao evoluir APIs.</p>
+        <section>
+          <h2>Contexto de produção</h2>
+          <p>Em sistemas reais, compatibilidade retroativa não é só uma técnica de código, mas uma disciplina de comunicação entre times e consumidores.</p>
+          <p>Esse mock amplia o espaço de leitura para refletir melhor esse tipo de decisão operacional.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -213,7 +241,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "backendjoao",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "backendjoao — engenheiro backend",
         socialMedias: [],
       },
@@ -237,6 +265,11 @@ const BACKEND_SEEDS = [
         </ol>
         <p><img src="/images/imageScience.png" alt="outbox" style="max-width:100%"/></p>
         <p style="font-size:14px">Referência: <a href="https://example.com/outbox">Implementando Outbox</a></p>
+        <section>
+          <h2>Leitura complementar</h2>
+          <p>O outbox é especialmente útil quando você precisa desacoplar escrita e publicação sem perder rastreabilidade do que foi realmente persistido.</p>
+          <p>Essa abordagem também facilita auditoria, reprocessamento e observabilidade do fluxo assíncrono.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -247,7 +280,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "apiclara",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "apiclara — arquiteta de APIs",
         socialMedias: [],
       },
@@ -267,6 +300,11 @@ const BACKEND_SEEDS = [
         <p style="background:#fff3cd;padding:10px;border-left:4px solid #ffeeba">Dica: comece com um read model simples antes de migrar toda a camada.</p>
         <h3>Exemplo</h3>
         <p>Código de pseudo-exemplo e diagrama da separação de responsabilidades.</p>
+        <section>
+          <h2>Nota final</h2>
+          <p>O objetivo aqui é mostrar que CQRS pode ser usado de forma incremental, sem virar um projeto de arquitetura pesado antes da hora.</p>
+          <p>Esse tipo de conteúdo funciona melhor quando traz limites claros para evitar exageros conceituais.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -277,7 +315,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -295,6 +333,11 @@ const BACKEND_SEEDS = [
         <h2>Implementação</h2>
         <p>Combine cache (Redis) com middlewares e métricas por cliente.</p>
         <p style="font-size:13px"><a href="https://example.com/rate-limiting">Leia o guia</a></p>
+        <section>
+          <h2>Uso recomendado</h2>
+          <p>Quando a API cresce, limites e quotas deixam de ser detalhe técnico e passam a ser parte da governança do produto.</p>
+          <p>Esse mock amplia a leitura para cobrir também esse aspecto de operação e controle.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -305,7 +348,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "backendjoao",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "backendjoao — engenheiro backend",
         socialMedias: [],
       },
@@ -326,6 +369,11 @@ const BACKEND_SEEDS = [
           <li>Tempo até conclusão</li>
           <li>Dead-letter count</li>
         </ul>
+        <section>
+          <h2>O que observar</h2>
+          <p>Além das métricas, o conteúdo precisa mostrar o comportamento esperado quando o fluxo falha e volta a tentar sem intervenção manual.</p>
+          <p>Isso ajuda a validar se o sistema está realmente operável em cenários de carga irregular.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -336,7 +384,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "apiclara",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "apiclara — arquiteta de APIs",
         socialMedias: [],
       },
@@ -353,6 +401,11 @@ const BACKEND_SEEDS = [
         <p>Apresentamos padrões para retries que evitam thundering herd usando jitter e integração com circuit breakers para escalonamento seguro.</p>
         <h2>Configurações recomendadas</h2>
         <p>Backoff exponencial com jitter e limites de tentativa por operação.</p>
+        <section>
+          <h2>Complemento prático</h2>
+          <p>Retries são bons até começarem a amplificar falhas, então o texto precisa deixar claro onde parar e como detectar que o sistema já está em degradação.</p>
+          <p>Esse tipo de explicação ajuda a tomar decisão antes que a repetição agrave o problema original.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -363,7 +416,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -384,6 +437,11 @@ const BACKEND_SEEDS = [
           <li>Logs estruturados</li>
           <li>Versionamento de schemas</li>
         </ul>
+        <section>
+          <h2>Importância operacional</h2>
+          <p>Quanto mais cedo o contrato for validado, menos custo você carrega para etapas posteriores da pipeline ou da aplicação.</p>
+          <p>É um bom exemplo para testar documentação mais densa sem perder legibilidade.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -394,7 +452,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "backendjoao",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "backendjoao — engenheiro backend",
         socialMedias: [],
       },
@@ -411,6 +469,11 @@ const BACKEND_SEEDS = [
         <p>Exploramos modelos de arquitetura multi-tenant: schemas por tenant, colunas por tenant e bancos separados, avaliando trade-offs de isolamento e custo.</p>
         <h2>Considerações</h2>
         <p>Segurança, performance e operações de manutenção são fatores chave na escolha do modelo.</p>
+        <section>
+          <h2>Critério de escolha</h2>
+          <p>O melhor modelo depende do equilíbrio entre isolamento, custo operacional e facilidade de evolução do produto ao longo do tempo.</p>
+          <p>Esse conteúdo amplia o espaço para discutir esses trade-offs com mais clareza.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -421,7 +484,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "apiclara",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "apiclara — arquiteta de APIs",
         socialMedias: [],
       },
@@ -438,6 +501,11 @@ const BACKEND_SEEDS = [
         <p>Como mapear métricas e traces para limites de domínio, usando OpenTelemetry e dashboards por domínio de negócio.</p>
         <h3>Mapa de telemetria</h3>
         <p>Defina eventos, spans e métricas alinhadas ao domínio.</p>
+        <section>
+          <h2>Visão complementar</h2>
+          <p>Quando a observabilidade segue o domínio, o diagnóstico fica mais natural porque a métrica passa a falar a linguagem do negócio.</p>
+          <p>Essa estrutura também ajuda a evitar painéis genéricos que não levam a nenhuma ação concreta.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -448,7 +516,7 @@ const BACKEND_SEEDS = [
     Creators: {
       Owner: {
         name: "backendjoao",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "backendjoao — engenheiro backend",
         socialMedias: [],
       },
@@ -465,27 +533,21 @@ const BACKEND_SEEDS = [
         <p>Padronize headers de idempotência, implemente armazenamento temporário e verificação de assinaturas para garantir entrega segura e idempotente.</p>
         <h2>Implementação</h2>
         <p>Use consumidores com dedup keys e filas com retry configurado.</p>
+        <section>
+          <h2>Resumo de operação</h2>
+          <p>Esse tipo de integração precisa ser resiliente por desenho, já que webhooks dependem tanto do emissor quanto do receptor para funcionar corretamente.</p>
+          <p>O mock agora tem mais espaço para explicar esse comportamento de ponta a ponta.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
   },
 ];
 
-export const BACKEND_NEWS_MOCK: HomeSectionItem[] = BACKEND_SEEDS.map(
-  (s, index) => {
-    const notice = enrichNoticeHtml({
-      html: s.notice,
-      title: s.Title,
-      category: s.Category,
-      creator: s.Creators.Owner.name,
-      index,
-    });
-
-    return {
-      ...s,
-      Creator: s.Creators.Owner.name,
-      notice,
-      Description: summarizeHtmlToDescription(notice),
-    };
-  },
-);
+export const BACKEND_NEWS_MOCK: HomeSectionItem[] = BACKEND_SEEDS.map((s) => ({
+  ...s,
+  Creator: s.Creators.Owner.name,
+  notice: s.notice,
+  Description:
+    "Conteúdo técnico para backend com foco em APIs, resiliência, contratos e escalabilidade.",
+}));
