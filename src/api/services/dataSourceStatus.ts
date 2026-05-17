@@ -1,7 +1,4 @@
-import {
-  checkApiReadiness,
-  type DataSourceMode,
-} from "@/api/connection/http";
+import { checkApiReadiness, type DataSourceMode } from "@/api/connection/http";
 import { IS_DEV_BUILD } from "@/config/buildTarget";
 
 export type DataSourceStatusReason =
@@ -16,6 +13,7 @@ export type DataSourceStatus = {
   canRender: boolean;
   reason: DataSourceStatusReason;
   datasource: DataSourceMode | "none";
+  displaySource: string;
 };
 
 export const getDataSourceStatus = async (): Promise<DataSourceStatus> => {
@@ -34,6 +32,7 @@ export const getDataSourceStatus = async (): Promise<DataSourceStatus> => {
       canRender: true,
       reason: "ok",
       datasource: "api",
+      displaySource: "api",
     };
   }
 
@@ -42,5 +41,6 @@ export const getDataSourceStatus = async (): Promise<DataSourceStatus> => {
     canRender: false,
     reason: "api-unavailable",
     datasource: "none",
+    displaySource: "indisponível (API e mocks)",
   };
 };

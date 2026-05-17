@@ -1,8 +1,6 @@
 // cloudNews.ts
 import type { HomeSectionItem } from "./homeFactory";
 import { createCreatedAtFromMinutesAgo } from "@/utils/date";
-import { summarizeHtmlToDescription } from "./homeFactory";
-import { enrichNoticeHtml } from "./noticeEnhancer";
 
 const CLOUD_SEEDS = [
   {
@@ -11,7 +9,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "cloudleo",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "cloudleo — engenheiro de infraestrutura",
         socialMedias: [],
       },
@@ -35,6 +33,11 @@ const CLOUD_SEEDS = [
         <p>Use backends remotos com locking e pipelines que executem planos de forma automatizada em ambientes de staging antes da promoção.</p>
         <p style="text-align:center"><img src="/images/imageScience.png" alt="terraform-arch" style="max-width:100%"/></p>
         <p>Conclusão: automação e convenções reduzem erros operacionais e aceleram entregas.</p>
+        <section>
+          <h2>Governança prática</h2>
+          <p>Um fluxo multi-ambiente só se sustenta quando a equipe consegue enxergar o que muda em cada ambiente sem depender de conhecimento tribal.</p>
+          <p>Esse mock reforça exatamente essa leitura de arquitetura, operação e custo em conjunto.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -45,7 +48,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "finopsdani",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "finopsdani — especialista em FinOps",
         socialMedias: [],
       },
@@ -70,6 +73,11 @@ const CLOUD_SEEDS = [
           <li>Automatizar relatórios semanais</li>
         </ul>
         <p>Ferramentas: combine dados do provider com um BI para análises históricas e alertas de anomalia.</p>
+        <section>
+          <h2>Leitura de custo</h2>
+          <p>Quando os custos ficam visíveis por serviço, fica muito mais fácil discutir priorização, desperdício e impacto de crescimento com a equipe certa.</p>
+          <p>O mock foi expandido para sustentar uma explicação mais completa desse raciocínio.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -80,7 +88,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "cloudleo",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "cloudleo — engenheiro de infraestrutura",
         socialMedias: [],
       },
@@ -99,6 +107,11 @@ const CLOUD_SEEDS = [
         <p>Projete consumers para serem idempotentes e use chaves de deduplicação quando disponíveis para evitar efeitos colaterais duplicados.</p>
         <h3>Observabilidade</h3>
         <p>Monitore métricas de atraso, taxa de mensagens na DLQ e latência de processamento para detectar problemas cedo.</p>
+        <section>
+          <h2>Mensagem final</h2>
+          <p>Esse é o tipo de conteúdo que ganha muito quando inclui detalhes operacionais, porque a teoria só faz sentido se o time conseguir operar o fluxo depois.</p>
+          <p>A ideia é deixar o mock suficientemente rico para leitura e validação visual ao mesmo tempo.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -109,7 +122,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -128,6 +141,11 @@ const CLOUD_SEEDS = [
         <p>Implemente regras que validem políticas durante PRs e pipelines que verifiquem drift de configuração regularmente.</p>
         <h3>Rotação de segredos</h3>
         <p>Automatize rotação e revogação de credenciais para reduzir janela de exposição.</p>
+        <section>
+          <h2>Contexto de governança</h2>
+          <p>Segurança em cloud não é só bloqueio, mas também rastreabilidade e consistência entre times e ambientes.</p>
+          <p>Esse trecho adicional torna o mock mais adequado para artigos com leitura mais longa e política de controle mais séria.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -138,7 +156,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "cloudleo",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "cloudleo — engenheiro de infraestrutura",
         socialMedias: [],
       },
@@ -159,6 +177,11 @@ const CLOUD_SEEDS = [
           <li>Políticas de segurança</li>
           <li>Observabilidade e alertas</li>
         </ul>
+        <section>
+          <h2>Uso recomendado</h2>
+          <p>Um blueprint é mais útil quando acelera as primeiras decisões sem aprisionar a equipe em padrões rígidos demais.</p>
+          <p>Esse mock amplia essa ideia com mais contexto para leitura editorial e técnica.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -169,7 +192,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "finopsdani",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "finopsdani — especialista em FinOps",
         socialMedias: [],
       },
@@ -187,6 +210,11 @@ const CLOUD_SEEDS = [
         <h2>Modelos de análise</h2>
         <p>Agregue custo por tag de produto e compare com tráfego para detectar desvios.</p>
         <p>Inclui exemplos de queries e thresholds recomendados.</p>
+        <section>
+          <h2>Leitura complementar</h2>
+          <p>Quanto mais granular a visão por domínio, mais fácil fica justificar ações de otimização sem perder a visão do negócio como um todo.</p>
+          <p>O bloco extra ajuda a transformar o mock em conteúdo de leitura mais densa.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -197,7 +225,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -215,6 +243,11 @@ const CLOUD_SEEDS = [
         <h2>Testes</h2>
         <p>Automatize drills e valide tempos de restauração contra objetivos de negócio.</p>
         <p style="font-size:13px">Incluímos checklist de DR e exemplos de runbooks.</p>
+        <section>
+          <h2>Importância operacional</h2>
+          <p>DR precisa ser realista, testado e documentado o suficiente para que a equipe saiba o que fazer quando o ambiente principal falhar.</p>
+          <p>Esse conteúdo extra deixa o mock mais útil para cenários de leitura longa e revisão visual.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -225,7 +258,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "cloudleo",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "cloudleo — engenheiro de infraestrutura",
         socialMedias: [],
       },
@@ -242,6 +275,11 @@ const CLOUD_SEEDS = [
         <p>Segmentar workloads por zona de confiança reduz blast radius e melhora performance. Exploramos modelos de subnets, NACLs, security groups e políticas de comunicação entre workloads.</p>
         <h2>Modelos</h2>
         <p>Compare isolamento por VPC, por sub-rede e por microsegmentation para escolher a abordagem adequada.</p>
+        <section>
+          <h2>Motivo prático</h2>
+          <p>Quando a rede é segmentada com clareza, fica mais simples diagnosticar problemas e limitar o impacto de qualquer incidente.</p>
+          <p>O mock agora traz mais contexto para leitura editorial e teste de layout.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -252,7 +290,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "finopsdani",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "finopsdani — especialista em FinOps",
         socialMedias: [],
       },
@@ -272,6 +310,11 @@ const CLOUD_SEEDS = [
           <li>Transição automática para arquivamento após período definido</li>
           <li>Compressão adaptativa por tipo de mídia</li>
         </ul>
+        <section>
+          <h2>Observação final</h2>
+          <p>Lifecycle bom é o que o time consegue entender e manter sem precisar de uma operação manual constante para cada tipo de asset.</p>
+          <p>Essa extensão deixa o conteúdo mais próximo de um artigo real e menos de um fragmento curto de guia.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -282,7 +325,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -299,6 +342,11 @@ const CLOUD_SEEDS = [
         <p>Identity federation, SSO e políticas de autorização são essenciais para times distribuídos. Fornecemos um roteiro para implementar fluxos seguros, compatíveis com SAML/OIDC e políticas centralizadas.</p>
         <h2>Arquitetura</h2>
         <p>Centralize identidade e delegue autorização via claims; mantenha logs de auditoria para conformidade.</p>
+        <section>
+          <h2>Aspecto de escala</h2>
+          <p>À medida que a organização cresce, a governança de identidade passa a ser uma parte central da experiência de operação e auditoria.</p>
+          <p>Esse mock oferece um pouco mais de corpo para representar essa complexidade.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -309,7 +357,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "cloudleo",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "cloudleo — engenheiro de infraestrutura",
         socialMedias: [],
       },
@@ -326,6 +374,11 @@ const CLOUD_SEEDS = [
         <p>Este texto reúne práticas para dimensionar horizontalmente serviços durante picos: autoscaling baseado em métricas de negócio, cache efetivo e arquiteturas stateless.</p>
         <h2>Cache</h2>
         <p>Use caches na borda e caching por domínio para reduzir carga nos serviços origin.</p>
+        <section>
+          <h2>Decisão de arquitetura</h2>
+          <p>Escalar bem exige saber o que pode ser replicado facilmente e o que precisa continuar centralizado para manter consistência.</p>
+          <p>O conteúdo extra ajuda a suportar essa discussão com mais clareza.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -336,7 +389,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "finopsdani",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "finopsdani — especialista em FinOps",
         socialMedias: [],
       },
@@ -353,6 +406,11 @@ const CLOUD_SEEDS = [
         <p>Tags padronizadas permitem rastrear despesas por produto e time. Este artigo mostra um esquema de tagging prático e como validar tags automaticamente durante deploys.</p>
         <h2>Validação</h2>
         <p>Automatize checagens em pipelines e aplique guardrails para impedir recursos sem tags obrigatórias.</p>
+        <section>
+          <h2>Impacto de governança</h2>
+          <p>Quando a política de tags é consistente, o time ganha clareza sobre custo, ownership e accountability sem depender de planilhas paralelas.</p>
+          <p>Isso torna o mock mais útil para páginas que precisam explicar decisões financeiras com contexto.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -363,7 +421,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "secgabriel",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "secgabriel — especialista em segurança",
         socialMedias: [],
       },
@@ -380,6 +438,11 @@ const CLOUD_SEEDS = [
         <p>Rotacionar segredos automaticamente reduz riscos de vazamento. Discutimos integração com cofres, pipelines de rotação e práticas para revogação rápida.</p>
         <h2>Integração</h2>
         <p>Automatize a atualização de segredos em serviços e minimize o tempo entre rotação e aplicação.</p>
+        <section>
+          <h2>Leitura operacional</h2>
+          <p>O ponto mais importante é reduzir a janela de exposição sem criar fricção excessiva para a equipe no dia a dia.</p>
+          <p>Esse conteúdo adicional dá mais peso ao mock e melhora a experiência de leitura na home.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
@@ -390,7 +453,7 @@ const CLOUD_SEEDS = [
     Creators: {
       Owner: {
         name: "cloudleo",
-        imgProfile: "/images/Nicholas-Emery.png",
+        imgProfile: "",
         bio: "cloudleo — engenheiro de infraestrutura",
         socialMedias: [],
       },
@@ -408,27 +471,21 @@ const CLOUD_SEEDS = [
         <h2>Invalidation</h2>
         <p>Planeje políticas de invalidation para equilibrar custo e atualizações de conteúdo.</p>
         <p>Guia completo: <a href="https://example.com/cdn-guide">Guia de CDN</a></p>
+        <section>
+          <h2>Contexto extra</h2>
+          <p>Uma CDN boa não é só rápida; ela precisa manter previsibilidade de atualização, custo controlado e comportamento consistente entre regiões.</p>
+          <p>Esse acréscimo deixa o mock mais próximo de um artigo longo de verdade.</p>
+        </section>
       </article>
     `.trim(),
     commentsNotice: [],
   },
 ];
 
-export const CLOUD_NEWS_MOCK: HomeSectionItem[] = CLOUD_SEEDS.map(
-  (s, index) => {
-    const notice = enrichNoticeHtml({
-      html: s.notice,
-      title: s.Title,
-      category: s.Category,
-      creator: s.Creators.Owner.name,
-      index,
-    });
-
-    return {
-      ...s,
-      Creator: s.Creators.Owner.name,
-      notice,
-      Description: summarizeHtmlToDescription(notice),
-    };
-  },
-);
+export const CLOUD_NEWS_MOCK: HomeSectionItem[] = CLOUD_SEEDS.map((s) => ({
+  ...s,
+  Creator: s.Creators.Owner.name,
+  notice: s.notice,
+  Description:
+    "Conteúdo de cloud sobre infraestrutura, FinOps, segurança e operação em escala.",
+}));

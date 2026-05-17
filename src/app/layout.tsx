@@ -119,7 +119,7 @@ export default async function RootLayout({
   const isDevEnvironment = IS_DEV_BUILD;
 
   const dataSource = IS_DEV_BUILD
-    ? (await getDataSourceStatus()).datasource
+    ? (await getDataSourceStatus()).displaySource
     : "api";
 
   const DevEnvironmentNotice = IS_DEV_BUILD

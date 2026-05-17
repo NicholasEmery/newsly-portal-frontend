@@ -3,6 +3,7 @@ import SystemStatusPanel from "@/app/components/server/feedback/SystemStatusPane
 import { cookies } from "next/headers";
 import { ServiceUnavailableReasonSchema } from "@/api/schemas/system";
 import { getTranslations } from "next-intl/server";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -46,11 +47,31 @@ export default async function ServiceUnavailablePage() {
   } as const;
 
   const devContentByReason = {
+    "api-unavailable": {
+      badge: t("apiUnavailableDev.badge"),
+      title: t("apiUnavailableDev.title"),
+      description: t("apiUnavailableDev.description"),
+      secondaryDescription: t("apiUnavailableDev.secondaryDescription"),
+      actionLabel: t("apiUnavailableDev.actionLabel"),
+    },
     "mock-directory-missing-dev": {
       badge: t("mockDirectoryMissing.badge"),
       title: t("mockDirectoryMissing.title"),
       description: t("mockDirectoryMissing.description"),
-      secondaryDescription: t("mockDirectoryMissing.secondaryDescription"),
+      secondaryDescription: (
+        <>
+          {t("mockDirectoryMissing.secondaryDescriptionPrefix")}{" "}
+          <Link
+            href="https://newsly-cli.example.com"
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium text-primary-blue underline underline-offset-4 hover:opacity-80"
+          >
+            clique aqui
+          </Link>{" "}
+          .
+        </>
+      ),
       actionLabel: t("mockDirectoryMissing.actionLabel"),
     },
     "datasource-env-missing-dev": {
@@ -71,7 +92,20 @@ export default async function ServiceUnavailablePage() {
       badge: t("apiAndMockUnavailable.badge"),
       title: t("apiAndMockUnavailable.title"),
       description: t("apiAndMockUnavailable.description"),
-      secondaryDescription: t("apiAndMockUnavailable.secondaryDescription"),
+      secondaryDescription: (
+        <>
+          {t("apiAndMockUnavailable.secondaryDescriptionPrefix")}{" "}
+          <Link
+            href="https://newsly-cli.example.com"
+            target="_blank"
+            rel="noreferrer"
+            className="font-medium text-primary-blue underline underline-offset-4 hover:opacity-80"
+          >
+            clique aqui
+          </Link>
+          .
+        </>
+      ),
       actionLabel: t("apiAndMockUnavailable.actionLabel"),
     },
   } as const;

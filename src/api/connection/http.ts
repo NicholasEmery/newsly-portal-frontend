@@ -49,7 +49,7 @@ export const resolveDataSourceMode = (): DataSourceMode => {
     process.env.NEWSLY_DATA_SOURCE ||
     process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE;
 
-  if (!rawMode) return "api";
+  if (!rawMode) return "auto";
 
   const normalizedMode = rawMode
     .trim()
@@ -84,13 +84,29 @@ export const requestByDataSourceMode = async <T>(
   try {
     return await options.fromApi();
   } catch (error) {
+    // Em modo "auto", trata erros 5xx ou de rede como backend indisponível
+    // e faz fallback automático para mocks. Para outros erros, respeita a
+    // readiness check: se a readiness indicar indisponibilidade, faz fallback,
+    // caso contrário propaga o erro para debugging.
     if (mode === "auto") {
-      return options.fallbackData;
-    }
+      try {
+        if (isBackendUnavailable(error)) {
+          return options.fallbackData;
+        }
+      } catch {
+        // se isBackendUnavailable falhar por algum motivo, continue com a
+        // verificação de readiness abaixo
+      }
 
-    if (isBackendUnavailable(error)) {
-      // Fallback: service unavailable, already handled in other flows
-      return options.fallbackData;
+      // Verifica se o backend respondeu ao readiness check
+      const apiReady = await checkApiReadiness(1500);
+      if (!apiReady) {
+        // Backend não respondeu - usa mocks
+        return options.fallbackData;
+      }
+
+      // Backend respondeu e o erro não indica 5xx - lança o erro
+      throw error;
     }
 
     throw error;
@@ -193,8 +209,11 @@ export const requestJsonWithLocale = async <T>(
 
 export const checkApiHealth = async (timeoutMs = 3000): Promise<boolean> => {
   try {
-    await requestJson(routes.system.health, ApiHealthSchema, { timeoutMs });
-    return true;
+    // Chama a rota proxy do Next.js local
+    const response = await axios.get("/api/health", {
+      timeout: timeoutMs,
+    });
+    return response.status === 200;
   } catch {
     return false;
   }
@@ -202,9 +221,12 @@ export const checkApiHealth = async (timeoutMs = 3000): Promise<boolean> => {
 
 export const checkApiReadiness = async (timeoutMs = 3000): Promise<boolean> => {
   try {
-    await requestJson(routes.system.ready, ApiReadySchema, { timeoutMs });
-    return true;
+    const response = await axios.get("/api/ready", {
+      timeout: timeoutMs,
+    });
+    return response.status === 200;
   } catch {
     return false;
   }
 };
+

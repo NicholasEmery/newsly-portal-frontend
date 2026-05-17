@@ -1,0 +1,41 @@
+name: Push frontend submodule to orchestrator
+
+on:
+    push:
+        branches: [main]
+
+permissions:
+    contents: write
+
+jobs:
+    update-orchestrator:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout this repo
+              uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Checkout orchestrator repo
+              uses: actions/checkout@v4
+              with:
+                  repository: NicholasEmery/newsly-portal-orchestrator
+                  token: ${{ secrets.ORCHESTRATOR_PAT }}
+                  path: orchestrator
+                  fetch-depth: 0
+                  submodules: true
+
+            - name: Update frontend submodule pointer in orchestrator
+              run: |
+                  set -e
+                  cd orchestrator
+                  git submodule update --init --remote frontend
+                  if git status --porcelain | grep -q "frontend"; then
+                    git config user.name "github-actions[bot]"
+                    git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                    git add frontend
+                    git commit -m "chore: update frontend submodule (auto from frontend)"
+                    git push origin main
+                  else
+                    echo "No changes to frontend submodule."
+                  fi

@@ -5,7 +5,7 @@ import { formatCreatedAtDisplay, type NewsCreators } from "./homeFactory";
 const defaultCreators: NewsCreators = {
   Owner: {
     name: "newsly",
-    imgProfile: "/images/Nicholas-Emery.png",
+    imgProfile: "",
     bio: "Autor newsly",
     socialMedias: [],
   },
@@ -21,7 +21,8 @@ export const TOP_NOTICE_MOCK = {
     "newsly",
   Creators: TOP_NOTICE_NEWS?.Creators ?? defaultCreators,
   Title: TOP_NOTICE_NEWS?.Title ?? "Top Notice",
-  Description: TOP_NOTICE_NEWS?.Description ?? "",
+  Description:
+    TOP_NOTICE_NEWS?.Description ?? "Top notice em destaque na home.",
   CreatedAt: TOP_NOTICE_NEWS?.CreatedAt ?? formatCreatedAtDisplay(new Date()),
   Slug: TOP_NOTICE_NEWS?.Slug ?? "top-notice",
 };

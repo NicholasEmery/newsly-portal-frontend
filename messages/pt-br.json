@@ -15,6 +15,46 @@
     "viewMore": "Ver Mais",
     "dontMissOut": "Não Perca"
   },
+  "noticePage": {
+    "share": "Compartilhar notícia",
+    "copyLink": "Copiar link",
+    "copyFallback": "Copie o link desta notícia",
+    "comments": "comentários",
+    "shareChannels": {
+      "facebook": "Compartilhar no Facebook",
+      "x": "Compartilhar no X",
+      "linkedin": "Compartilhar no LinkedIn",
+      "email": "Compartilhar por e-mail"
+    }
+  },
+  "subscriberCard": {
+    "badge": "Acesso premium",
+    "titleGuest": "Desbloqueie o acesso ilimitado",
+    "titleMember": "Aprimore sua assinatura",
+    "titlePremium": "Acesso premium ativo",
+    "descriptionGuest": "Leia jornalismo confiável, premiado e com contexto. Assine por apenas US$ 2 por 6 meses.",
+    "descriptionMember": "Faça upgrade da sua conta para liberar a matéria completa, recursos premium e cobertura exclusiva para assinantes.",
+    "descriptionPremium": "Sua assinatura premium está ativa. Continue lendo sem restrições e acompanhe o conteúdo completo.",
+    "primaryGuest": "Assinar agora",
+    "primaryMember": "Fazer upgrade",
+    "primaryPremium": "Gerenciar conta",
+    "secondaryGuest": "Entrar",
+    "secondaryPremium": "Sair da conta",
+    "secondaryPrompt": "Já é assinante?",
+    "signedInAs": "Conectado como"
+  },
+  "profilesCard": {
+    "openProfile": "Abrir perfil",
+    "noDescription": "Sem descrição disponível",
+    "roles": {
+      "creator": "Criador",
+      "collaborator": "Colaborador"
+    },
+    "aria": {
+      "previousProfile": "Perfil anterior",
+      "nextProfile": "Próximo perfil"
+    }
+  },
   "dateRelative": {
     "thisMonth": "Este mês",
     "twoWeeksAgo": "Há 2 semanas",
@@ -236,11 +276,18 @@
       "secondaryDescription": "Você pode tentar novamente em alguns instantes para continuar lendo as últimas atualizações.",
       "actionLabel": "Tentar novamente"
     },
+    "apiUnavailableDev": {
+      "badge": "API indisponível no desenvolvimento",
+      "title": "A fonte configurada está em api, mas o backend não respondeu.",
+      "description": "A env atual aponta para api, então o frontend tentou usar o backend direto.",
+      "secondaryDescription": "Altere NEWSLY_DATA_SOURCE para auto ou mock para continuar o desenvolvimento enquanto a API estiver fora.",
+      "actionLabel": "Ir para a página inicial"
+    },
     "mockDirectoryMissing": {
       "badge": "Mocks ausentes no projeto",
       "title": "A pasta src/mocks não foi encontrada neste ambiente local.",
       "description": "Para usar o fallback local, restaure a pasta src/mocks com os arquivos esperados pelo frontend.",
-      "secondaryDescription": "Se preferir continuar sem mocks, use NEWSLY_DATA_SOURCE=api e certifique-se de que a API está disponível.",
+      "secondaryDescriptionPrefix": "Se a fonte estiver em mock, altere para auto ou api e confirme que a API está disponível até recriar a pasta de mocks. Você também pode usar a newsly-cli para instalar os mocks no projeto:",
       "actionLabel": "Ir para a página inicial"
     },
     "datasourceEnvMissing": {

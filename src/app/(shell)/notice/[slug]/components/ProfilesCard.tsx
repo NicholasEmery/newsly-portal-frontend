@@ -1,20 +1,15 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import type { CreatorInfo } from "@/api/types/news";
+import ProfileAvatar from "@/app/components/client/media/ProfileAvatar";
 
 interface ProfilesCardProps {
   owner: CreatorInfo;
   collaborators?: CreatorInfo[];
 }
-
-type SlideState =
-  | "visible"
-  | "exit-left"
-  | "exit-right"
-  | "enter-left"
-  | "enter-right";
 
 type ProfileCardData = {
   imgUrl: string;
@@ -23,30 +18,46 @@ type ProfileCardData = {
   role: "Creator" | "Collaborator";
 };
 
-type CarouselSlot = {
-  key: string;
-  profile: ProfileCardData | null;
-  isCenter: boolean;
-  offset: -1 | 0 | 1;
-};
+const ITEM_SIZE = 100;
+const SLOT_SPACING = 60;
+const TRANSITION_DURATION = 700;
+const INFO_SWAP_DELAY = TRANSITION_DURATION;
 
-const slideClasses: Record<SlideState, string> = {
-  "visible": "translate-x-0 opacity-100",
-  "exit-left": "-translate-x-8 opacity-0",
-  "exit-right": "translate-x-8 opacity-0",
-  "enter-left": "-translate-x-8 opacity-0",
-  "enter-right": "translate-x-8 opacity-0",
-};
+const SLOT_EASING = `transform ${TRANSITION_DURATION}ms cubic-bezier(0.445,0.05,0.55,0.95), opacity ${TRANSITION_DURATION}ms cubic-bezier(0.445,0.05,0.55,0.95), filter ${TRANSITION_DURATION}ms cubic-bezier(0.445,0.05,0.55,0.95), box-shadow ${TRANSITION_DURATION}ms cubic-bezier(0.445,0.05,0.55,0.95)`;
 
-const DEFAULT_IMAGE = "/images/Nicholas-Emery.png";
-const CAROUSEL_STEP = 58;
+function getSlotStyle(slot: number): React.CSSProperties {
+  const abs = Math.abs(slot);
+  const tx = slot * SLOT_SPACING;
 
-const fallbackCreator = (name: string): CreatorInfo => ({
-  name,
-  imgProfile: DEFAULT_IMAGE,
-  bio: "",
-  socialMedias: [],
-});
+  if (abs === 0) {
+    return {
+      transform: `translateX(${tx}px) scale(1) translateY(0)`,
+      opacity: 1,
+      zIndex: 30,
+      filter: "none",
+      border: "4px solid rgba(99,102,241)",
+      pointerEvents: "auto",
+    };
+  }
+  if (abs === 1) {
+    return {
+      transform: `translateX(${tx}px) scale(0.45) translateY(40px)`,
+      opacity: 0.65,
+      zIndex: 20,
+      filter: "blur(0.6px)",
+      boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+      pointerEvents: "auto",
+    };
+  }
+  // Slots com distância >= 2 ficam invisíveis, mas mantidos no DOM
+  return {
+    transform: `translateX(${tx}px) scale(0.2) translateY(70px)`,
+    opacity: 0,
+    zIndex: 0,
+    filter: "blur(4px)",
+    pointerEvents: "none",
+  };
+}
 
 const slugify = (value: string) =>
   value
@@ -56,15 +67,30 @@ const slugify = (value: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "") || "profile";
 
+const getCircularSlot = (
+  itemIndex: number,
+  currentIndex: number,
+  total: number,
+) => {
+  let slot = itemIndex - currentIndex;
+  const half = total / 2;
+
+  if (slot > half) slot -= total;
+  if (slot < -half) slot += total;
+
+  return slot;
+};
+
 export default function ProfilesCard({
   owner,
   collaborators = [],
 }: ProfilesCardProps) {
+  const t = useTranslations("profilesCard");
+
   const safeOwner = {
-    ...fallbackCreator(owner?.name || "newsly"),
     ...owner,
     name: owner?.name?.trim() || "newsly",
-    imgProfile: owner?.imgProfile?.trim() || DEFAULT_IMAGE,
+    imgProfile: owner?.imgProfile?.trim() || "",
     bio: owner?.bio?.trim() || "",
     socialMedias: Array.isArray(owner?.socialMedias) ? owner.socialMedias : [],
   };
@@ -72,17 +98,15 @@ export default function ProfilesCard({
   const safeCollaborators = collaborators
     .filter(Boolean)
     .map((collab, index) => ({
-      ...fallbackCreator(collab?.name || `colaborador ${index + 1}`),
       ...collab,
       name: collab?.name?.trim() || `colaborador ${index + 1}`,
-      imgProfile: collab?.imgProfile?.trim() || DEFAULT_IMAGE,
+      imgProfile: collab?.imgProfile?.trim() || "",
       bio: collab?.bio?.trim() || "",
       socialMedias: Array.isArray(collab?.socialMedias)
         ? collab.socialMedias
         : [],
     }));
 
-  // Monta lista de perfis com os campos necessários para o componente
   const allProfiles: ProfileCardData[] = [
     {
       imgUrl: safeOwner.imgProfile,
@@ -98,244 +122,261 @@ export default function ProfilesCard({
     })),
   ];
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [slideState, setSlideState] = useState<SlideState>("visible");
-  const [carouselShift, setCarouselShift] = useState<-1 | 0 | 1>(0);
-  const currentProfile = allProfiles[selectedIndex];
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const pointerStartXRef = useRef<number | null>(null);
-  const pointerStartYRef = useRef<number | null>(null);
-  // cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    };
-  }, []);
-  const total = allProfiles.length || 1;
+  const total = allProfiles.length;
   const canNavigate = total > 1;
 
-  function triggerSelection(newIndex: number, carouselDirection: -1 | 1) {
-    if (newIndex === selectedIndex) return;
-    const direction = newIndex > selectedIndex ? "right" : "left";
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [displayedProfileIndex, setDisplayedProfileIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
-    setSlideState(direction === "right" ? "exit-left" : "exit-right");
-    setCarouselShift(carouselDirection);
+  const transitionTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  );
+  const infoTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pointerStartXRef = useRef<number | null>(null);
+  const pointerStartYRef = useRef<number | null>(null);
 
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
-      setSelectedIndex(newIndex);
-      setSlideState(direction === "right" ? "enter-right" : "enter-left");
-      setCarouselShift(0);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => setSlideState("visible"));
-      });
-    }, 200);
-  }
+  const currentProfile = allProfiles[displayedProfileIndex];
+  const currentRoleLabel =
+    currentProfile.role === "Creator"
+      ? t("roles.creator")
+      : t("roles.collaborator");
 
-  function moveCarousel(carouselDirection: -1 | 1) {
-    const nextIndex =
-      carouselDirection === -1
-        ? (selectedIndex + 1) % total
-        : (selectedIndex - 1 + total) % total;
+  useEffect(() => {
+    if (currentIndex === displayedProfileIndex) return;
 
-    triggerSelection(nextIndex, carouselDirection);
-  }
+    if (infoTimeoutRef.current) clearTimeout(infoTimeoutRef.current);
+    infoTimeoutRef.current = setTimeout(() => {
+      setDisplayedProfileIndex(currentIndex);
+    }, INFO_SWAP_DELAY);
+  }, [currentIndex, displayedProfileIndex]);
 
-  function handlePointerDown(event: React.PointerEvent<HTMLDivElement>) {
+  useEffect(() => {
+    return () => {
+      if (transitionTimeoutRef.current)
+        clearTimeout(transitionTimeoutRef.current);
+      if (infoTimeoutRef.current) clearTimeout(infoTimeoutRef.current);
+    };
+  }, []);
+
+  const moveCarousel = useCallback(
+    (direction: -1 | 1) => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
+      setCurrentIndex((prev) => (prev + direction + total) % total);
+      if (transitionTimeoutRef.current)
+        clearTimeout(transitionTimeoutRef.current);
+      transitionTimeoutRef.current = setTimeout(
+        () => setIsTransitioning(false),
+        TRANSITION_DURATION,
+      );
+    },
+    [isTransitioning, total],
+  );
+
+  const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
     pointerStartXRef.current = event.clientX;
     pointerStartYRef.current = event.clientY;
-  }
+  };
 
-  function handlePointerUp(event: React.PointerEvent<HTMLDivElement>) {
+  const handlePointerUp = (event: React.PointerEvent<HTMLDivElement>) => {
     const startX = pointerStartXRef.current;
     const startY = pointerStartYRef.current;
-
     pointerStartXRef.current = null;
     pointerStartYRef.current = null;
-
     if (startX === null || startY === null) return;
-
     const deltaX = event.clientX - startX;
     const deltaY = event.clientY - startY;
-
-    if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY)) {
-      return;
-    }
-
-    if (deltaX < 0) {
-      moveCarousel(-1);
-      return;
-    }
-
-    moveCarousel(1);
-  }
-
-  const visibleSlots: CarouselSlot[] = (() => {
-    if (total >= 3) {
-      return [
-        {
-          key: `thumb-${(selectedIndex - 1 + total) % total}`,
-          profile: allProfiles[(selectedIndex - 1 + total) % total],
-          isCenter: false,
-          offset: -1,
-        },
-        {
-          key: `thumb-${selectedIndex}`,
-          profile: allProfiles[selectedIndex],
-          isCenter: true,
-          offset: 0,
-        },
-        {
-          key: `thumb-${(selectedIndex + 1) % total}`,
-          profile: allProfiles[(selectedIndex + 1) % total],
-          isCenter: false,
-          offset: 1,
-        },
-      ];
-    }
-
-    if (total === 2) {
-      const otherIndex = selectedIndex === 0 ? 1 : 0;
-      const otherOffset = selectedIndex === 0 ? 1 : -1;
-      return [
-        {
-          key: `thumb-${otherIndex}`,
-          profile: allProfiles[otherIndex],
-          isCenter: false,
-          offset: otherOffset,
-        },
-        {
-          key: `thumb-${selectedIndex}`,
-          profile: allProfiles[selectedIndex],
-          isCenter: true,
-          offset: 0,
-        },
-        {
-          key: "thumb-placeholder-right",
-          profile: null,
-          isCenter: false,
-          offset: otherOffset === 1 ? -1 : 1,
-        },
-      ];
-    }
-
-    return [
-      {
-        key: "thumb-placeholder-left",
-        profile: null,
-        isCenter: false,
-        offset: -1,
-      },
-      {
-        key: `thumb-${selectedIndex}`,
-        profile: allProfiles[selectedIndex],
-        isCenter: true,
-        offset: 0,
-      },
-      {
-        key: "thumb-placeholder-right",
-        profile: null,
-        isCenter: false,
-        offset: 1,
-      },
-    ];
-  })();
+    if (Math.abs(deltaX) < 32 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    moveCarousel(deltaX < 0 ? 1 : -1);
+  };
 
   return (
-    <div className="relative w-full max-w-sm rounded-[28px] border border-slate-100 bg-white p-7 text-center shadow-[0_18px_50px_rgba(15,23,42,0.08)]">
-      {/* Navegação absoluta: 50px fora / 50px dentro do container */}
-      <button
-        type="button"
-        onClick={() => moveCarousel(1)}
-        disabled={!canNavigate}
-        aria-label="Perfil anterior"
-        className="absolute z-30 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
-        style={{ left: -50, top: 16, width: 100, height: 40 }}
-      >
-        &lt;
-      </button>
+    <div className="group relative mx-auto w-full xl:min-w-82 xl:max-w-82 rounded-[28px] border border-slate-100 bg-white px-4 py-5 text-center text-slate-900 shadow-[0_18px_50px_rgba(15,23,42,0.08)] transition-colors duration-300 dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-100 dark:shadow-[0_18px_50px_rgba(2,6,23,0.45)]">
+      {/* Botão anterior */}
+      {canNavigate && (
+        <div
+          className="opacity-0 group-hover:opacity-100 transition-all duration-400 absolute z-30"
+          style={{
+            left: -15,
+            top: "calc(50% + 80px)",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => moveCarousel(-1)}
+            disabled={!canNavigate || isTransitioning}
+            aria-label={t("aria.previousProfile")}
+            className="flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+            style={{ width: 30, height: 30 }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+        </div>
+      )}
 
-      <button
-        type="button"
-        onClick={() => moveCarousel(-1)}
-        disabled={!canNavigate}
-        aria-label="Próximo perfil"
-        className="absolute z-30 inline-flex items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 shadow transition-colors hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40"
-        style={{ right: -50, top: 16, width: 100, height: 40 }}
-      >
-        &gt;
-      </button>
-      <div>
-        <h1>{currentProfile.role}</h1>
+      {/* Botão próximo */}
+      {canNavigate && (
+        <div
+          className="opacity-0 group-hover:opacity-100 transition-all duration-400 absolute z-30"
+          style={{
+            right: -15,
+            top: "calc(50% + 80px)",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => moveCarousel(1)}
+            disabled={!canNavigate || isTransitioning}
+            aria-label={t("aria.nextProfile")}
+            className="flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-800"
+            style={{ width: 30, height: 30 }}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="m9 18 6-6-6-6" />
+            </svg>
+          </button>
+        </div>
+      )}
+
+      {/* Tag de papel */}
+      <div className="mb-2">
+        <span className="inline-block rounded-full bg-indigo-50 px-3 py-1 text-xs font-semibold text-indigo-600 dark:bg-indigo-500/15 dark:text-indigo-200">
+          {currentRoleLabel}
+        </span>
       </div>
+
+      {/* Carrossel – renderiza slots de -2 a 2 (para transição suave) */}
       <div
-        className="mb-7 flex items-center justify-center"
+        className="relative mb-5 overflow-hidden"
+        style={{ height: 140 }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
       >
-        <div className="relative h-33 w-full max-w-90 overflow-visible">
-          {visibleSlots.map((slot) => {
-            const isPlaceholder = !slot.profile;
-            const profileIndex = slot.profile
-              ? allProfiles.indexOf(slot.profile)
-              : -1;
+        <div
+          className="absolute"
+          style={{
+            left: "50%",
+            top: "50%",
+            transform: "translate(-50%, -50%)",
+            width: ITEM_SIZE,
+            height: ITEM_SIZE,
+          }}
+        >
+          {allProfiles.map((profile, idx) => {
+            const slot = getCircularSlot(idx, currentIndex, total);
+            // Mostramos slots de -2 a 2 (5 itens) – os invisíveis garantem suavidade
+            if (Math.abs(slot) > 2) return null;
+            const slotStyle = getSlotStyle(slot);
+            const isCenter = slot === 0;
 
             return (
               <button
-                key={slot.key}
-                onClick={() =>
-                  slot.profile &&
-                  triggerSelection(
-                    profileIndex,
-                    slot.offset === 0 ? 1 : ((slot.offset * -1) as -1 | 1),
-                  )
-                }
-                disabled={isPlaceholder}
-                className={`absolute left-1/2 top-1/2 rounded-full bg-cover bg-center shadow-[0_8px_24px_rgba(70,83,246,0.22)] transition-[transform,opacity,box-shadow,filter] duration-500 ease-out ${isPlaceholder ? "pointer-events-none opacity-0" : "opacity-100"} ${slot.isCenter ? "ring-4 border-primary-blue ring-indigo-100" : "border-b-blue-500"}`}
-                style={{
-                  backgroundImage: slot.profile
-                    ? `url(${slot.profile.imgUrl})`
-                    : "none",
-                  width: slot.isCenter ? 100 : 78,
-                  height: slot.isCenter ? 100 : 78,
-                  borderWidth: 4,
-                  borderStyle: "solid",
-                  zIndex: slot.isCenter ? 30 : 5,
-                  transform: `translate(-50%, -50%) translateX(${slot.offset * CAROUSEL_STEP + carouselShift * CAROUSEL_STEP}px) translateY(${slot.isCenter ? -4 : 14}px) scale(${slot.isCenter ? 1.08 : 0.7})`,
-                  boxShadow: slot.isCenter
-                    ? "0 18px 38px rgba(70,83,246,0.24)"
-                    : "0 8px 18px rgba(70,83,246,0.10)",
+                key={idx}
+                type="button"
+                onClick={() => {
+                  if (
+                    !isCenter &&
+                    !isTransitioning &&
+                    canNavigate &&
+                    Math.abs(slot) === 1
+                  ) {
+                    moveCarousel(slot > 0 ? 1 : -1);
+                  }
                 }}
-                aria-label={slot.profile?.nickname || "placeholder"}
-              />
+                aria-label={profile.nickname}
+                className="absolute inset-0 rounded-full border-none p-0 will-change-transform"
+                style={{
+                  background: "transparent",
+                  cursor: isCenter
+                    ? "default"
+                    : Math.abs(slot) === 1
+                      ? "pointer"
+                      : "default",
+                  outline: "none",
+                  transition: SLOT_EASING,
+                  ...slotStyle,
+                }}
+              >
+                <div className="h-full w-full overflow-hidden rounded-full">
+                  <ProfileAvatar
+                    name={profile.nickname}
+                    src={profile.imgUrl}
+                    size="h-full w-full"
+                  />
+                </div>
+              </button>
             );
           })}
         </div>
       </div>
 
+      {/* Dots indicadores */}
+      {canNavigate && (
+        <div className="mb-5 flex items-center justify-center gap-1.5">
+          {allProfiles.map((_, i) => {
+            const active = i === currentIndex;
+            return (
+              <div
+                key={i}
+                style={{
+                  width: active ? 18 : 5,
+                  height: 5,
+                  borderRadius: 3,
+                  transition: "width 300ms ease, background 300ms ease",
+                }}
+                className={active ? "bg-indigo-500" : "bg-slate-200"}
+              />
+            );
+          })}
+        </div>
+      )}
+
+      {/* Informações do perfil com fade */}
       <div className="overflow-hidden min-h-42.5">
         <div
-          className={`transition-all duration-300 ease-in-out ${slideClasses[slideState]}`}
+          style={{
+            opacity: isTransitioning ? 0 : 1,
+            transform: isTransitioning ? "translateY(6px)" : "translateY(0)",
+            transition: `opacity ${TRANSITION_DURATION * 0.4}ms ease, transform ${TRANSITION_DURATION * 0.4}ms ease`,
+          }}
         >
-          {/* Botões de navegação movidos para as bordas do container */}
-          <h2 className="mb-3 text-[1.45rem] font-bold leading-tight text-slate-900">
+          <h2 className="mb-3 text-[clamp(1.25rem,4vw,1.55rem)] font-bold leading-tight text-slate-900 dark:text-slate-50">
             {currentProfile.nickname}
           </h2>
-          <p className="mb-6 text-[0.98rem] leading-7 text-slate-600">
-            {currentProfile.description}
+          <p className="mb-6 text-[0.96rem] leading-7 text-slate-600 line-clamp-3 dark:text-slate-300 sm:text-[0.98rem]">
+            {currentProfile.description || t("noDescription")}
           </p>
           <Link
             href={`/profile/${slugify(currentProfile.nickname)}`}
-            className="inline-flex items-center justify-center rounded-xl bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-700"
+            className="inline-flex items-center justify-center rounded-xl bg-primary-blue px-5 py-3 text-sm font-semibold text-white transition-all duration-500 hover:opacity-80 dark:bg-blue-500 dark:text-white dark:hover:bg-blue-400"
           >
-            Open Profile
+            {t("openProfile")}
           </Link>
         </div>
       </div>
     </div>
   );
 }
-
-// cleanup timeout on unmount
-// (note: placed after export so linter doesn't complain about hooks)
-// but we add effect inside component instead
