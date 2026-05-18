@@ -1,5 +1,4 @@
-import { requestJson, resolveDataSourceMode } from "@/api/connection/http";
-import { IS_DEV_BUILD } from "@/config/buildTarget";
+// removed unused imports from http and buildTarget
 import { SocialLinksSchema, type SocialLink } from "@/api/schemas/socialLinks";
 import { createDevGetService } from "@/api/utils/serviceHelpers";
 import { loadMocks } from "@/api/mocks";

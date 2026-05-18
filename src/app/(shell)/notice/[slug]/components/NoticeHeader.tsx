@@ -58,7 +58,6 @@ export default function NoticeHeader({
   commentsCount,
 }: NoticeHeaderProps) {
   const t = useTranslations("noticePage");
-  const tDate = useTranslations("dateRelative");
 
   const handleShare = useCallback(
     async (channel: ShareChannel) => {

@@ -1,5 +1,5 @@
 import { routes, withQuery } from "@/api/routes";
-import { requestByDataSourceMode, requestJson } from "@/api/connection/http";
+import { requestJson } from "@/api/connection/http";
 import {
   HomeSectionItemSchema,
   HomeSectionSchema,

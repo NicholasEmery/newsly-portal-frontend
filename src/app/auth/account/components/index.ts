@@ -1,5 +1,4 @@
 export { BackgroundGradients } from "./BackgroundGradients";
-export { LogoBadge } from "./LogoBadge";
 export { HeaderActions } from "./HeaderActions";
 export { AuthHeader } from "./AuthHeader";
 export { FormField } from "./FormField";

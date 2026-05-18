@@ -1,7 +1,6 @@
 import axios from "axios";
 import { z } from "zod";
-import { routes } from "@/api/routes";
-import { ApiHealthSchema, ApiReadySchema } from "@/api/schemas/system";
+// Note: removed unused imports to satisfy lint
 
 export type DataSourceMode = "api" | "mock" | "auto";
 export type RuntimeEnvironment = "development" | "production";

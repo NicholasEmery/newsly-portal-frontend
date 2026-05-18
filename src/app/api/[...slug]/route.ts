@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { resolveDataSourceMode } from "@/api/connection/http";
-import { hasMocksDirectory, loadMocks, loadMocksAsync, loadMockForPathAsync } from "@/api/mocks";
+import { hasMocksDirectory, loadMocksAsync, loadMockForPathAsync } from "@/api/mocks";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
-function mapMockForPath(mocks: any, path: string, query: string) {
+function mapMockForPath(mocks: any, path: string, _query: string) {
   // Exact mappings for well-known endpoints
   if (path === "categories") {
     return mocks?.NAV_ALL_CATEGORIES || mocks?.NAV_PRIMARY_CATEGORIES || [];
@@ -64,8 +64,8 @@ export async function GET(
           try {
             const targeted = await loadMockForPathAsync(path);
             if (targeted !== null && targeted !== undefined) mock = targeted;
-          } catch (e) {
-            // ignore
+          } catch (_e) {
+            /* ignore */
           }
         }
         if (mock !== null && mock !== undefined) {

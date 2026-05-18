@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint \"src/**/*.{js,ts,tsx}\" \"cypress/**/*.{js,ts,tsx}\" \"scripts/**/*.{js,ts}\" --ext .js,.ts,.tsx",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "format": "prettier --write .",

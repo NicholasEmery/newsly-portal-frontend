@@ -18,8 +18,7 @@ function buildOwnerCreators(creatorName: string): NewsCreators {
 }
 
 // Seeds agora usam Creators e não possuem mais Creator, Description e campos separados de perfil
-const SUBSCRIBER_NEWS_SEEDS: Omit<HomeSectionItem, "Description" | "notice">[] =
-  [
+const SUBSCRIBER_NEWS_SEEDS: Partial<HomeSectionItem>[] = [
     {
       ImgUrl: "/images/imageScience.png",
       Title: "Arquitetura event-driven para checkout com alta resiliência",
@@ -77,7 +76,19 @@ const SUBSCRIBER_NEWS_SEEDS: Omit<HomeSectionItem, "Description" | "notice">[] =
 // Converte cada seed com notice e descrição explícitos
 export const SUBSCRIBER_NEWS_MOCK: HomeSectionItem[] =
   SUBSCRIBER_NEWS_SEEDS.map((s) => ({
-    ...s,
+    ImgUrl: s.ImgUrl ?? "/images/imageScience.png",
+    Title: s.Title ?? "",
     Description:
+      s.Description ??
       "Conteúdo exclusivo para assinantes com análise aprofundada e orientações práticas.",
+    Creator: s.Creator ?? "",
+    Category: s.Category ?? "",
+    CreatedAt: s.CreatedAt ?? createCreatedAtFromMinutesAgo(0),
+    CommentsCount: s.CommentsCount ?? 0,
+    isSubscriber: s.isSubscriber ?? true,
+    Slug: s.Slug ?? "",
+    Creators: s.Creators ?? buildOwnerCreators(s.Creator ?? "newsly"),
+    // preserve optional fields when present
+    notice: s.notice,
+    commentsNotice: s.commentsNotice,
   }));

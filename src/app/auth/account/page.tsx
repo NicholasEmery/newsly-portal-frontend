@@ -118,7 +118,6 @@ export default function LoginPage() {
     setTimeout(() => setValidationPulse(false), 380);
   }
 
-  const hasFieldErrors = Object.keys(errors).length > 0 && submitCount > 0;
 
   const emailValue = watch("email") || "";
   const passwordValue = watch("password") || "";

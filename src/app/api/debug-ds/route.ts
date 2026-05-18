@@ -15,7 +15,6 @@ export async function GET() {
   let mocksSummary: any = null;
   try {
     // dynamic import to reflect what loadMocksAsync would get
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const m = await import("@/mocks");
     const mods = m;
     mocksSummary = {

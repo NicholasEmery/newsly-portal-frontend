@@ -6,12 +6,7 @@ import {
   getResolvedDataSourceMode,
 } from "@/api/services/homeSections";
 import { getLocaleFromRequest } from "@/api/utils/locale";
-import {
-  TrendingItemSchema,
-  LatestNewsSectionSchema,
-  HomeSectionItemSchema,
-  TopNoticeSchema,
-} from "@/api/schemas/homepage";
+// schema imports removed (not used)
 
 // flatten results from various sections into {Title,Category,CreatedAt} list
 const flattenMocks = (mocks: any) => {

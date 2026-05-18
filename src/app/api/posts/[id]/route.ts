@@ -5,7 +5,6 @@ import {
   getDataSourceStatus,
   getResolvedDataSourceMode,
 } from "@/api/services/homeSections";
-import { withQuery } from "@/api/routes";
 import { getLocaleFromRequest } from "@/api/utils/locale";
 
 export async function GET(

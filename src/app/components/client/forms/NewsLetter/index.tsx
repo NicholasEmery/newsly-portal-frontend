@@ -97,7 +97,7 @@ const Newsletter = () => {
     handleSubmit,
     reset,
     watch,
-    formState: { isSubmitting, isValid, errors },
+    formState: { isSubmitting, isValid: _isValid, errors },
   } = useForm<NewsletterFormData>({
     resolver: zodResolver(NewsletterSubscribeClientSchema),
     mode: "onChange", // Real-time validation to control disabled state

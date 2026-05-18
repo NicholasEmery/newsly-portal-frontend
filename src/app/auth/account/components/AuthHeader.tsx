@@ -1,5 +1,4 @@
 import { HeaderActions } from "./HeaderActions";
-import Image from "next/image";
 
 export function AuthHeader() {
   return (

@@ -1,4 +1,4 @@
-import { requestByDataSourceMode, api } from "@/api/connection/http";
+import { requestByDataSourceMode } from "@/api/connection/http";
 import { loadMocks } from "@/api/mocks";
 import axios from "axios";
 
@@ -158,6 +158,7 @@ function loadMockData<T>(loader: (mocks: any) => T): T {
   try {
     return loader(mocks);
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error("[loadMockData] error processing mocks:", error);
     return (Array.isArray(loader({})) ? [] : {}) as T;
   }

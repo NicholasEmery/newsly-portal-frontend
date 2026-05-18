@@ -5,7 +5,6 @@ import { ThemeProvider } from "@/app/components/client/providers/ThemeProvider";
 import { AuthProvider } from "@/app/components/client/providers/AuthProvider";
 import { TooltipProvider } from "@/shadcn/components/ui/tooltip";
 import localFont from "next/font/local";
-import { resolveDataSourceMode } from "@/api/connection/http";
 import { getDataSourceStatus } from "@/api/services/homeSections";
 import { IS_DEV_BUILD } from "@/config/buildTarget";
 import { NextIntlClientProvider } from "next-intl";

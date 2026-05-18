@@ -1,4 +1,4 @@
-import Image from "next/image";
+// Image import not used
 import Link from "next/link";
 import { buildCreatorRoute, buildNoticeRoute } from "@/utils/userRoute";
 import DateDisplay from "@/app/components/server/display/DateDisplay";
@@ -34,7 +34,7 @@ const ContainerLatestNews = ({ item }: ContainerLatestNewsProps) => {
         <div
           ref={mediaProbeRef}
           className="transform transition-transform duration-700 group-hover:scale-105 cursor-pointer w-full h-30 sm:h-50 md:h-60 lg:h-70 xl:h-80 2xl:h-110 rounded-xl bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(\"${item.ImgUrl}\")` }}
+          style={{ backgroundImage: `url("${item.ImgUrl}")` }}
         />
       </Link>
       <div className="flex flex-col items-center w-full">

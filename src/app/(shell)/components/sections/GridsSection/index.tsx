@@ -129,7 +129,7 @@ const GridsSection = () => {
                   FilterLabel={section.FilterLabel}
                   CategoryHref={resolveCategoryHref(
                     section.Category,
-                    data.categories,
+                    data?.categories || [],
                   )}
                   Items={section.Items.filter((item) => !item.isSubscriber)}
                 />

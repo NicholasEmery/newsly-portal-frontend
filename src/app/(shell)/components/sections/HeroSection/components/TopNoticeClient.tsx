@@ -29,7 +29,7 @@ const TopNoticeClient = ({ item }: TopNoticeClientProps) => {
           ref={mediaProbeRef}
           data-cy="top-notice-media"
           className="transform w-full h-30 sm:h-50 md:h-60 lg:h-70 xl:h-80 2xl:h-110 rounded-xl transition-transform cursor-pointer duration-700 group-hover:scale-105 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(\"${item.ImgUrl}\")` }}
+          style={{ backgroundImage: `url("${item.ImgUrl}")` }}
         />
       </Link>
       <div className="flex items-center justify-center">

@@ -1,8 +1,4 @@
-import {
-  requestJsonWithLocale,
-  resolveDataSourceMode,
-} from "@/api/connection/http";
-import { IS_DEV_BUILD } from "@/config/buildTarget";
+import { resolveDataSourceMode } from "@/api/connection/http";
 import { CategoriesSchema, type Category } from "@/api/schemas/categories";
 import { createDevGetService } from "@/api/utils/serviceHelpers";
 import { loadMocks } from "@/api/mocks";

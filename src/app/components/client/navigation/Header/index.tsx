@@ -34,7 +34,9 @@ const Header = () => {
             : [];
           setCategories(mapped);
         }
-      } catch {}
+      } catch (_e) {
+        /* ignore load errors in header categories */
+      }
     };
     load();
   }, []);

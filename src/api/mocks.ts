@@ -22,7 +22,7 @@ export function hasMocksDirectory(): boolean {
       if (parent === dir) break;
       dir = parent;
     }
-  } catch {
+  } catch (_e) {
     // fallback to process.cwd()
   }
 
@@ -60,7 +60,9 @@ export function loadMocks(): any | null {
         if (parent === dir) break;
         dir = parent;
       }
-    } catch {}
+    } catch (_e) {
+      /* ignore */
+    }
 
     const mocksDir = path.join(projectRoot, "src", "mocks");
     const candidates = [
@@ -84,10 +86,11 @@ export function loadMocks(): any | null {
           const resolved = _req.resolve(p);
           if (resolved && _req.cache) delete _req.cache[resolved];
         } catch (resErr) {
+          /* ignore */
         }
         const mod = _req(p);
         return mod?.default ?? mod;
-      } catch (e) {
+      } catch (_e) {
         // continue to next candidate
       }
     }
@@ -106,10 +109,11 @@ export async function loadMocksAsync(): Promise<any | null> {
   if (!hasMocksDirectory()) return null;
   // Prefer a statically-imported dev bundle to avoid dynamic import restrictions
   try {
-    // eslint-disable-next-line import/no-unresolved
     const devModule = await import("./mocks.dev");
     return devModule?.default ?? devModule;
-  } catch {}
+  } catch (_e) {
+    /* ignore */
+  }
   try {
     let projectRoot = process.cwd();
     try {
@@ -124,7 +128,9 @@ export async function loadMocksAsync(): Promise<any | null> {
         if (parent === dir) break;
         dir = parent;
       }
-    } catch {}
+    } catch (_e) {
+      /* ignore */
+    }
 
     const mocksDir = path.join(projectRoot, "src", "mocks");
     const candidates = [
@@ -176,7 +182,9 @@ export async function loadMockForPathAsync(pathName: string): Promise<any | null
         if (parent === dir) break;
         dir = parent;
       }
-    } catch {}
+    } catch (e) {
+      /* ignore */
+    }
 
     const mocksDir = path.join(projectRoot, "src", "mocks");
 
@@ -200,7 +208,7 @@ export async function loadMockForPathAsync(pathName: string): Promise<any | null
         const mod = await import(url);
         const exported = c.key ? (mod[c.key] ?? mod.default ?? mod) : mod.default ?? mod;
         if (exported !== undefined) return exported;
-      } catch (e) {
+      } catch (_e) {
         continue;
       }
     }

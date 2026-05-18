@@ -46,7 +46,7 @@ export function AuthForm({
   mode,
   register,
   errors,
-  watch,
+  watch: _watch,
   isSubmitting,
   submitCount,
   submitStatus,

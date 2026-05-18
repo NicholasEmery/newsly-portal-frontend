@@ -99,8 +99,8 @@ const AccordionComponent: React.FC<NoticeComponentProps> = ({
 // Register the component so the renderer can find it
 try {
   registerComponent("accordion", AccordionComponent);
-} catch (e) {
-  // noop in case of SSR or double-register
+} catch (_e) {
+  /* noop in case of SSR or double-register */
 }
 
 export default AccordionComponent;
