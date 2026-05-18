@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
 import { resolveDataSourceMode } from "@/api/connection/http";
-import { hasMocksDirectory, loadMocksAsync, loadMockForPathAsync } from "@/api/mocks";
+import {
+  hasMocksDirectory,
+  loadMocksAsync,
+  loadMockForPathAsync,
+} from "@/api/mocks";
 
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
@@ -59,7 +63,10 @@ export async function GET(
       if ((mode === "mock" || mode === "auto") && hasMocks) {
         const mocks = await loadMocksAsync();
         let mock = mapMockForPath(mocks, path, queryString);
-        if ((mock === null || mock === undefined) && (!mocks || Object.keys(mocks).length === 0)) {
+        if (
+          (mock === null || mock === undefined) &&
+          (!mocks || Object.keys(mocks).length === 0)
+        ) {
           // Try targeted import of the specific mock module
           try {
             const targeted = await loadMockForPathAsync(path);

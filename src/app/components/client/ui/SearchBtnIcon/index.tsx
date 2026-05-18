@@ -33,14 +33,14 @@ const SearchBtnIcon = () => {
   useEffect(() => {
     const load = async () => {
       try {
-          const res = await fetch("/api/search");
-          if (res.ok) {
-            const data = await res.json();
-            setSearchResults(data);
-          }
-        } catch (_e) {
-          /* ignore search load errors in client */
+        const res = await fetch("/api/search");
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data);
         }
+      } catch (_e) {
+        /* ignore search load errors in client */
+      }
     };
     load();
   }, []);

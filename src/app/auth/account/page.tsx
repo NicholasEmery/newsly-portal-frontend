@@ -118,7 +118,6 @@ export default function LoginPage() {
     setTimeout(() => setValidationPulse(false), 380);
   }
 
-
   const emailValue = watch("email") || "";
   const passwordValue = watch("password") || "";
   const fullNameValue = watch("fullName") || "";

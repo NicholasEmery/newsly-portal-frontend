@@ -166,7 +166,9 @@ export async function loadMocksAsync(): Promise<any | null> {
 // Try to dynamically import a single mock module that corresponds to a
 // specific API path. This is useful when importing the aggregated
 // `index.ts` fails due to ESM/TS re-export resolution in the dev runtime.
-export async function loadMockForPathAsync(pathName: string): Promise<any | null> {
+export async function loadMockForPathAsync(
+  pathName: string,
+): Promise<any | null> {
   if (!hasMocksDirectory()) return null;
   try {
     let projectRoot = process.cwd();
@@ -190,12 +192,21 @@ export async function loadMockForPathAsync(pathName: string): Promise<any | null
 
     // mapping from request paths to candidate module files and export keys
     const map: Record<string, { file: string; key?: string }[]> = {
-      categories: [{ file: "navigation.ts", key: "NAV_ALL_CATEGORIES" }, { file: "navigation.ts", key: "NAV_PRIMARY_CATEGORIES" }],
+      "categories": [
+        { file: "navigation.ts", key: "NAV_ALL_CATEGORIES" },
+        { file: "navigation.ts", key: "NAV_PRIMARY_CATEGORIES" },
+      ],
       "social-links": [{ file: "socialLinks.ts", key: "SOCIAL_LINKS_MOCK" }],
       "sections/top-notice": [{ file: "topNotice.ts", key: "TOP_NOTICE_MOCK" }],
-      "sections/trending-now": [{ file: "trending.ts", key: "TRENDING_SECTION_MOCK" }],
-      "sections/latest-news": [{ file: "latestNews.ts", key: "LATEST_NEWS_SECTION_MOCK" }],
-      "sections/subscriber-news": [{ file: "subscriberNews.ts", key: "SUBSCRIBER_NEWS_MOCK" }],
+      "sections/trending-now": [
+        { file: "trending.ts", key: "TRENDING_SECTION_MOCK" },
+      ],
+      "sections/latest-news": [
+        { file: "latestNews.ts", key: "LATEST_NEWS_SECTION_MOCK" },
+      ],
+      "sections/subscriber-news": [
+        { file: "subscriberNews.ts", key: "SUBSCRIBER_NEWS_MOCK" },
+      ],
       "sections/home-grids": [{ file: "home.ts", key: "HOME_SECTIONS_MOCK" }],
     };
 
@@ -206,7 +217,9 @@ export async function loadMockForPathAsync(pathName: string): Promise<any | null
       try {
         const url = pathToFileURL(p).href;
         const mod = await import(url);
-        const exported = c.key ? (mod[c.key] ?? mod.default ?? mod) : mod.default ?? mod;
+        const exported = c.key
+          ? (mod[c.key] ?? mod.default ?? mod)
+          : (mod.default ?? mod);
         if (exported !== undefined) return exported;
       } catch (_e) {
         continue;

@@ -19,17 +19,17 @@ function buildOwnerCreators(creatorName: string): NewsCreators {
 
 // Seeds agora usam Creators e não possuem mais Creator, Description e campos separados de perfil
 const SUBSCRIBER_NEWS_SEEDS: Partial<HomeSectionItem>[] = [
-    {
-      ImgUrl: "/images/imageScience.png",
-      Title: "Arquitetura event-driven para checkout com alta resiliência",
-      Creator: "backendjoao",
-      Creators: buildOwnerCreators("backendjoao"),
-      Category: "Backend",
-      CreatedAt: createCreatedAtFromMinutesAgo(160),
-      CommentsCount: 24,
-      isSubscriber: true,
-      Slug: "event-driven-checkout-resiliencia",
-      notice: `
+  {
+    ImgUrl: "/images/imageScience.png",
+    Title: "Arquitetura event-driven para checkout com alta resiliência",
+    Creator: "backendjoao",
+    Creators: buildOwnerCreators("backendjoao"),
+    Category: "Backend",
+    CreatedAt: createCreatedAtFromMinutesAgo(160),
+    CommentsCount: 24,
+    isSubscriber: true,
+    Slug: "event-driven-checkout-resiliencia",
+    notice: `
         <article>
           <header><h1>Arquitetura event-driven para checkout com alta resiliência</h1></header>
           <p>Este guia aprofunda como desacoplar o fluxo de checkout para lidar com picos, retries e falhas parciais sem interromper a experiência do usuário.</p>
@@ -44,18 +44,18 @@ const SUBSCRIBER_NEWS_SEEDS: Partial<HomeSectionItem>[] = [
             </section>
         </article>
       `.trim(),
-    },
-    {
-      ImgUrl: "/images/imageScience.png",
-      Title: "Governança multi-conta em cloud com políticas automatizadas",
-      Creator: "cloudleo",
-      Creators: buildOwnerCreators("cloudleo"),
-      Category: "Cloud",
-      CreatedAt: createCreatedAtFromMinutesAgo(115),
-      CommentsCount: 19,
-      isSubscriber: true,
-      Slug: "governanca-multiconta-politicas-automatizadas",
-      notice: `
+  },
+  {
+    ImgUrl: "/images/imageScience.png",
+    Title: "Governança multi-conta em cloud com políticas automatizadas",
+    Creator: "cloudleo",
+    Creators: buildOwnerCreators("cloudleo"),
+    Category: "Cloud",
+    CreatedAt: createCreatedAtFromMinutesAgo(115),
+    CommentsCount: 19,
+    isSubscriber: true,
+    Slug: "governanca-multiconta-politicas-automatizadas",
+    notice: `
         <article>
           <header><h1>Governança multi-conta em cloud com políticas automatizadas</h1></header>
           <p>Uma estratégia de governança multi-conta precisa combinar políticas, auditoria e visibilidade centralizada para manter consistência sem travar a operação.</p>
@@ -70,8 +70,8 @@ const SUBSCRIBER_NEWS_SEEDS: Partial<HomeSectionItem>[] = [
           </section>
         </article>
       `.trim(),
-    },
-  ];
+  },
+];
 
 // Converte cada seed com notice e descrição explícitos
 export const SUBSCRIBER_NEWS_MOCK: HomeSectionItem[] =
