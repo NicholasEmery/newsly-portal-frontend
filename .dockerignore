@@ -16,6 +16,13 @@
 **/compose*
 **/Dockerfile*
 **/node_modules
+**/.next
+**/.turbo
+**/coverage
+**/.nyc_output
+**/cypress/videos
+**/cypress/screenshots
+**/*.log
 **/npm-debug.log
 **/obj
 **/secrets.dev.yaml

@@ -8,7 +8,7 @@ WORKDIR /app
 
 # Copia package* e instala deps
 COPY package*.json ./
-RUN npm install
+RUN npm install --include=dev
 
 # Copia código
 COPY . .
