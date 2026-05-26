@@ -12,6 +12,8 @@ import { getLocale, getMessages, getTranslations } from "next-intl/server";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
+export const dynamic = "force-dynamic";
+
 const spaceGroteskLocal = localFont({
   src: [
     {

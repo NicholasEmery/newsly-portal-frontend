@@ -1,36 +1,53 @@
+# ARG: define a imagem base Node.js a ser usada para ambos os estágios (build e final)
+ARG NODE_BASE=node:26-alpine
+
 ### Stage 1: build da aplicação Next.js
-FROM node:26-alpine AS builder
+# FROM: estágio de build (constrói a aplicação)
+FROM ${NODE_BASE} AS builder
 
-ARG NEXT_PUBLIC_API_URL
-ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
-ENV NODE_ENV=production
-WORKDIR /app
+# WORKDIR: define diretório de trabalho dentro do container para o estágio de build
+WORKDIR /frontend
 
-# Copia package* e instala deps
-COPY package*.json ./
-RUN npm install --include=dev
+# COPY: copia manifests para aproveitar cache de camadas
+COPY package.json package-lock.json ./ 
+RUN --mount=type=cache,target=/root/.npm npm ci --include=dev --no-audit --no-fund --prefer-offline
+# RUN: instala dependências de forma reprodutível (npm ci)
+# --mount=type=cache: usa cache BuildKit para acelerar reinstalações
+# --include=dev: inclui devDependencies necessários para o build
 
-# Copia código
 COPY . .
 
-# Build da aplicação
 RUN npm run build
 
-### Stage 2: imagem final de produção
-FROM node:26-alpine AS runner
+### Stage 2: base mínima comum
+# FROM: cria um estágio base mínimo reutilizável para imagens finais
+FROM ${NODE_BASE} AS base
 
+# ENV: define ambiente de produção dentro da imagem
 ENV NODE_ENV=production
+# ENV: desativa telemetria do Next
 ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3000
 
-RUN addgroup -S appgroup && adduser -S frontuser -G appgroup
-WORKDIR /app
+# WORKDIR: define diretório de trabalho no estágio base
+WORKDIR /frontend
+# RUN: instala apenas certificados CA necessários e cria usuário/grupo com UID/GID fixos
+RUN apk add --no-cache ca-certificates \
+	&& addgroup -S -g 10001 frontgroup \
+	&& adduser -S -D -H -u 10001 -G frontgroup frontuser
+# adduser: cria usuário sem shell e sem home (mais seguro)
 
-COPY --from=builder /app/package*.json ./
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.next ./.next
+### Stage 3: imagem final endurecida
+# FROM: usa o estágio `base` como ponto de partida para a imagem endurecida
+FROM base AS hardened
 
-RUN chown -R frontuser:appgroup /app
+# COPY: copia apenas `public` do builder e ajusta dono para o usuário não-root
+COPY --from=builder --chown=frontuser:frontgroup /frontend/public ./public
+# COPY: copia arquivos estáticos gerados pelo Next
+COPY --from=builder --chown=frontuser:frontgroup /frontend/.next/static ./.next/static
+# COPY: copia o output standalone do Next (apenas runtime necessário)
+COPY --from=builder --chown=frontuser:frontgroup /frontend/.next/standalone ./
+
 USER frontuser
 
-CMD ["npm", "run", "start"]
+# CMD: comando padrão para iniciar o servidor Node gerado pelo Next standalone
+CMD ["node", "server.js"]

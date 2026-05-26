@@ -5,15 +5,12 @@ import CategoriesSection from "./components/sections/CategoriesSection";
 import SectionFrame from "./components/layout/SectionFrame";
 import Newsletter from "../components/client/forms/NewsLetter";
 
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   return (
     <main className="w-full mt-16">
       <div className="w-3/4 mx-auto flex flex-col items-center justify-center space-y-16">
-        <div className="w-full rounded-2xl border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900 shadow-sm">
-          Mock feature-flow test: frontend banner habilitado para validar o
-          disparo do orchestrator.
-        </div>
-
         <SectionFrame data-cy="home-section-hero">
           <HeroSection />
         </SectionFrame>

@@ -3,6 +3,8 @@ import { AppShell } from "@/app/AppShell";
 import { getDataSourceStatus } from "@/api/services/homeSections";
 import { redirect } from "next/navigation";
 
+export const dynamic = "force-dynamic";
+
 export default async function ShellLayout({
   children,
 }: {
