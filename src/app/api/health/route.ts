@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
+import { resolveBackendBaseUrl } from "@/api/connection/http";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BACKEND_URL = resolveBackendBaseUrl();
 
 export async function GET() {
   try {

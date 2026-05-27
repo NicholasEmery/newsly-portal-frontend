@@ -15,42 +15,60 @@ updates:
       - "dependencies"
       - "automated"
     groups:
-      ui-frameworks:
+      app-framework:
         patterns:
-          - "react*"
           - "next*"
-          - "react-router*"
-          - "@emotion/*"
-          - "styled-components"
-      http-and-state:
+          - "react*"
+          - "react-dom"
+          - "next-intl"
+          - "next-themes"
+      ui-and-animation:
+        patterns:
+          - "@base-ui/*"
+          - "lucide-react"
+          - "react-icons"
+          - "gsap"
+          - "tw-animate-css"
+          - "country-flag-icons"
+          - "@lottiefiles/*"
+      data-fetching-and-state:
         patterns:
           - "axios"
-          - "redux*"
-          - "@reduxjs/*"
-      types-and-build:
+          - "zustand"
+          - "js-cookie"
+          - "libsodium-wrappers"
+          - "dompurify"
+      forms-and-validation:
         patterns:
-          - "typescript"
-          - "@types/*"
-          - "tslib"
-          - "webpack*"
-          - "babel*"
-      lint-and-format:
+          - "react-hook-form"
+          - "@hookform/*"
+          - "zod"
+      styling-and-build:
+        patterns:
+          - "tailwind*"
+          - "@tailwindcss/*"
+          - "postcss"
+          - "clsx"
+          - "class-variance-authority"
+          - "tailwind-merge"
+      testing-and-linting:
         patterns:
           - "eslint*"
           - "prettier"
-      styling:
-        patterns:
-          - "tailwind*"
-      testing:
-        patterns:
-          - "jest*"
+          - "vitest"
+          - "cypress"
+          - "jsdom"
           - "@testing-library/*"
-      utils:
+      types-and-tooling:
         patterns:
-          - "lodash*"
-          - "date-fns"
-          - "moment"
-          - "core-js"        
+          - "typescript"
+          - "@types/*"
+          - "tsx"
+          - "babel-plugin-react-compiler"
+          - "baseline-browser-mapping"
+      utilities:
+        patterns:
+          - "dotenv"
     rebase-strategy: "auto"
-  
+
 

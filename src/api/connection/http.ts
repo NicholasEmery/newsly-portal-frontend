@@ -4,6 +4,7 @@ import { z } from "zod";
 
 export type DataSourceMode = "api" | "mock" | "auto";
 export type RuntimeEnvironment = "development" | "production";
+export type DeploymentTarget = "local" | "docker";
 
 type DataSourceRequestOptions<T> = {
   fromApi: () => Promise<T>;
@@ -18,9 +19,46 @@ type RequestJsonOptions = {
 
 const DEFAULT_TIMEOUT_MS = 10000;
 
+const normalizeEnvValue = (value?: string | null): string | null => {
+  const normalized = value?.trim();
+  return normalized ? normalized : null;
+};
+
+const resolveDeploymentTarget = (): DeploymentTarget => {
+  const raw =
+    process.env.NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET ||
+    process.env.NEWSLY_DEPLOYMENT_TARGET ||
+    "local";
+
+  return raw.trim().toLowerCase() === "docker" ? "docker" : "local";
+};
+
+const resolveTaggedEnvValue = (
+  localValue?: string | null,
+  dockerValue?: string | null,
+  fallbackValue?: string | null,
+): string | null => {
+  const target = resolveDeploymentTarget();
+  const preferredValues =
+    target === "docker"
+      ? [dockerValue, fallbackValue, localValue]
+      : [localValue, fallbackValue, dockerValue];
+
+  for (const value of preferredValues) {
+    const normalized = normalizeEnvValue(value);
+    if (normalized) return normalized;
+  }
+
+  return null;
+};
+
 export const resolveRuntimeEnvironment = (): RuntimeEnvironment => {
-  // rely solely on NODE_ENV; staging is treated as production
-  const raw = process.env.NODE_ENV || "production";
+  // prefer explicit NEWSLY_ENV tags and fall back to NODE_ENV
+  const raw =
+    process.env.NEXT_PUBLIC_NEWSLY_ENV ||
+    process.env.NEWSLY_ENV ||
+    process.env.NODE_ENV ||
+    "production";
   const env = raw.trim().toLowerCase();
   return env === "development" ? "development" : "production";
 };
@@ -30,23 +68,35 @@ export const isDevelopmentEnvironment = (): boolean => {
 };
 
 export const isDataSourceEnvConfigured = (): boolean => {
-  const rawMode =
-    process.env.NEWSLY_DATA_SOURCE ||
-    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE;
+  const rawMode = resolveTaggedEnvValue(
+    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE_LOCAL ||
+      process.env.NEWSLY_DATA_SOURCE_LOCAL ||
+      process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE,
+    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER ||
+      process.env.NEWSLY_DATA_SOURCE_DOCKER ||
+      process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE,
+    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE ||
+      process.env.NEWSLY_DATA_SOURCE,
+  );
 
   return Boolean(rawMode && rawMode.trim().length > 0);
 };
 
 export const resolveDataSourceMode = (): DataSourceMode => {
-  const runtimeEnv = resolveRuntimeEnvironment();
-
-  if (runtimeEnv === "production") {
+  if (!isDevelopmentEnvironment()) {
     return "api";
   }
 
-  const rawMode =
-    process.env.NEWSLY_DATA_SOURCE ||
-    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE;
+  const rawMode = resolveTaggedEnvValue(
+    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE_LOCAL ||
+      process.env.NEWSLY_DATA_SOURCE_LOCAL ||
+      process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE,
+    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER ||
+      process.env.NEWSLY_DATA_SOURCE_DOCKER ||
+      process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE,
+    process.env.NEXT_PUBLIC_NEWSLY_DATA_SOURCE ||
+      process.env.NEWSLY_DATA_SOURCE,
+  );
 
   if (!rawMode) return "auto";
 
@@ -124,8 +174,16 @@ export const canAccessByDataSourceMode = async (
   return readinessCheck();
 };
 
-const rawBaseUrl = process.env.NEXT_PUBLIC_API_URL?.trim();
-const rawAppOrigin = process.env.NEXT_PUBLIC_APP_ORIGIN?.trim();
+const rawBaseUrl = resolveTaggedEnvValue(
+  process.env.NEXT_PUBLIC_API_URL_LOCAL || process.env.NEXT_PUBLIC_API_URL,
+  process.env.NEXT_PUBLIC_API_URL_DOCKER || process.env.NEXT_PUBLIC_API_URL,
+  process.env.NEXT_PUBLIC_API_URL,
+);
+const rawAppOrigin = resolveTaggedEnvValue(
+  process.env.NEXT_PUBLIC_APP_ORIGIN_LOCAL || process.env.NEXT_PUBLIC_APP_ORIGIN,
+  process.env.NEXT_PUBLIC_APP_ORIGIN_DOCKER || process.env.NEXT_PUBLIC_APP_ORIGIN,
+  process.env.NEXT_PUBLIC_APP_ORIGIN,
+);
 
 const isTrustedOrigin = (input: string) => {
   try {
@@ -156,6 +214,11 @@ const resolveBaseUrl = () => {
 };
 
 const baseURL = resolveBaseUrl();
+
+export const resolveBackendBaseUrl = (): string => baseURL;
+
+export const resolveFrontendAppOrigin = (): string =>
+  rawAppOrigin || "http://localhost:3000";
 
 const normalizePath = (path: string) =>
   path.startsWith("http://") || path.startsWith("https://")

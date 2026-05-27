@@ -4,8 +4,17 @@ import tsPlugin from "@typescript-eslint/eslint-plugin";
 
 export default [
   {
-    ignores: ["**/node_modules/**", "**/.next/**", "**/coverage/**"],
-    // Provide common globals used across the project (browser, node, test and tooling)
+    ignores: [
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/coverage/**",
+      "**/out/**",
+      "**/build/**",
+      "**/next-env.d.ts",
+      "public/**",
+    ],
+  },
+  {
     languageOptions: {
       globals: {
         window: "readonly",
@@ -22,7 +31,6 @@ export default [
       },
     },
   },
-  // Disable core rules that conflict with TypeScript/browser globals
   {
     rules: {
       "no-undef": "off",
@@ -46,9 +54,7 @@ export default [
       "@typescript-eslint": tsPlugin,
     },
     rules: {
-      // TypeScript performs undef checks — disable ESLint's no-undef to avoid false positives
       "no-undef": "off",
-      // Use the TypeScript-aware rule for unused vars
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": [
         "warn",
@@ -59,17 +65,27 @@ export default [
         },
       ],
       "import/no-unresolved": "off",
-      "no-console": "warn",
+      "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
-  // Override for Cypress tests: provide test globals and cy/Cypress
   {
-    files: [
-      "cypress/**/*.ts",
-      "cypress/**/*.js",
-      "cypress/**/*.tsx",
-      "cypress/**/*.jsx",
-    ],
+    files: ["**/*.test.{js,jsx,ts,tsx}", "**/*.spec.{js,jsx,ts,tsx}"],
+    languageOptions: {
+      globals: {
+        describe: "readonly",
+        it: "readonly",
+        test: "readonly",
+        expect: "readonly",
+        vi: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
+      },
+    },
+  },
+  {
+    files: ["cypress/**/*.{js,jsx,ts,tsx}"],
     languageOptions: {
       globals: {
         cy: "readonly",
@@ -82,7 +98,6 @@ export default [
       },
     },
   },
-  // Allow console usage in scripts
   {
     files: ["scripts/**/*.js", "scripts/**/*.ts"],
     rules: {

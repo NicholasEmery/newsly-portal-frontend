@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loadMocksAsync, hasMocksDirectory } from "@/api/mocks";
-import { requestJsonWithLocale } from "@/api/connection/http";
+import { requestJsonWithLocale, resolveBackendBaseUrl } from "@/api/connection/http";
 import {
   getDataSourceStatus,
   getResolvedDataSourceMode,
@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
   try {
     const locale = getLocaleFromRequest(request);
     const resp = await requestJsonWithLocale(
-      `${process.env.NEXT_PUBLIC_API_URL}/search`,
+      `${resolveBackendBaseUrl()}/search`,
       null as any,
       locale,
     );

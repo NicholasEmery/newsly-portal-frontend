@@ -1,4 +1,8 @@
-import { requestByDataSourceMode } from "@/api/connection/http";
+import {
+  requestByDataSourceMode,
+  resolveBackendBaseUrl,
+  resolveFrontendAppOrigin,
+} from "@/api/connection/http";
 import { loadMocks } from "@/api/mocks";
 import axios from "axios";
 
@@ -60,9 +64,10 @@ export async function createDevPostService<TRequest, TResponse>(options: {
   );
   return await requestByDataSourceMode({
     fromApi: async () => {
+      const backendBaseUrl = resolveBackendBaseUrl();
       const internalEndpoint = `/api${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
       const internalOrigin =
-        process.env.NEXT_PUBLIC_APP_ORIGIN ||
+        resolveFrontendAppOrigin() ||
         (process.env.VERCEL_URL
           ? `https://${process.env.VERCEL_URL}`
           : "http://localhost:3000");
@@ -76,8 +81,8 @@ export async function createDevPostService<TRequest, TResponse>(options: {
         return response.data;
       } catch (err: any) {
         const status = err?.response?.status;
-        if (status === 404 && process.env.NEXT_PUBLIC_API_URL) {
-          const backendUrl = `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
+        if (status === 404 && backendBaseUrl) {
+          const backendUrl = `${backendBaseUrl.replace(/\/$/, "")}${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
           const backResp = await axios.post(backendUrl, options.data, {
             headers: { "Content-Type": "application/json" },
           });
@@ -112,9 +117,10 @@ export async function createDevGetService<T>(options: {
   const fallback = loadMockData(options.mockLoader);
   return await requestByDataSourceMode({
     fromApi: async () => {
+      const backendBaseUrl = resolveBackendBaseUrl();
       const internalEndpoint = `/api${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
       const internalOrigin =
-        process.env.NEXT_PUBLIC_APP_ORIGIN ||
+        resolveFrontendAppOrigin() ||
         (process.env.VERCEL_URL
           ? `https://${process.env.VERCEL_URL}`
           : "http://localhost:3000");
@@ -128,8 +134,8 @@ export async function createDevGetService<T>(options: {
         return response.data;
       } catch (err: any) {
         const status = err?.response?.status;
-        if (status === 404 && process.env.NEXT_PUBLIC_API_URL) {
-          const backendUrl = `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, "")}${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
+        if (status === 404 && backendBaseUrl) {
+          const backendUrl = `${backendBaseUrl.replace(/\/$/, "")}${options.endpoint.startsWith("/") ? options.endpoint : `/${options.endpoint}`}`;
           const backResp = await axios.get(backendUrl, {
             headers: options.headers,
           });
@@ -158,7 +164,6 @@ function loadMockData<T>(loader: (mocks: any) => T): T {
   try {
     return loader(mocks);
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.error("[loadMockData] error processing mocks:", error);
     return (Array.isArray(loader({})) ? [] : {}) as T;
   }

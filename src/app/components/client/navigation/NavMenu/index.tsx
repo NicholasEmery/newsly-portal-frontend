@@ -12,6 +12,7 @@ import ThemeModeBtn from "@/app/components/client/ui/ThemeModeBtn";
 import MoreDropdown from "@/app/components/client/navigation/MoreDropdown";
 import { useTranslations } from "next-intl";
 import LanguageSelector from "../../ui/LanguageSelector";
+import { IS_DEV_BUILD } from "@/config/buildTarget";
 
 interface NavMenuProps {
   categories: Array<{ label: string; href: string }>;
@@ -24,9 +25,7 @@ const NavMenu = ({ categories }: NavMenuProps) => {
   const { navRef, pinned, slideIn, navHeight } = useNavPin();
   const [isDesktop, setIsDesktop] = useState(false);
   const [devNoticeOffset, setDevNoticeOffset] = useState(0);
-  // Next.js exposes NODE_ENV at build time; we consider only
-  // development as the development environment.
-  const isDevEnvironment = process.env.NODE_ENV === "development";
+  const isDevEnvironment = IS_DEV_BUILD;
 
   const readDevNoticeHeight = () => {
     if (typeof window === "undefined") return 0;

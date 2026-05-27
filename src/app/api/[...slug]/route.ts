@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
-import { resolveDataSourceMode } from "@/api/connection/http";
+import { resolveBackendBaseUrl, resolveDataSourceMode } from "@/api/connection/http";
 import {
   hasMocksDirectory,
   loadMocksAsync,
   loadMockForPathAsync,
 } from "@/api/mocks";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
+const BACKEND_URL = resolveBackendBaseUrl();
 
 function mapMockForPath(mocks: any, path: string, _query: string) {
   // Exact mappings for well-known endpoints

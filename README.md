@@ -107,20 +107,37 @@ Este projeto também abrange minha experiência em áreas como **deploy** com **
 
 ## ⚙️ Configuração de Ambientes (API + Mock)
 
-Use apenas o arquivo local no repositório:
+Use apenas arquivos locais no repositório para desenvolvimento:
 
-- `.env.local` (NODE_ENV/NEWSLY_ENV e, em dev, `NEWSLY_DATA_SOURCE`)
+- `.env.local` ou `.env.development.local` (não versionados)
+- `.env.example` como referência de estrutura
 
-Para staging e produção, não haja nenhum arquivo no repositório; defina
-as variáveis no provedor de deploy (Vercel, Docker, Kubernetes secrets,
-etc.).
+Para staging e produção, não mantenha arquivos de segredo no repositório;
+defina as variáveis no provedor de deploy (Vercel, Docker, Kubernetes
+secrets, etc.).
+
+### Tags de ambiente
+
+O frontend agora entende duas dimensões:
+
+- `NEWSLY_ENV`: `development` ou `production`
+- `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET`: `local` ou `docker`
+
+As variáveis críticas podem ser duplicadas por tag:
+
+- `NEXT_PUBLIC_API_URL_LOCAL` / `NEXT_PUBLIC_API_URL_DOCKER`
+- `NEXT_PUBLIC_APP_ORIGIN_LOCAL` / `NEXT_PUBLIC_APP_ORIGIN_DOCKER`
+- `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_LOCAL` / `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER`
+
+Se a versão tagueada não existir, o código ainda aceita as variáveis
+legadas sem sufixo.
 
 ### Variável de alternância de fonte de dados
 
-`NEWSLY_DATA_SOURCE` é usada apenas em desenvolvimento local (via
+`NEWSLY_DATA_SOURCE` é usada apenas em desenvolvimento (via
 `resolveDataSourceMode()`); ela não aparece em `routes.ts` porque não
-há lógica de rota dependente dela. As rotas internas consomem essa
-variável ao decidir se retornam mocks ou proxy para a API.
+há lógica de rota dependente dela. As rotas internas consomem a fonte
+resolvida ao decidir se retornam mocks ou proxy para a API.
 
 - `api`: front end solicita dados ao backend real; os endpoints `/api/sections/*` atuam como proxy para a API externa
 - `mock`: as rotas internas devolvem conjuntos de mock estáticos, sem fazer nenhuma chamada externa
@@ -142,40 +159,43 @@ variável ao decidir se retornam mocks ou proxy para a API.
 - Durante o build, a ausência de mocks não trava a geração de páginas; o sistema injeta dados placeholder mínimos para satisfazer os schemas.
 
 Por isso você pode apagar `src/mocks` quando quiser: os arquivos verdadeiros de mock são mantidos em `src/mock-data`.
-O ambiente é determinado principalmente por `NODE_ENV` (seguido
-por `NEXT_PUBLIC_NEWSLY_ENV`/`NEWSLY_ENV` apenas enquanto a variável
-legada estiver em uso). Em termos de política:
+O ambiente é determinado principalmente por `NODE_ENV` e
+`NEWSLY_ENV`. Em termos de política:
 
-- `local`/`development`: permite `api`, `mock` ou `auto`
-- `staging`: força `api` (não permite mock e não requer `NEWSLY_DATA_SOURCE`)
-- `production`: força `api` (não permite mock e não requer `NEWSLY_DATA_SOURCE`)
+- `development`: permite `api`, `mock` ou `auto`
+- `production`: força `api` e nunca usa mocks
 
 ### Dev Local
 
-- Front local + rotas fictícias internas:
-  - `NEXT_PUBLIC_API_URL=http://localhost:3000`
-- Front local + backend externo local:
-  - `NEXT_PUBLIC_API_URL=http://localhost:3001`
+- Front local + backend local:
+  - `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=local`
+  - `NEXT_PUBLIC_API_URL_LOCAL=http://localhost:3333`
+  - `NEXT_PUBLIC_APP_ORIGIN_LOCAL=http://localhost:3000`
+- Front em Docker + backend local:
+  - `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=docker`
+  - `NEXT_PUBLIC_API_URL_DOCKER=http://localhost:3333`
+  - `NEXT_PUBLIC_APP_ORIGIN_DOCKER=http://localhost:3000`
 - Opcional:
-  - `NEXT_PUBLIC_APP_ORIGIN=http://localhost:3000`
-- Arquivo:
-  - `.env.local`
+  - `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_LOCAL=auto`
+  - `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER=auto`
 
 ### Staging
 
 - `NEWSLY_ENV=staging`
-- `NEXT_PUBLIC_API_URL=https://api-staging.seudominio.com`
-- `NEXT_PUBLIC_APP_ORIGIN=https://staging.seudominio.com`
-- não definir `NEWSLY_DATA_SOURCE`
+- `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=docker`
+- `NEXT_PUBLIC_API_URL_DOCKER=http://localhost:3333`
+- `NEXT_PUBLIC_APP_ORIGIN_DOCKER=https://newsly.nicholasemery.dev`
+- `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER=api`
 - Use HTTPS em tudo
 - Defina no provedor de deploy (não criar `.env.staging` no repositório)
 
 ### Produção
 
 - `NEWSLY_ENV=production`
-- `NEXT_PUBLIC_API_URL=https://api.seudominio.com`
-- `NEXT_PUBLIC_APP_ORIGIN=https://www.seudominio.com`
-- não definir `NEWSLY_DATA_SOURCE`
+- `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=docker`
+- `NEXT_PUBLIC_API_URL_DOCKER=http://localhost:3333`
+- `NEXT_PUBLIC_APP_ORIGIN_DOCKER=https://newsly.nicholasemery.dev`
+- `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER=api`
 - Sem HTTP público; somente HTTPS/infra interna confiável
 - Defina no provedor (Vercel, Docker, Kubernetes secrets), sem `.env.production` no repositório
 
@@ -184,22 +204,28 @@ legada estiver em uso). Em termos de política:
 Antes de publicar, valide no provedor:
 
 - [ ] `NEWSLY_ENV` definido como `staging` ou `production`
-- [ ] `NEXT_PUBLIC_API_URL` definido e apontando para a API correta do ambiente
-- [ ] `NEXT_PUBLIC_APP_ORIGIN` definido com a URL pública correta do frontend
-- [ ] `NEWSLY_DATA_SOURCE` não definido
+- [ ] `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET` definido como `local` ou `docker`
+- [ ] `NEXT_PUBLIC_API_URL_*` definido e apontando para a API correta do ambiente
+- [ ] `NEXT_PUBLIC_APP_ORIGIN_*` definido com a URL pública correta do frontend
+- [ ] `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_*` definido como `api` na produção
 - [ ] Todas as URLs em HTTPS
 - [ ] Não existe arquivo `.env.staging` ou `.env.production` versionado no repositório
 
 ### Exemplos rápidos
 
 - Front local + mock interno:
-  - `NEWSLY_DATA_SOURCE=mock`
-  - `NEXT_PUBLIC_API_URL=http://localhost:3000`
+  - `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=local`
+  - `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_LOCAL=mock`
 - Front local + backend local:
-  - `NEWSLY_DATA_SOURCE=api`
-  - `NEXT_PUBLIC_API_URL=http://localhost:3001`
+  - `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=local`
+  - `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_LOCAL=api`
+  - `NEXT_PUBLIC_API_URL_LOCAL=http://localhost:3333`
+- Front local + backend local:
+  - `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=docker`
+  - `NEXT_PUBLIC_NEWSLY_DATA_SOURCE_DOCKER=api`
+  - `NEXT_PUBLIC_API_URL_DOCKER=http://localhost:3333`
 - Front em staging + API staging:
-  - definir apenas `NEWSLY_ENV=staging`, `NEXT_PUBLIC_API_URL` e `NEXT_PUBLIC_APP_ORIGIN`
+  - definir `NEWSLY_ENV=production`, `NEXT_PUBLIC_NEWSLY_DEPLOYMENT_TARGET=docker`, `NEXT_PUBLIC_API_URL_DOCKER` e `NEXT_PUBLIC_APP_ORIGIN_DOCKER`
 
 ### **Painel Administrativo**
 
