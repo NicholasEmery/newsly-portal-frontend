@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { loadMocksAsync, hasMocksDirectory } from "@/api/mocks";
-import { requestJsonWithLocale, resolveBackendBaseUrl } from "@/api/connection/http";
+import {
+  requestJsonWithLocale,
+  resolveBackendBaseUrl,
+} from "@/api/connection/http";
 import {
   getDataSourceStatus,
   getResolvedDataSourceMode,

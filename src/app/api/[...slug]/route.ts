@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import axios from "axios";
-import { resolveBackendBaseUrl, resolveDataSourceMode } from "@/api/connection/http";
+import {
+  resolveBackendBaseUrl,
+  resolveDataSourceMode,
+} from "@/api/connection/http";
 import {
   hasMocksDirectory,
   loadMocksAsync,

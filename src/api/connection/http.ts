@@ -180,8 +180,10 @@ const rawBaseUrl = resolveTaggedEnvValue(
   process.env.NEXT_PUBLIC_API_URL,
 );
 const rawAppOrigin = resolveTaggedEnvValue(
-  process.env.NEXT_PUBLIC_APP_ORIGIN_LOCAL || process.env.NEXT_PUBLIC_APP_ORIGIN,
-  process.env.NEXT_PUBLIC_APP_ORIGIN_DOCKER || process.env.NEXT_PUBLIC_APP_ORIGIN,
+  process.env.NEXT_PUBLIC_APP_ORIGIN_LOCAL ||
+    process.env.NEXT_PUBLIC_APP_ORIGIN,
+  process.env.NEXT_PUBLIC_APP_ORIGIN_DOCKER ||
+    process.env.NEXT_PUBLIC_APP_ORIGIN,
   process.env.NEXT_PUBLIC_APP_ORIGIN,
 );
 
