@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { HiArrowRight } from "react-icons/hi2";
 import SectionSkeleton from "@/app/(shell)/components/sections/SectionSkeleton";
+import SectionEmptyState from "@/app/(shell)/components/sections/SectionEmptyState";
 import { useLazyLoadSection } from "@/app/hooks/useLazyLoadSection";
 import { useSectionReveal } from "@/app/hooks/useSectionReveal";
 import { getHomeGridsSectionPageClient } from "@/api/services/homeSections.client";
@@ -60,8 +61,9 @@ const mapSectionsToColumns = (
 
 const CategoriesSection = () => {
   const { open } = useGlobalStore();
-  const t = useTranslations("editorialSection");
-  const { targetRef, data, hasError } = useLazyLoadSection<CategoryColumnsData>(
+  const tEditorial = useTranslations("editorialSection");
+  const tSections = useTranslations("sections");
+  const { targetRef, data, hasError, isLoading } = useLazyLoadSection<CategoryColumnsData>(
     {
       rootMargin: "200px 0px",
       threshold: 0.1,
@@ -126,7 +128,7 @@ const CategoriesSection = () => {
                       <div className="relative h-18 w-18 shrink-0 overflow-hidden rounded-2xl border border-white/20 bg-white/5">
                         <Image
                           src={column.imageSrc}
-                          alt={t("featuredImageAlt", {
+                          alt={tEditorial("featuredImageAlt", {
                             category: categoryLabel,
                           })}
                           fill
@@ -152,7 +154,7 @@ const CategoriesSection = () => {
                         className="group mt-auto inline-flex w-fit items-center gap-3 text-white font-semibold transition-colors duration-300 hover:text-primary-blue"
                       >
                         <span>
-                          {t("goToCategory", { category: categoryLabel })}
+                          {tEditorial("goToCategory", { category: categoryLabel })}
                         </span>
                         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-primary-blue text-white transition-transform duration-300 group-hover:translate-x-0.5">
                           <HiArrowRight size={14} aria-hidden />
@@ -160,7 +162,7 @@ const CategoriesSection = () => {
                       </Link>
                     ) : (
                       <span className="mt-auto inline-flex w-fit items-center gap-3 text-white/50 font-semibold">
-                        {t("goToCategory", { category: categoryLabel })}
+                        {tEditorial("goToCategory", { category: categoryLabel })}
                       </span>
                     )}
                   </article>
@@ -171,11 +173,24 @@ const CategoriesSection = () => {
         </div>
       ) : (
         <div className="w-full py-4">
-          <SectionSkeleton variant="categories" />
-          {hasError && (
-            <p className="text-sm text-gray-500 mt-4 text-center">
-              Falha ao carregar a seção. Tente novamente ao recarregar a página.
-            </p>
+          {!hasError && (isLoading || !data) ? (
+            <SectionSkeleton variant="categories" />
+          ) : (
+            <SectionEmptyState
+              className="py-10"
+              title={
+                hasError
+                  ? tSections("emptyState.unavailableTitle")
+                  : tSections("emptyState.categoriesTitle")
+              }
+              description={
+                hasError
+                  ? tSections("emptyState.unavailableDescription")
+                  : tSections("emptyState.categoriesDescription")
+              }
+              actionLabel={tSections("viewMore")}
+              actionHref="/latest-news"
+            />
           )}
         </div>
       )}

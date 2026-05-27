@@ -72,6 +72,18 @@
     "trendingNow": "Em Alta",
     "forSubscribers": "Para Assinantes",
     "viewMore": "Ver Mais",
+    "emptyState": {
+      "unavailableTitle": "Estamos preparando essa seção",
+      "unavailableDescription": "No momento não foi possível carregar os dados. Tente novamente em instantes.",
+      "heroTitle": "Sem manchete principal no momento",
+      "heroDescription": "Assim que novas notícias forem publicadas, os destaques vão aparecer aqui.",
+      "latestTitle": "Ainda não há notícias recentes",
+      "latestDescription": "Esta seção foi desenhada para funcionar também com poucas matérias. Novas publicações aparecerão aqui automaticamente.",
+      "gridTitle": "Sem notícias suficientes para este bloco",
+      "gridDescription": "Quando houver mais conteúdo publicado, esta grade será preenchida automaticamente.",
+      "categoriesTitle": "As categorias ainda estão vazias",
+      "categoriesDescription": "Continue navegando. Assim que chegarem novas notícias, as colunas serão exibidas aqui."
+    },
     "filterLabels": {
       "spotlight": "Destaques",
       "trendingStories": "Historias em Alta",

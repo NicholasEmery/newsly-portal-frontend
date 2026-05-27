@@ -102,6 +102,18 @@
     "trendingNow": "Trending Now",
     "forSubscribers": "For Subscribers",
     "viewMore": "View More",
+    "emptyState": {
+      "unavailableTitle": "This section is being prepared",
+      "unavailableDescription": "We couldn't load this data right now. Please try again in a moment.",
+      "heroTitle": "No featured headline yet",
+      "heroDescription": "As soon as new stories are published, highlights will appear here.",
+      "latestTitle": "No recent stories yet",
+      "latestDescription": "This section now adapts to small datasets. New stories will appear here automatically.",
+      "gridTitle": "Not enough stories for this block yet",
+      "gridDescription": "This grid will be filled automatically as more content is published.",
+      "categoriesTitle": "Category columns are still empty",
+      "categoriesDescription": "Keep browsing. As soon as new stories arrive, category columns will be shown here."
+    },
     "filterLabels": {
       "spotlight": "Spotlight",
       "trendingStories": "Trending Stories",

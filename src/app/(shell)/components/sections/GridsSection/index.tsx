@@ -2,6 +2,7 @@
 
 import CardsGridClient from "./components/CardsGridClient";
 import SectionSkeleton from "@/app/(shell)/components/sections/SectionSkeleton";
+import SectionEmptyState from "@/app/(shell)/components/sections/SectionEmptyState";
 import SubscriberSectionClient from "./components/SubscriberSectionClient";
 import SubscriberBanner from "./components/SubscriberBanner";
 import SectionFrame from "@/app/(shell)/components/layout/SectionFrame";
@@ -24,6 +25,7 @@ import {
   resolveCategoryHref,
   type CategoryRouteSource,
 } from "@/utils/categoryRoute";
+import { useTranslations } from "next-intl";
 
 type GridsData = {
   homeGrids: HomeSectionDto[];
@@ -35,7 +37,8 @@ const sectionKey = (section: HomeSectionDto) =>
   `${section.FilterLabel}-${section.Category}`;
 
 const GridsSection = () => {
-  const { targetRef, data, hasError } = useLazyLoadSection<GridsData>({
+  const t = useTranslations("sections");
+  const { targetRef, data, hasError, isLoading } = useLazyLoadSection<GridsData>({
     rootMargin: "220px 0px",
     threshold: 0.1,
     fetcher: async () => {
@@ -103,18 +106,30 @@ const GridsSection = () => {
       data-cy="lazy-grids-section"
     >
       {!sectionsWithSubscribers.length ? (
-        <>
-          <SectionSkeleton variant="grid" />
-          <SectionSkeleton variant="subscriber" />
-          <SectionSkeleton variant="grid" />
-          <SectionSkeleton variant="subscriber-banner" />
-          {hasError && (
-            <p className="text-sm text-gray-500 mt-2 text-center">
-              Falha ao carregar as seções abaixo. Tente novamente ao recarregar
-              a página.
-            </p>
-          )}
-        </>
+        !hasError && (isLoading || !data) ? (
+          <>
+            <SectionSkeleton variant="grid" />
+            <SectionSkeleton variant="subscriber" />
+            <SectionSkeleton variant="grid" />
+            <SectionSkeleton variant="subscriber-banner" />
+          </>
+        ) : (
+          <SectionEmptyState
+            className="py-10"
+            title={
+              hasError
+                ? t("emptyState.unavailableTitle")
+                : t("emptyState.gridTitle")
+            }
+            description={
+              hasError
+                ? t("emptyState.unavailableDescription")
+                : t("emptyState.gridDescription")
+            }
+            actionLabel={t("viewMore")}
+            actionHref="/latest-news"
+          />
+        )
       ) : (
         sectionsWithSubscribers.map(
           ({ section, subscriberItem, subscriberVariant }, idx) => (

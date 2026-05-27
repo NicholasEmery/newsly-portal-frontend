@@ -25,6 +25,7 @@ const CardsGridClient = ({
   const resolvedFilterLabel = resolveSectionFilterLabel(FilterLabel, (key) =>
     tSections(key),
   );
+  const visibleItems = Items.slice(0, isDontMissOut ? 3 : 4);
 
   return (
     <section className="w-full flex flex-col justify-center items-center gap-10">
@@ -45,13 +46,24 @@ const CardsGridClient = ({
       <div
         className={`grid grid-cols-1 lg:grid-cols-2 ${isDontMissOut ? "2xl:grid-cols-3" : "2xl:grid-cols-4"} items-start justify-center gap-6`}
       >
-        {Items.slice(0, isDontMissOut ? 3 : 4).map((item, idx) => (
-          <Card
-            key={item.Title + idx}
-            {...item}
-            Category={isDontMissOut ? item.Category : undefined}
-          />
-        ))}
+        {visibleItems.length > 0 ? (
+          visibleItems.map((item, idx) => (
+            <Card
+              key={item.Title + idx}
+              {...item}
+              Category={isDontMissOut ? item.Category : undefined}
+            />
+          ))
+        ) : (
+          <div className="col-span-full rounded-xl border border-dashed border-gray-300/90 bg-gray-50/80 p-6 text-center dark:border-gray-700 dark:bg-gray-900/40">
+            <p className="text-sm font-semibold text-gray-800 dark:text-gray-100">
+              {tSections("emptyState.gridTitle")}
+            </p>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+              {tSections("emptyState.gridDescription")}
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );
