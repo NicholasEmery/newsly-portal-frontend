@@ -1,6 +1,6 @@
 # GitHub Actions - frontend
 
-O repositório `newsly-portal-frontend` usa um workflow para notificar o orchestrator quando houver push em `main`.
+O repositório `newsly-portal-frontend` usa um workflow para notificar o orchestrator quando o workflow `CI` terminar com sucesso após um push em `main`.
 
 Requisitos antes de ativar CI completo:
 
@@ -9,7 +9,7 @@ Requisitos antes de ativar CI completo:
 
 Notas operacionais:
 
-- O workflow que chama o orchestrator está em `.github/workflows/notify-orchestrator.yml`.
+- O workflow que chama o orchestrator está em `.github/workflows/notify-orchestrator.yml` e escuta `workflow_run` do workflow `CI`.
 - O token em `ORCHESTRATOR_PAT` deve ser criado por um usuário/UUID com permissão para disparar `repository_dispatch` no repositório alvo.
 
 Como testar localmente:
