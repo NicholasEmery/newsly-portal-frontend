@@ -12,7 +12,7 @@ export async function GET() {
   const mode = resolveDataSourceMode();
   const mocksPresent = hasMocksDirectory();
 
-  let mocksSummary: any = null;
+  let mocksSummary: any;
   try {
     // dynamic import to reflect what loadMocksAsync would get
     const m = await import("@/mocks");
