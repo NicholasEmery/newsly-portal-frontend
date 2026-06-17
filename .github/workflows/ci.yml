@@ -42,9 +42,6 @@ jobs:
       - name: Install dependencies (skip lifecycle scripts)
         run: npm ci --ignore-scripts
 
-      - name: Install Cypress binary (diagnostic)
-        run: npx cypress install --loglevel debug
-
       - name: Typecheck
         run: npm run typecheck
 
